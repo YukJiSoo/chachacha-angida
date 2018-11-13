@@ -1,14 +1,11 @@
 <template>
   <v-app>
+    <!-- navigation -->
     <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      temporary
       v-model="drawer"
-      enable-resize-watcher
       fixed
       app
-      color="deep-orange lighten-1"
     >
       <v-list>
         <v-list-tile
@@ -25,49 +22,41 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer>
-    <v-toolbar
+    </v-navigation-drawer>  
+    
+    <!-- toolbar -->
+    <v-toolbar 
       app
-      :clipped-left="clipped"
-      color="deep-orange lighten-1"
-    >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      dark color="deep-orange lighten-1">
+      <v-toolbar-side-icon icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
+      <v-img
+        :src="require('./assets/mlogoWhite.png')"
+        contain
+        height="150%"
+      ></v-img>
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>search</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>account_circle</v-icon>
       </v-btn>
     </v-toolbar>
+    
+    <!-- content -->
     <v-content>
       <router-view/>
     </v-content>
-    <v-navigation-drawer
-      temporary
-      :right="right"
-      v-model="rightDrawer"
-      fixed
-      app
-    >
-      <v-list>
-        <v-list-tile @click="right = !right">
-          <v-list-tile-action>
-            <v-icon>compare_arrows</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
+
+    <!-- footer -->
+    <v-footer :fixed="fixed" app color="transparent" grid-list-md text-xs-center align-center>
+      <v-btn>
+        <v-icon x-large>keyboard_arrow_up</v-icon>
+        <span>내 위치 : {{myLocation}}</span> 
+      </v-btn>
     </v-footer>
   </v-app>
 </template>
@@ -78,43 +67,38 @@ export default {
   name: 'App',
   data () {
     return {
-      clipped: false,
-      drawer: true,
+      myLocation: '강남역 11번 출구',
+      drawer: false,
       fixed: false,
       items: [
         {
         icon: 'bubble_chart',
-        title: 'Inspire',
+        title: '위치로 찾기',
         to: {
-          path: '/'
+          path: '/login'
           }
         },
         {
         icon: 'help',
-        title: 'help',
+        title: '카테고리',
         to: {
           path: '/help'
         }
         },
         {
-        icon: 'home',
-        title: 'about',
-        to: {
-          path: '/about'
-        }
-        },
-        {
         icon: 'account_box',
-        title: 'user',
+        title: '마이페이지',
         to: {
           path: '/user'
         }
         }
       ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: '안기다'
+      title: '안기다',
+    }
+  },
+  method : {
+    goToMain () {
+      window.location.href = 'http://localhost:8080/home';
     }
   }
 }
