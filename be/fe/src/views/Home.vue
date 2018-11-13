@@ -12,7 +12,7 @@
 
         <!-- advertisement -->
         <v-subheader class="mt-0 mb-0">Event</v-subheader>
-        <v-carousel 
+        <v-carousel
           hide-delimiters
           app
         >
@@ -25,7 +25,7 @@
 
         <!-- category -->
         <v-subheader>Category</v-subheader>
-        <v-carousel 
+        <v-carousel
           hide-controls
           hide-delimiters
           app
@@ -79,7 +79,7 @@
             </v-flex>
           </v-layout>
         </v-container>
-        
+
 
       </v-flex>
     </v-layout>

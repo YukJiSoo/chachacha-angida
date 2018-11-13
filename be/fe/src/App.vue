@@ -22,10 +22,10 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-navigation-drawer>  
-    
+    </v-navigation-drawer>
+
     <!-- toolbar -->
-    <v-toolbar 
+    <v-toolbar
       app
       dark color="deep-orange lighten-1">
       <v-toolbar-side-icon icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
@@ -45,7 +45,7 @@
         <v-icon>account_circle</v-icon>
       </v-btn>
     </v-toolbar>
-    
+
     <!-- content -->
     <v-content>
       <router-view/>
@@ -55,7 +55,7 @@
     <v-footer :fixed="fixed" app color="transparent" grid-list-md text-xs-center align-center>
       <v-btn>
         <v-icon x-large>keyboard_arrow_up</v-icon>
-        <span>내 위치 : {{myLocation}}</span> 
+        <span>내 위치 : {{myLocation}}</span>
       </v-btn>
     </v-footer>
   </v-app>

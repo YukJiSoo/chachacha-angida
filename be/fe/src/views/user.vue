@@ -127,7 +127,7 @@
                   label="Age"
                   required
                   v-model="userAge"
-                ></v-select>  
+                ></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -218,7 +218,7 @@ export default {
     //       console.error(e.message)
     //     })
     // },
-    
+
     getUsers () {
       axios.get('http://localhost:3000/api/user')
         .then((r) => {
