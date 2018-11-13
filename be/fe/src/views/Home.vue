@@ -43,8 +43,8 @@
         <v-subheader>이 달의 인기 식당!</v-subheader>
         <v-container class="pa-0">
           <v-layout row>
-            <v-flex xs12 sm4>
-              <v-hover v-for="n in 3" class="mb-2">
+            <v-flex xs12 sm4 v-for="n in 3" >
+              <v-hover class="mb-2">
                 <v-card
                   slot-scope="{ hover }"
                   :class="`elevation-${hover ? 12 : 2}`"
@@ -72,13 +72,6 @@
                           <span>(413)</span>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      <v-btn 
-                        outline color="deep-orange lighten-1"
-                        class="ml-2"
-                        large
-                      >안아주기</v-btn>
                     </div>
                   </v-card-title>
                 </v-card>
