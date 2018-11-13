@@ -27,9 +27,9 @@ export default new Router({
       component: () => import('./views/user.vue')
     },
     {
-      path: '/',
-      name: 'login',
-      component: () => import('./views/login.vue')
+      path: '/time',
+      name: 'time',
+      component: () => import('./views/time.vue')
     },
     {
       path: '*',
