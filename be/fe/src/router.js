@@ -9,6 +9,11 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/',
+      name: 'login',
+      component: () => import('./views/login.vue')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('./views/Home.vue')
@@ -27,9 +32,9 @@ export default new Router({
       component: () => import('./views/user.vue')
     },
     {
-      path: '/time',
-      name: 'time',
-      component: () => import('./views/time.vue')
+      path: '/reservation',
+      name: 'reservation',
+      component: () => import('./views/reservation.vue')
     },
     {
       path: '*',

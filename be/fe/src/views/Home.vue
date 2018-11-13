@@ -4,17 +4,18 @@
       <v-flex xs12 sm12>
         <v-text-field
             solo
-            label="찾고싶은 가게를 입력하세요"
+            label="어떤 가게를 안을래요?"
             append-icon="place"
             color="deep-orange lighten-1"
             class="mt-3 mb-0 mx-2"
           ></v-text-field>
 
         <!-- advertisement -->
-        <v-subheader class="mt-0 mb-0">Event</v-subheader>
+        <v-subheader class="mt-0 mb-0">이것 좀 봐봐!!</v-subheader>
         <v-carousel
           hide-delimiters
           app
+          height="200"
         >
           <v-carousel-item
             v-for="(item,i) in ad_items"
@@ -24,12 +25,13 @@
         </v-carousel>
 
         <!-- category -->
-        <v-subheader>Category</v-subheader>
+        <v-subheader>뭐 먹으러 갈까~~</v-subheader>
         <v-carousel
           hide-controls
           hide-delimiters
           app
           :cycle = "false"
+          height="300"
         >
           <v-carousel-item
             v-for="(item,i) in ad_items"
@@ -40,11 +42,11 @@
         </v-carousel>
 
         <!-- hot place -->
-        <v-subheader>이 달의 인기 식당!</v-subheader>
+        <v-subheader>많이 안긴 식당!</v-subheader>
         <v-container class="pa-0">
           <v-layout row>
-            <v-flex xs12 sm4 v-for="n in 3" >
-              <v-hover class="mb-2">
+            <v-flex xs12 sm4>
+              <v-hover v-for="n in 3" class="mb-2">
                 <v-card
                   slot-scope="{ hover }"
                   :class="`elevation-${hover ? 12 : 2}`"
@@ -72,6 +74,9 @@
                           <span>(413)</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="ml-5 grey--text text--darken-2">
+                      <v-btn color="deep-orange lighten-1">안아주기</v-btn>
                     </div>
                   </v-card-title>
                 </v-card>

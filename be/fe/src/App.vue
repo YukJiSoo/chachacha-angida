@@ -34,7 +34,10 @@
         :src="require('./assets/mlogoWhite.png')"
         contain
         height="150%"
-      ></v-img>
+        @click="goToMain"
+      >
+        
+      </v-img>
       <v-spacer></v-spacer>
 
       <v-btn icon>
@@ -82,7 +85,7 @@ export default {
         icon: 'help',
         title: '카테고리',
         to: {
-          path: '/help'
+          path: '/reservation'
         }
         },
         {
@@ -96,7 +99,7 @@ export default {
       title: '안기다',
     }
   },
-  method : {
+  methods : {
     goToMain () {
       window.location.href = 'http://localhost:8080/home';
     }
