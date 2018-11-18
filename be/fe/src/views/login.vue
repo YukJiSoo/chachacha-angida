@@ -3,7 +3,7 @@
     <v-layout>
       <v-flex xs12 sm12>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-          <v-card dark color="deep-orange lighten-1">
+          <v-card dark class="angida-gradiation">
             <v-img
               :src="require('../assets/mlogoWhite.png')"
               contain
@@ -61,4 +61,11 @@ export default {
 </script>
 
 <style>
+  .angida-gradiation{
+    background: #fc8e53;
+    background: -moz-linear-gradient(left, #fc8e53 0%, #f17432 0%, #fc8e53 0%, #fc8e53 17%, #ea5507 55%, #f70000 100%);
+    background: -webkit-linear-gradient(left, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
+    background: linear-gradient(to right, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8e53', endColorstr='#f70000',GradientType=1 );
+ }
 </style>

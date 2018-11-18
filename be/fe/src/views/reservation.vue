@@ -277,5 +277,6 @@
 .footer-style {
   border-radius: 20px;
   bottom: -20px;
+  box-shadow: 0px 0px 2px 0px #000808;
 }
 </style>

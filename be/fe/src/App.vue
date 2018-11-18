@@ -14,11 +14,12 @@
           :key="i"
           :to="item.to"
         >
-          <v-list-tile-action>
-            <v-icon v-html="item.icon"></v-icon>
-          </v-list-tile-action>
+
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
+            <v-list-tile-title 
+              v-text="item.title" 
+              class="title deep-orange--text">
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -27,19 +28,22 @@
     <!-- toolbar -->
     <v-toolbar
       app
-      dark color="deep-orange lighten-1">
+      dark
+      class="angida-gradiation">
       <v-toolbar-side-icon icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-img
-        :src="require('./assets/mlogoWhite.png')"
-        contain
-        height="150%"
-        @click="goToMain"
-      >
-        
-      </v-img>
+      <v-container class="pa-0">
+        <v-layout align-center column>
+          <v-flex xs12 sm12>
+            <span @click="goToMain" class="font-weight-bold caption">음식이 나에게</span>
+          </v-flex>
+          <v-flex xs8 sm12 class="pl-5">
+            <span @click="goToMain" class="font-weight-bold title">안기다</span>
+            <span @click="goToMain" class="font-weight-bold caption">린다</span>
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-spacer></v-spacer>
-
       <v-btn icon>
         <v-icon>search</v-icon>
       </v-btn>
@@ -54,13 +58,6 @@
       <router-view/>
     </v-content>
 
-    <!-- footer -->
-    <v-footer :fixed="fixed" app color="transparent" grid-list-md text-xs-center align-center>
-      <v-btn>
-        <v-icon x-large>keyboard_arrow_up</v-icon>
-        <span>내 위치 : {{myLocation}}</span>
-      </v-btn>
-    </v-footer>
   </v-app>
 </template>
 
@@ -70,7 +67,6 @@ export default {
   name: 'App',
   data () {
     return {
-      myLocation: '강남역 11번 출구',
       drawer: false,
       fixed: false,
       items: [
@@ -106,3 +102,12 @@ export default {
   }
 }
 </script>
+<style>
+ .angida-gradiation{
+    background: #fc8e53;
+    background: -moz-linear-gradient(left, #fc8e53 0%, #f17432 0%, #fc8e53 0%, #fc8e53 17%, #ea5507 55%, #f70000 100%);
+    background: -webkit-linear-gradient(left, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
+    background: linear-gradient(to right, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8e53', endColorstr='#f70000',GradientType=1 );
+ }
+</style>
