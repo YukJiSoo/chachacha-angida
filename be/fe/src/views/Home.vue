@@ -77,7 +77,8 @@
                       </div>
                     </div>
                     <div class="ml-5 grey--text text--darken-2">
-                      <v-btn color="deep-orange lighten-1">안아주기</v-btn>
+                      <v-btn color="deep-orange lighten-1" @click="goToReserv">
+                        안아주기</v-btn>
                     </div>
                   </v-card-title>
                 </v-card>
@@ -86,8 +87,8 @@
           </v-layout>
         </v-container
         >
-        <v-footer 
-          :fixed="false" 
+        <v-footer
+          :fixed="false"
           app
           height="auto"
           color="grey lighten-4"
@@ -151,7 +152,7 @@
                           </v-flex>
                         </v-layout>
                       </v-container>
-                      
+
                     </v-container>
                   </v-list>
                 </v-bottom-sheet>
@@ -211,6 +212,11 @@
         value: 4.5,
         locationSlider: 5,
       }
+    },
+    methods: {
+      goToReserv () {
+        window.location.href = 'http://localhost:8080/reservation';
+      },
     }
   }
 </script>

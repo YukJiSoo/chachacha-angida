@@ -61,7 +61,7 @@
                           <v-flex
                             v-for="n in menuNum"
                             :key="n"
-                            xs6 sm4 md2 
+                            xs6 sm4 md2
                             d-flex
                           >
                             <v-card flat tile class="d-flex">
@@ -101,7 +101,7 @@
               <!-- 다음바닥 -->
               <v-footer
                 v-if="onboarding !== 2"
-                :fixed="false" 
+                :fixed="false"
                 app
                 color="transparent"
               >
@@ -116,9 +116,9 @@
                 </v-layout>
               </v-footer>
               <!-- 결제바닥 -->
-              <v-footer 
+              <v-footer
                 v-if="onboarding === 2"
-                :fixed="false" 
+                :fixed="false"
                 app
                 height="auto"
                 color="grey lighten-4"
@@ -189,7 +189,7 @@
                                   </v-flex>
                                 </v-layout>
                               </v-container>
-                              
+
                             </v-container>
                           </v-list>
                         </v-bottom-sheet>
