@@ -16,8 +16,8 @@
         >
 
           <v-list-tile-content>
-            <v-list-tile-title 
-              v-text="item.title" 
+            <v-list-tile-title
+              v-text="item.title"
               class="title deep-orange--text">
             </v-list-tile-title>
           </v-list-tile-content>
@@ -70,6 +70,27 @@ export default {
       drawer: false,
       fixed: false,
       items: [
+        {
+        icon: 'alert',
+        title: '공지사항',
+        to: {
+          path: '/notice'
+          }
+        },
+        {
+        icon: 'question',
+        title: 'Q&A',
+        to: {
+          path: '/Q&A'
+          }
+        },
+        {
+        icon: 'setting',
+        title: 'setting',
+        to: {
+          path: '/setting'
+          }
+        },
         {
         icon: 'bubble_chart',
         title: '위치로 찾기',
