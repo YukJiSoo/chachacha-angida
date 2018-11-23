@@ -3,13 +3,15 @@
     <v-layout>
       <v-flex xs12 sm12>
         <v-form v-model="valid">
+          <!--title text field-->
   <v-text-field
-    v-model="name"
+    v-model="title"
     :rules="nameRules"
-    :counter="10"
-    label="Name"
+    :counter="20"
+    label="Title"
     required
   ></v-text-field>
+  <!-- Q&A내용-->
   <v-textarea
            solo
            name="Question"
@@ -17,6 +19,7 @@
            value=""
          ></v-textarea>
 </v-form>
+<!-- 완료, 취소 버튼-->
 <div>
 <v-btn @click="complete">완료</v-btn>
 <v-btn color="error" @click="goBack">취소</v-btn>
@@ -34,11 +37,11 @@ export default {
     }
   },
   methods: {
-    complete () {
+    complete () { //완료 method
       alert("등록되었습니다.")
       window.location.href = 'http://localhost:8080/Q&A';
     },
-    goBack () {
+    goBack () { //취소 method
       window.location.href = 'http://localhost:8080/Q&A';
     }
   }

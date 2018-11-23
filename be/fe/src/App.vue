@@ -45,7 +45,7 @@
       </v-container>
       <v-spacer></v-spacer>
       <v-btn icon>
-        <v-icon>search</v-icon>
+        <v-icon @click="">search</v-icon>
       </v-btn>
 
       <v-btn icon>
@@ -75,6 +75,13 @@ export default {
         title: '공지사항',
         to: {
           path: '/notice'
+          }
+        },
+        {
+        icon: 'coupon',
+        title: '쿠폰함',
+        to: {
+          path: '/coupon'
           }
         },
         {
@@ -119,6 +126,7 @@ export default {
   methods : {
     goToMain () {
       window.location.href = 'http://localhost:8080/home';
+
     }
   }
 }

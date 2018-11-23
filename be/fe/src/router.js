@@ -13,6 +13,16 @@ export default new Router({
       component: () => import('./views/login.vue')
     },
     {
+      path: '/choosesignup',
+      name: 'choosesignup',
+      component: () => import('./views/choosesignup.vue')
+    },
+    {
+      path: '/ownersignup',
+      name: 'ownersignup',
+      component: () => import('./views/ownersignup.vue')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('./views/Home.vue')
@@ -31,6 +41,11 @@ export default new Router({
       path: '/writing',
       name: 'writing',
       component: () => import('./views/writing.vue')
+    },
+    {
+      path: '/coupon',
+      name: 'coupon',
+      component: () => import('./views/coupon.vue')
     },
     {
       path: '/setting',

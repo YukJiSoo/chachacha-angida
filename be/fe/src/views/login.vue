@@ -35,7 +35,7 @@
                 </v-flex>
               </v-layout>
             </v-container>
-                
+
           </v-card>
         </v-dialog>
       </v-flex>
@@ -55,7 +55,9 @@ export default {
     goToHome () {
       window.location.href = 'http://localhost:8080/home';
     },
-
+    submit(){
+      window.location.href = 'http://localhost:8080/choosesignup';
+    }
   }
 }
 </script>
