@@ -115,33 +115,23 @@
                           <!-- <v-img
                             src="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
                           ></v-img> -->
-                          <div id="map" style="width:500px;height:400px;">
-                            <vue-daum-map
-                              :appKey="appKey"
-                              :center.sync="center"
-                              :level.sync="level"
-                              :mapTypeId="mapTypeId"
-                              :libraries="libraries"
-                              @load="onLoad"
-                              @center_changed=""
-                              @zoom_start=""
-                              @zoom_changed=""
-                              @bounds_changed=""
-                              @click=""
-                              @dblclick=""
-                              @rightclick=""
-                              @mousemove=""
-                              @dragstart=""
-                              @drag=""
-                              @dragend=""
-                              @idle=""
-                              @tilesloaded=""
-                              @maptypeid_changed=""
-                              style="width:500px;height:400px;">
-                            </vue-daum-map>
-
-                          </div>
-
+                          <GmapMap
+                            ref="mapRef"
+                            :center="{lat:currentLocation.lat, lng:currentLocation.lng}"
+                            :zoom="15"
+                            options="{disableDefaultUI:true}"
+                            map-type-id="terrain"
+                            style="width: 550px; height: 300px"
+                          >
+                            <GmapMarker
+                              :key="index"
+                              v-for="(m, index) in markers"
+                              :position="m.position"
+                              :clickable="true"
+                              :draggable="true"
+                              @click="center=m.position"
+                            />
+                          </GmapMap>
                         </v-flex>
                       </v-layout>
 
@@ -172,9 +162,9 @@
                               thumb-color="red"
                               :thumb-size="24"
                               thumb-label="always"
-                              :max="10"
-                              :min="0"
-                              :step="0.1"
+                              :max="1000"
+                              :min="100"
+                              :step="10"
                             ></v-slider>
                           </v-flex>
                         </v-layout>
@@ -198,8 +188,9 @@
                   </v-flex>
                   <v-flex xs2 sm6 class="pa-0">
                     <div class="caption text--darken-2">
-                      <span>주변</span>
-                      <span> 1.5km</span>
+                      <span>주변 : </span>
+                      <span>{{ locationSlider }}</span>
+                      <span>m 이내</span>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -216,10 +207,9 @@
 </template>
 
 <script>
-import VueDaumMap from 'vue-daum-map';
+import {gmapApi} from 'vue2-google-maps'
   export default {
     name: 'Home',
-    component: {VueDaumMap},
     data () {
       return {
         size: 'sm',
@@ -237,31 +227,51 @@ import VueDaumMap from 'vue-daum-map';
             src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
           }
         ],
-        reviews: 413,
-        value: 4.5,
-        locationSlider: 5,
-        appKey: '8feca6e86cc6f57ee2fc7d5efc5fa910', // 테스트용 appkey
-        center: {lat:33.450701, lng:126.570667}, // 지도의 중심 좌표
-        level: 3, // 지도의 레벨(확대, 축소 정도),
-        mapTypeId: VueDaumMap.MapTypeId.NORMAL, // 맵 타입
-        libraries: [], // 추가로 불러올 라이브러리
-        mapObject: null // 지도 객체. 지도가 로드되면 할당됨.
+        currentLocation: { lat : 37.558196, lng : 127.000131},
+        searchAddressInput: '',
+        locationSlider: 500
       }
     },
     mounted () {
+      this.geolocation();
+      // this.$refs.mapRef.$mapPromise.then((map) => {
+      //   map.panTo({lat: 1.38, lng: 103.80})
+      // })
+    },
+    computed: {
+      google: gmapApi
     },
     methods: {
-      // 지도가 로드 완료되면 load 이벤트 발생
-      onLoad (map) {
-          // 지도의 현재 영역을 얻어옵니다
-          var bounds = map.getBounds();
-          // 영역정보를 문자열로 얻어옵니다. ((남,서), (북,동)) 형식입니다
-          var boundsStr = bounds.toString();
-          console.log('Daum Map Loaded', boundsStr);
-          this.mapObject = map
+      geolocation: function () {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+        });
       },
-      onMapEvent (event, params) {
-        console.log(`Daum Map Event(${event})`, params);
+      initMap: function(){//document.getElementById('map')
+        // var elementId = this.$ref.el;
+        // map = new google.maps.Map(elementId, {
+        //   center: {lat: -34.397, lng: 150.644},
+        //   zoom: 6
+        // });
+
+      },
+      handleLocationError : function(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      },
+      greet: function (event) {
+        // 메소드 안에서 사용하는 `this` 는 Vue 인스턴스를 가리킵니다
+        alert('Hello ' + this.name + '!')
+        // `event` 는 네이티브 DOM 이벤트입니다
+        if (event) {
+          alert(event.target.tagName)
+        }
       }
     }
 
