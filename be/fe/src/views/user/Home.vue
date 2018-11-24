@@ -1,18 +1,34 @@
 <template>
-  <v-container class="pa-0">
+  <v-container class="pa-1">
     <v-layout>
       <v-flex xs12 sm12>
-        <!-- 검색창 -->
-        <v-text-field
-            solo
-            label="어떤 가게를 안을래요?"
-            append-icon="place"
-            color="deep-orange lighten-1"
-            class="mt-3 mb-0 mx-2"
-          ></v-text-field>
+        <!-- toolbar -->
+        <v-toolbar
+          app
+          dark
+          class="angida-gradiation">
+          <v-btn icon>
+            <v-icon @click="goToPage(mypage)">account_circle</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-container class="pa-0">
+            <v-layout align-center column>
+              <v-flex xs12 sm12>
+                <span @click="goToMain" class="font-weight-bold caption">음식이 나에게</span>
+              </v-flex>
+              <v-flex xs8 sm12 class="pl-5">
+                <span @click="goToMain" class="font-weight-bold title">안기다</span>
+                <span @click="goToMain" class="font-weight-bold caption">린다</span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>search</v-icon>
+          </v-btn>
+        </v-toolbar>
 
         <!-- advertisement -->
-        <v-subheader class="mt-0 mb-0">이것 좀 봐봐!!</v-subheader>
         <v-carousel
           hide-delimiters
           app
@@ -25,67 +41,16 @@
           ></v-carousel-item>
         </v-carousel>
 
-        <!-- category -->
-        <v-subheader>뭐 먹으러 갈까~~</v-subheader>
-        <v-carousel
-          hide-controls
-          hide-delimiters
-          app
-          :cycle = "false"
-          height="300"
-        >
-          <v-carousel-item
-            v-for="(item,i) in ad_items"
-            :key="i"
-            :src="item.src"
-            class="mx-1"
-          ></v-carousel-item>
-        </v-carousel>
-
-        <!-- hot place -->
-        <v-subheader>많이 안긴 식당!</v-subheader>
-        <v-container class="pa-0">
-          <v-layout row>
-            <v-flex xs12 sm4>
-              <v-hover v-for="n in 3" class="mb-2">
-                <v-card
-                  slot-scope="{ hover }"
-                  :class="`elevation-${hover ? 12 : 2}`"
-                  class="mx-auto"
-                >
-                  <v-img
-                    :aspect-ratio="16/9"
-                    src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                  ></v-img>
-                  <v-card-title>
-                    <div>
-                      <span class="headline">토끼정 강남점</span>
-                      <div class="d-flex">
-                        <v-rating
-                          :value="4.5"
-                          :full-icon="favorite"
-                          color="amber"
-                          dense
-                          half-increments
-                          readonly
-                          size="14"
-                        ></v-rating>
-                        <div class="ml-2 grey--text text--darken-2">
-                          <span>4.5</span>
-                          <span>(413)</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="ml-5 grey--text text--darken-2">
-                      <v-btn color="deep-orange lighten-1">안아주기</v-btn>
-                    </div>
-                  </v-card-title>
-                </v-card>
-              </v-hover>
+        <!-- category - 그리드 형식으로 한눈에 보이게 -->
+        <v-container fluid grid-list-sm class="pa-0 mt-2">
+          <v-layout row wrap>
+            <v-flex v-for="i in 9" :key="i" xs4>
+              <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%">
             </v-flex>
           </v-layout>
-        </v-container
-        >
+        </v-container>
+
+        <!-- 위치기반 검색 창 푸터 -->
         <v-footer
           :fixed="false"
           app
@@ -96,7 +61,7 @@
           <v-container grid-list-xl class="pt-2">
             <v-layout align-center justify-center column fill-height>
               <v-flex class="pa-0">
-                <v-bottom-sheet v-model="sheet">
+                <v-bottom-sheet>
                   <v-btn slot="activator" small flat icon color="grey">
                     <v-icon>keyboard_arrow_up</v-icon>
                   </v-btn>
@@ -178,7 +143,7 @@
               <v-container grid-list-xl flex class="pt-0">
                 <v-layout align-center justify-center row fill-height>
                   <v-flex xs2 sm6 class="pa-0">
-                    <v-icon color="grey" class="pt-0 ml-0">my_location</v-icon>
+                    <v-icon color="grey" class="pt-0 ml-0" @click="goToPage(restaurantListPage)">my_location</v-icon>
                   </v-flex>
                   <v-flex xs7 sm6 class="pa-0">
                     <div class="caption text--darken-2">
@@ -198,12 +163,13 @@
 
             </v-layout>
           </v-container>
-      </v-footer>
+        </v-footer>
 
 
       </v-flex>
     </v-layout>
   </v-container>
+
 </template>
 
 <script>
@@ -212,6 +178,8 @@ import {gmapApi} from 'vue2-google-maps'
     name: 'Home',
     data () {
       return {
+        mypage:'http://localhost:8080/mypage',
+        restaurantListPage:'http://localhost:8080/restaurantList',
         size: 'sm',
         ad_items: [
           {
@@ -272,6 +240,14 @@ import {gmapApi} from 'vue2-google-maps'
         if (event) {
           alert(event.target.tagName)
         }
+      }
+    },
+    methods: {
+      goToMain () {
+        window.location.href = 'http://localhost:8080/home';
+      },
+      goToPage (page) {
+        window.location.href = page;
       }
     }
 
