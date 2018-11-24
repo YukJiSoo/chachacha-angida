@@ -30,7 +30,9 @@
       app
       dark
       class="angida-gradiation">
-      <v-toolbar-side-icon icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-btn icon>
+        <v-icon>account_circle</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <v-container class="pa-0">
         <v-layout align-center column>
@@ -48,9 +50,6 @@
         <v-icon @click="">search</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>account_circle</v-icon>
-      </v-btn>
     </v-toolbar>
 
     <!-- content -->
