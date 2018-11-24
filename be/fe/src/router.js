@@ -13,9 +13,24 @@ export default new Router({
       component: () => import('./views/login.vue')
     },
     {
+      path: '/restaurantList',
+      name: 'restaurantList',
+      component: () => import('./views/user/restaurantList.vue')
+    },
+    {
+      path: '/restaurantDetail',
+      name: 'restaurantDetail',
+      component: () => import('./views/user/restaurantDetail.vue')
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import('./views/user/mypage.vue')
+    },
+    {
       path: '/choosesignup',
       name: 'choosesignup',
-      component: () => import('./views/user/choosesignup.vue')
+      component: () => import('./views/choosesignup.vue')
     },
     {
       path: '/ownersignup',
