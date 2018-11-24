@@ -5,7 +5,7 @@
         <v-card>
           <v-list two-line>
             <v-subheader><p>
-              coupon : items.length
+              coupon : {{count}}
             </p></v-subheader>
             <v-divider></v-divider>
     <template v-for="item in items">
@@ -39,6 +39,7 @@
   export default {
     data () {
       return {
+        count: '쿠폰수',
         items: [
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
@@ -47,7 +48,7 @@
           },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+            title: 'Summer BBQ <span class="grey--text text--lighten-1"></span>',
             subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend."
           },
           {

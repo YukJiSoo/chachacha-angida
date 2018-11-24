@@ -52,6 +52,7 @@
                   slot-scope="{ hover }"
                   :class="`elevation-${hover ? 12 : 2}`"
                   class="mx-auto"
+                   @click.native="showInfo"
                 >
                   <v-img
                     :aspect-ratio="16/9"
@@ -76,9 +77,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="ml-5 grey--text text--darken-2">
-                      <v-btn color="deep-orange lighten-1">안아주기</v-btn>
-                    </div>
                   </v-card-title>
                 </v-card>
               </v-hover>
@@ -86,8 +84,8 @@
           </v-layout>
         </v-container
         >
-        <v-footer 
-          :fixed="false" 
+        <v-footer
+          :fixed="false"
           app
           height="auto"
           color="grey lighten-4"
@@ -151,7 +149,7 @@
                           </v-flex>
                         </v-layout>
                       </v-container>
-                      
+
                     </v-container>
                   </v-list>
                 </v-bottom-sheet>
@@ -211,8 +209,13 @@
         value: 4.5,
         locationSlider: 5,
       }
-    }
+    },
+    methods: {
+      showInfo () {
+        window.location.href = 'http://localhost:8080/restaurantInfo';
+      }
   }
+}
 </script>
 <style>
 .footer-style {

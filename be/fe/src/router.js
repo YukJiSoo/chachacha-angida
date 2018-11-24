@@ -52,6 +52,11 @@ export default new Router({
       name: 'setting',
       component: () => import('./views/setting.vue')
     },
+    {
+      path: '/restaurantInfo',
+      name: 'restaurnantInfo',
+      component: () => import('./views/restaurantInfo.vue')
+    },
     // {
     //   path: '/about',
     //   name: 'about',
