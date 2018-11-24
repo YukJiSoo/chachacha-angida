@@ -86,8 +86,8 @@
           </v-layout>
         </v-container
         >
-        <v-footer 
-          :fixed="false" 
+        <v-footer
+          :fixed="false"
           app
           height="auto"
           color="grey lighten-4"
@@ -112,25 +112,53 @@
                       <!-- 지도 -->
                       <v-layout align-center justify-center row fill-height>
                         <v-flex xs12 sm6 class="px-0">
-                          <v-img
+                          <!-- <v-img
                             src="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
-                          ></v-img>
+                          ></v-img> -->
+                          <div id="map" style="width:500px;height:400px;">
+                            <vue-daum-map
+                              :appKey="appKey"
+                              :center.sync="center"
+                              :level.sync="level"
+                              :mapTypeId="mapTypeId"
+                              :libraries="libraries"
+                              @load="onLoad"
+                              @center_changed=""
+                              @zoom_start=""
+                              @zoom_changed=""
+                              @bounds_changed=""
+                              @click=""
+                              @dblclick=""
+                              @rightclick=""
+                              @mousemove=""
+                              @dragstart=""
+                              @drag=""
+                              @dragend=""
+                              @idle=""
+                              @tilesloaded=""
+                              @maptypeid_changed=""
+                              style="width:500px;height:400px;">
+                            </vue-daum-map>
+
+                          </div>
+
                         </v-flex>
                       </v-layout>
 
-                      <v-container fluid grid-list-xl class="pa-0">
-                        <v-layout row>
+                      <v-container fluid grid-list-xl text-xs-center class="pa-0">
+                        <v-layout align-center justify-center row>
                           <v-flex xs8 sm6 class="px-1">
                             <v-text-field
                               label="위치를 입력하세요"
                               solo
                             ></v-text-field>
-                          </v-flex>
-                          <v-flex xs4 sm6>
                             <v-btn round dark color="red">
                               현재 위치
                             </v-btn>
                           </v-flex>
+                          <!-- <v-flex xs4 sm6>
+
+                          </v-flex> -->
                         </v-layout>
                       </v-container>
 
@@ -151,7 +179,7 @@
                           </v-flex>
                         </v-layout>
                       </v-container>
-                      
+
                     </v-container>
                   </v-list>
                 </v-bottom-sheet>
@@ -188,8 +216,10 @@
 </template>
 
 <script>
+import VueDaumMap from 'vue-daum-map';
   export default {
     name: 'Home',
+    component: {VueDaumMap},
     data () {
       return {
         size: 'sm',
@@ -210,8 +240,31 @@
         reviews: 413,
         value: 4.5,
         locationSlider: 5,
+        appKey: '8feca6e86cc6f57ee2fc7d5efc5fa910', // 테스트용 appkey
+        center: {lat:33.450701, lng:126.570667}, // 지도의 중심 좌표
+        level: 3, // 지도의 레벨(확대, 축소 정도),
+        mapTypeId: VueDaumMap.MapTypeId.NORMAL, // 맵 타입
+        libraries: [], // 추가로 불러올 라이브러리
+        mapObject: null // 지도 객체. 지도가 로드되면 할당됨.
+      }
+    },
+    mounted () {
+    },
+    methods: {
+      // 지도가 로드 완료되면 load 이벤트 발생
+      onLoad (map) {
+          // 지도의 현재 영역을 얻어옵니다
+          var bounds = map.getBounds();
+          // 영역정보를 문자열로 얻어옵니다. ((남,서), (북,동)) 형식입니다
+          var boundsStr = bounds.toString();
+          console.log('Daum Map Loaded', boundsStr);
+          this.mapObject = map
+      },
+      onMapEvent (event, params) {
+        console.log(`Daum Map Event(${event})`, params);
       }
     }
+
   }
 </script>
 <style>
