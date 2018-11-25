@@ -10,7 +10,12 @@
               토끼정 강남점
               </div>
               <v-spacer></v-spacer>
-              <v-btn round color="grey" class="font-weight-bold title white--text"><div>취소</div></v-btn>
+              <v-btn 
+                round color="grey" 
+                class="font-weight-bold title white--text"
+                @click="goToMain">
+                <div>취소</div>
+              </v-btn>
             </v-toolbar>
             <v-divider class="mx-3"></v-divider>
 

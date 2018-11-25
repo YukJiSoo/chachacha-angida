@@ -28,6 +28,9 @@
                       <v-btn flat large color="white" @click="goToHome">
                         Login
                       </v-btn>
+                      <v-btn flat large color="white" @click="goToOwnerLogin">
+                        OwnerLogin
+                      </v-btn>
                       <v-btn flat large color="white" @click="submit">
                         SignUp
                       </v-btn>
@@ -54,6 +57,9 @@ export default {
   methods: {
     goToHome () {
       window.location.href = 'http://localhost:8080/home';
+    },
+    goToOwnerLogin () {
+      window.location.href = 'http://localhost:8080/ownerHome';
     },
     submit(){
       window.location.href = 'http://localhost:8080/choosesignup';
