@@ -1,7 +1,6 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-const User = require('../../../models/users');
 const cal = require('../../../models/distance')
 /* GET home page. */
 router.get('/list', function(req, res, next) {
