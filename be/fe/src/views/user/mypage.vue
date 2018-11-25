@@ -57,7 +57,14 @@
           </v-layout>
         </v-container>
       </v-flex>
-
+      <!-- 내역 -->
+      <v-container fluid grid-list-sm class="pa-0">
+        <v-layout row wrap>
+          <v-flex v-for="userMenu in userMenuList" :key="i" xs3>
+            <img :src="`${userMenu.url}`" class="image" alt="lorem" width="100%" height="100%">
+          </v-flex>
+        </v-layout>
+      </v-container>
       <!-- 그 외 버튼 -->
       <v-flex xs12 sm12>
         <v-container grid-list-md text-xs-center align-center class="pa-0">
@@ -89,7 +96,7 @@
                 <span>환경 설정</span>
               </div>
             </v-flex>
-            
+
           </v-layout>
         </v-container>
       </v-flex>
@@ -115,7 +122,25 @@ export default {
           title: 'Welcome to Vuetify.js!',
           excerpt: 'Thank you for joining our community...'
         }
-      ]
+      ],
+      userMenuList: {
+        userMenu1:{
+          name: 'point-list',
+          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fpoint.PNG?alt=media&token=c7d405ae-8998-46fd-8bb1-9a098d02de0a',
+        },
+        userMenu2:{
+          name: 'coupon-list',
+          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fcoupon.PNG?alt=media&token=36e4eeac-f052-4123-bb64-bd89c7036d73',
+        },
+        userMenu3:{
+          name: 'order-list',
+          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Forder.PNG?alt=media&token=579ed091-4142-43a3-8ce3-6d15cc58ad9d',
+        },
+        userMenu4:{
+          name: 'review-list',
+          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Freview.PNG?alt=media&token=9d7c78ab-1a29-4e66-a89a-92516c7b1a2f',
+        },
+      }
     }
   },
   methods: {
