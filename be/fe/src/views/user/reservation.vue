@@ -228,7 +228,7 @@
                     <v-btn
                       color="deep-orange lighten-1 "
                       class="font-weight-bold headline white--text px-5"
-                      @click="next"
+                      @click="goToPage(paymentPage)"
                     >
                       결제하기
                     </v-btn>
@@ -247,6 +247,7 @@
     name: 'reservation',
     data () {
       return {
+        paymentPage: 'http://localhost:8080/payment',
         sheet: false,
         dialog : true,
         length: 3,
@@ -269,6 +270,9 @@
       },
       goToMain () {
         window.location.href = 'http://localhost:8080/home';
+      },
+      goToPage (page) {
+        window.location.href = page;
       },
       menuClick() {
         if(this.menuSelected === false) this.menuSelected = true;

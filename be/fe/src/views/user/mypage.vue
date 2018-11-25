@@ -1,6 +1,26 @@
 <template>
   <v-container class="pa-1">
     <v-layout row wrap>
+      <!-- 상단 -->
+      <v-flex xs12 sm12>
+        <v-toolbar
+          app
+          dark
+          height="40"
+          class="angida-gradiation">
+          <v-btn icon>
+            <v-icon @click="goToMain">keyboard_arrow_left</v-icon>
+          </v-btn>
+          <v-container class="pa-0">
+            <v-layout align-center column>
+              <v-flex xs12 sm12>
+                <span @click="goToMain" class="font-weight-bold subheading">Mypage</span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-toolbar>
+      </v-flex>
+
       <!-- 내역 -->
       <v-container fluid grid-list-sm class="pa-0">
         <v-layout row wrap>
@@ -43,28 +63,28 @@
         <v-container grid-list-md text-xs-center align-center class="pa-0">
           <v-layout column wrap>
             
-            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3">
+            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" @click="goToPage(noticePage)">
               <div class="subheading font-weight-bold">
                 <span>공지사항</span>
               </div>
             </v-flex>
 
             
-            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3">
+            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" @click="goToPage(myInfoPage)">
               <div class="subheading font-weight-bold">
                 <span>내정보 변경</span>
               </div>
             </v-flex>
 
             
-            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3">
+            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" @click="goToPage(qnaPage)">
               <div class="subheading font-weight-bold">
-                <span>QnA</span>
+                <span>QnA</span> 
               </div>
             </v-flex>
 
             
-            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3">
+            <v-flex xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" @click="goToPage(settingPage)">
               <div class="subheading font-weight-bold">
                 <span>환경 설정</span>
               </div>
@@ -74,34 +94,6 @@
         </v-container>
       </v-flex>
 
-      
-      <!-- toolbar -->
-      <v-flex xs12 sm12>
-        <v-toolbar
-          app
-          dark
-          class="angida-gradiation">
-          <v-btn icon>
-            <v-icon @click="goToPage(mypage)">account_circle</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-container class="pa-0">
-            <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <span @click="goToMain" class="font-weight-bold caption">음식이 나에게</span>
-              </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <span @click="goToMain" class="font-weight-bold title">안기다</span>
-                <span @click="goToMain" class="font-weight-bold caption">린다</span>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>search</v-icon>
-          </v-btn>
-        </v-toolbar>
-      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -112,6 +104,10 @@ export default {
   data () {
     return {
       mypage:'http://localhost:8080/mypage',
+      noticePage:'http://localhost:8080/notice',
+      qnaPage:'http://localhost:8080/Q&A',
+      settingPage:'http://localhost:8080/setting',
+      myInfoPage:'http://localhost:8080/myInfo',
       message: [
         {
           avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',

@@ -77,25 +77,43 @@
                       <!-- 지도 -->
                       <v-layout align-center justify-center row fill-height>
                         <v-flex xs12 sm6 class="px-0">
-                          <v-img
+                          <!-- <v-img
                             src="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
-                          ></v-img>
+                          ></v-img> -->
+                          <GmapMap
+                            ref="mapRef"
+                            :center="{lat:currentLocation.lat, lng:currentLocation.lng}"
+                            :zoom="15"
+                            options="{disableDefaultUI:true}"
+                            map-type-id="terrain"
+                            style="width: 550px; height: 300px"
+                          >
+                            <GmapMarker
+                              :key="index"
+                              v-for="(m, index) in markers"
+                              :position="m.position"
+                              :clickable="true"
+                              :draggable="true"
+                              @click="center=m.position"
+                            />
+                          </GmapMap>
                         </v-flex>
                       </v-layout>
 
-                      <v-container fluid grid-list-xl class="pa-0">
-                        <v-layout row>
+                      <v-container fluid grid-list-xl text-xs-center class="pa-0">
+                        <v-layout align-center justify-center row>
                           <v-flex xs8 sm6 class="px-1">
                             <v-text-field
                               label="위치를 입력하세요"
                               solo
                             ></v-text-field>
-                          </v-flex>
-                          <v-flex xs4 sm6>
                             <v-btn round dark color="red">
                               현재 위치
                             </v-btn>
                           </v-flex>
+                          <!-- <v-flex xs4 sm6>
+
+                          </v-flex> -->
                         </v-layout>
                       </v-container>
 
@@ -109,14 +127,14 @@
                               thumb-color="red"
                               :thumb-size="24"
                               thumb-label="always"
-                              :max="10"
-                              :min="0"
-                              :step="0.1"
+                              :max="1000"
+                              :min="100"
+                              :step="10"
                             ></v-slider>
                           </v-flex>
                         </v-layout>
                       </v-container>
-                      
+
                     </v-container>
                   </v-list>
                 </v-bottom-sheet>
@@ -135,8 +153,9 @@
                   </v-flex>
                   <v-flex xs2 sm6 class="pa-0">
                     <div class="caption text--darken-2">
-                      <span>주변</span>
-                      <span> 1.5km</span>
+                      <span>주변 : </span>
+                      <span>{{ locationSlider }}</span>
+                      <span>m 이내</span>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -154,6 +173,7 @@
 </template>
 
 <script>
+import {gmapApi} from 'vue2-google-maps'
   export default {
     name: 'Home',
     data () {
@@ -175,9 +195,51 @@
             src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
           }
         ],
-        reviews: 413,
-        value: 4.5,
-        locationSlider: 5,
+        currentLocation: { lat : 37.558196, lng : 127.000131},
+        searchAddressInput: '',
+        locationSlider: 500
+      }
+    },
+    mounted () {
+      this.geolocation();
+      // this.$refs.mapRef.$mapPromise.then((map) => {
+      //   map.panTo({lat: 1.38, lng: 103.80})
+      // })
+    },
+    computed: {
+      google: gmapApi
+    },
+    methods: {
+      geolocation: function () {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+        });
+      },
+      initMap: function(){//document.getElementById('map')
+        // var elementId = this.$ref.el;
+        // map = new google.maps.Map(elementId, {
+        //   center: {lat: -34.397, lng: 150.644},
+        //   zoom: 6
+        // });
+
+      },
+      handleLocationError : function(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      },
+      greet: function (event) {
+        // 메소드 안에서 사용하는 `this` 는 Vue 인스턴스를 가리킵니다
+        alert('Hello ' + this.name + '!')
+        // `event` 는 네이티브 DOM 이벤트입니다
+        if (event) {
+          alert(event.target.tagName)
+        }
       }
     },
     methods: {
@@ -188,6 +250,7 @@
         window.location.href = page;
       }
     }
+
   }
 </script>
 <style>

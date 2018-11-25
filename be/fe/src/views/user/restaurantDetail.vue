@@ -61,8 +61,8 @@
                 <v-flex xs12 sm12 class="pa-0">
                   <v-rating
                     v-model="rating"
-                    background-color="yellow lighten-3"
-                    color="yellow"
+                    background-color="yellow darken-3"
+                    color="yellow darken-3"
                     small
                   ></v-rating>
                 </v-flex>
@@ -71,7 +71,7 @@
             <v-divider vertical class="ma-0 pa-0"></v-divider>
             <!-- 리뷰 -->
             <v-flex xs5.5 sm12 class="pa-0">
-              <v-layout column wrap align-center>
+              <v-layout column wrap align-center @click="goToPage(reviewPage)">
                 <!-- 리뷰-제목 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="subheading font-weight-black text-xs-center">
@@ -139,6 +139,7 @@ export default {
       rating: 4,
       detailPage:'http://localhost:8080/restaurantDetail',
       reservationPage:'http://localhost:8080/reservation',
+      reviewPage: 'http://localhost:8080/review',
     }
   },
   methods: {

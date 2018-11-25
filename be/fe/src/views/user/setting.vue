@@ -1,18 +1,37 @@
 <template>
-  <v-container grid-list-md text-xs-center align-center>
-    <!-- 한칸 -->
-    <v-layout align-center justify-end row fill-height>
-      <v-flex xs10 sm10>
-        <p class="text-xs-left" style= "font-size:15pt; font-weight:bold">이벤트 혜택 알림</p>
-      </v-flex>
-      <v-flex xs2 sm2 class="pt-0">
-        <v-switch v-model="switch1" class="pt-0"></v-switch>
-      </v-flex>
-      <v-divider></v-divider>
-    </v-layout>
-    <v-layout align-center justify-end row fill-height class="mb-2">
+  <v-container grid-list-md align-center class="py-0">
+    <!-- 상단 -->
+    <v-layout align-end column>
       <v-flex xs12 sm12>
-        <v-divider></v-divider>
+        <v-toolbar
+          app
+          dark
+          height="40"
+          class="angida-gradiation">
+          <v-btn icon>
+            <v-icon>keyboard_arrow_left</v-icon>
+          </v-btn>
+          <v-container class="pa-0">
+            <v-layout align-center column>
+              <v-flex xs12 sm12>
+                <span class="font-weight-bold subheading">Q&A</span>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-toolbar>
+      </v-flex>
+    </v-layout>
+    
+    <!-- 한칸 -->
+    <v-layout align-start justify-end column fill-height>
+      <v-flex xs12 sm10 class="pl-3 pt-3">
+        <v-switch v-for="i in 3" v-model="switchMe" class="mt-1">
+          <template slot="label">
+            <div class="ml-3 subheading">
+              이벤트 혜택 알림
+            </div>
+          </template>
+        </v-switch>
       </v-flex>
     </v-layout>
     <!-- 끝 -->

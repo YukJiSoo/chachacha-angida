@@ -13,6 +13,11 @@ export default new Router({
       component: () => import('./views/login.vue')
     },
     {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('./views/user/payment.vue')
+    },
+    {
       path: '/restaurantList',
       name: 'restaurantList',
       component: () => import('./views/user/restaurantList.vue')
@@ -53,9 +58,14 @@ export default new Router({
       component: () => import('./views/user/Q&A.vue')
     },
     {
-      path: '/writing',
-      name: 'writing',
-      component: () => import('./views/user/writing.vue')
+      path: '/writingQnA',
+      name: 'writingQnA',
+      component: () => import('./views/user/writingQnA.vue')
+    },
+    {
+      path: '/writingReview',
+      name: 'writingReview',
+      component: () => import('./views/user/writingReview.vue')
     },
     {
       path: '/coupon',
@@ -66,6 +76,21 @@ export default new Router({
       path: '/setting',
       name: 'setting',
       component: () => import('./views/user/setting.vue')
+    },
+    {
+      path: '/point',
+      name: 'point',
+      component: () => import('./views/user/point.vue')
+    },
+    {
+      path: '/review',
+      name: 'review',
+      component: () => import('./views/user/review.vue')
+    },
+    {
+      path: '/reviewManage',
+      name: 'reviewManage',
+      component: () => import('./views/user/reviewManage.vue')
     },
     // {
     //   path: '/about',
@@ -84,6 +109,11 @@ export default new Router({
       path: '/reservation',
       name: 'reservation',
       component: () => import('./views/user/reservation.vue')
+    },
+    {
+      path: '/reservationHistory',
+      name: 'reservationHistory',
+      component: () => import('./views/user/reservationHistory.vue')
     },
     {
       path: '*',

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- content -->
-    <v-content>
+    <v-content class="grey lighten-4">
       <router-view/>
     </v-content>
   </v-app>
@@ -69,12 +69,6 @@ export default {
     }
   },
   methods : {
-    goToMain () {
-      window.location.href = 'http://localhost:8080/home';
-    },
-    goToPage (page) {
-      window.location.href = page;
-    }
   }
 }
 </script>
