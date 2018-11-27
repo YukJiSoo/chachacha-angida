@@ -65,8 +65,8 @@
             <div class="filebox" v-else>
               <img :src="image" />
               <label for="ex_file">Remove image</label>
-              <input type="button" id="ex_file" @change="removeImage">
-              <!--<button @click="removeImage">Remove image</button>-->
+              <input type="button" id="ex_file" @click="removeImage">
+              <!-- <button @click="removeImage">Remove image</button> -->
             </div>
           </div>
         </div>
@@ -74,7 +74,6 @@
         <div>
           <v-btn color="primary" @click="reviewRegister" >완료</v-btn>
           <v-btn color="error" :to="reviewPath">취소</v-btn>
-          <button v-on:click="showAlert">Hello world</button>
         </div>
       </v-flex>
     </v-layout>
@@ -103,14 +102,15 @@ export default {
       image: '',
       uploadfile: '',
       filename: '',
-      contentLimit: 1
+      contentLimit: 1,
+      fileUrl: ''
     }
   },
   methods: {
-    showAlert () {
-      this.$swal('Hello Vue world!!!');
-    },
-    complete () { //완료 method
+    complete (downloadURL) { //완료 method
+      console.log("별점:" + this.rating);
+      console.log(this.reviewContent);
+      console.log(downloadURL)
       console.log("리뷰등록완료");
     },
     reviewRegister () {
@@ -169,7 +169,7 @@ export default {
         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
           console.log('File available at', downloadURL);
           // 파일 업로드 완료 됐으니까 리뷰 작성 api호출해서 DB에 저장합시다.
-          //callbackFun();
+          callbackFun(downloadURL);
         });
       });
 
@@ -190,8 +190,8 @@ export default {
 
       reader.onload = (e) => {
         vm.image = e.target.result;
-        //console.log(typeof vm.image);
-        console.log(vm.image);
+        // console.log(typeof vm.image);
+        // console.log(vm.image);
       };
       reader.readAsDataURL(file);
     },
