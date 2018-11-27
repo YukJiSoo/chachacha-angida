@@ -9,14 +9,12 @@
           height="40"
           class="angida-gradiation">
           <v-btn icon>
-            <router-link :to="listPath" class="text--decoration-none">
-              <v-icon color="white">keyboard_arrow_left</v-icon>
-            </router-link>
+            <v-icon color="white" @click="goBack">keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">토끼정 강남점</span>
+                <span class="font-weight-bold subheading">{{name}}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -29,20 +27,20 @@
             <!-- 사진 -->
             <v-flex xs12 sm12 class="pa-0 black">
               <v-img
-                :src="require('../../assets/mlogo.png')"
+                :src="`${img}`"
               >
               </v-img>
             </v-flex>
             <!-- 이름 -->
             <v-flex xs12 sm12 class="pt-4 pl-2 pb-0">
               <div class="display-2 font-weight-bold">
-                <span>토끼정 강남점</span>
+                <span>{{name}}</span>
               </div>
             </v-flex>
             <!-- 간단한 설명 -->
             <v-flex xs12 sm12 class="pl-4 pt-3 pr-4">
               <div class="caption grey--text text--darken-2">
-                <span>갓 구운 토끼를 이쁜 접시에 담아서 사진찍기 좋은 음식점. 토끼구이의 색다른 맛. 토끼회도 있어요. </span>
+                <span>{{explain}} </span>
               </div>
             </v-flex>
           </v-layout>
@@ -56,7 +54,7 @@
                 <!-- 별 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="display-2 font-weight-bold red--text text-xs-center">
-                    <span>4.6</span>
+                    <span>{{rating}}</span>
                   </div>
                 </v-flex>
                 <!-- 점수 -->
@@ -84,7 +82,7 @@
                 <!-- 리뷰개수 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="display-2 font-weight-bold red--text text-xs-center">
-                    <span>130</span>
+                    <span>{{reviewNum}}</span>
                   </div>
                 </v-flex>
               </v-layout>
@@ -96,18 +94,18 @@
           <!-- 4행 주소, 전화번호 -->
           <v-flex xs12 sm12 class="pl-4 pt-3 pr-4 pb-2">
             <div class="caption grey--text text--darken-2">
-              <span>주소 : </span><span>서울특별시 중구 장충동 2가 193-179번지 201호</span>
+              <span>주소 : </span><span>{{address}}</span>
             </div>
             <div class="caption grey--text text--darken-2">
-              <span>전화번호 : </span><span>02-2345-6789</span>
+              <span>전화번호 : </span><span>{{phone}}</span>
             </div>
           </v-flex>
           <v-divider class="mt-2"></v-divider>
 
           <!-- 5행 메뉴종류 -->
           <v-layout row wrap class="mt-2">
-            <v-flex v-for="i in 9" :key="i" xs6 class="pa-1">
-              <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%">
+            <v-flex v-for="menu in menuItems" xs6 class="pa-1">
+              <img :src="`${menu.img}`" class="image" alt="lorem" width="100%" height="100%">
             </v-flex>
           </v-layout>
         </v-flex>
@@ -140,14 +138,79 @@ export default {
   name: 'default',
   data () {
     return {
+      storeId: '',
+      img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+      name: '토끼정',
+      explain: '토끼토끼',
       rating: 4,
-      listPath:'/restaurantList',
-      detailPath:'/restaurantDetail',
-      reservationPath:'/reservation',
-      reviewPath: '/review',
+      reviewNum: 10,
+      address: '어디어디',
+      phone: '전화번호',
+      menuItems: [
+        {
+          img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+          price:100,
+          name:'토끼고기',
+          explain:'토끼토끼'
+        }
+      ],
+
+
+      reservationPath: {
+        path: '/reservation',
+        query: {
+          storeId:''
+        }
+      },
+      reviewPath: {
+        path: '/review',
+        query: {
+          storeId:''
+        }
+      },
     }
   },
+  mounted() {
+    this.storeId = this.$route.query.storeId
+    this.reservationPath.query.storeId = this.storeId
+    
+    // getStore()
+  },
   methods: {
+    // 뒤로가기 - 플러그인 구현해야댐
+    goBack(){
+      this.$router.go(-1)
+    },
+    // 서버에서 가게정보 받아옴
+    getStore () {
+      axios.get('http://localhost:3000/api/store/',{
+        storeId: this.storeId
+      })
+      .then((r) => {
+        console.log(r.data)
+        setStoreInfo(r.data)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    // 가게 정보등록
+    setStoreInfo(data){
+      this.storeId = data.storeId
+      this.img = data.img
+      this.name = data.name
+      this.explain = data.explain
+      this.rating = data.rating
+      this.reviewNum = data.reviewNum
+      this.address = data.address
+      this.phone = data.phone
+
+      // 객체 추가로 수정
+      this.menuItems.img = data.menuImg
+      this.menuItems.price = data.price
+      this.menuItems.name = data.menuName
+      this.menuItems.explain = data.menuExplain
+    }
   }
 }
 </script>
