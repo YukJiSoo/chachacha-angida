@@ -77,7 +77,7 @@ export default {
       //   this.pop(e.message)
       //   alert('로그인에 실패했습니다')
       // })
-
+      
       if(success){
         localStorage.setItem('id', this.id);
         this.$router.push('/home');
