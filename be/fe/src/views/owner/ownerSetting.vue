@@ -66,64 +66,32 @@
         </v-toolbar>
         <!-- toolbar end-->
         </v-flex>
-        <v-flex xs12 sm12>
-          <!-- 음식점 이름-->
-          <h1>
-          {{restaurantName}}</h1>
-          <h3>주문관리</h3>
-        </v-flex>
     </v-layout>
-    <!-- system on/off-->
-    <v-layout align-center justify-end fill-height>
-      system 사용
-      <v-flex xs2 sm2>
-        <v-switch ></v-switch>
-    </v-flex>
-  </v-layout>
-  <!--주문정보-->
-  <v-card>
-    <v-list>
-     <v-list-group
-       v-for="item in items"
-       v-model="item.active"
-       :key="item.title"
-       no-action
-     >
-       <v-list-tile slot="activator">
-         <v-list-tile-content>
-           <!--주문자와 가격-->
-           <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}</v-list-tile-title>
-         </v-list-tile-content>
-       </v-list-tile>
-       <v-list-tile
-         v-for="subItem in item.items"
-         :key="subItem.title"
-       >
-         <v-list-tile-content>
-           <!--주문메뉴-->
-           <v-list-tile-title>{{ subItem.menu }}</v-list-tile-title>
-           <!--주문시간-->
-           <v-list-tile-subtitle>{{subItem.time}}</v-list-tile-subtitle>
-         </v-list-tile-content>
-
-       </v-list-tile>
-       <!--주문 수락 거절 버튼-->
-       <v-btn @click="agree" color="green lighten-1" class="font-weight-bold">수락</v-btn>
-       <v-btn @click="refuse" color="red lighten-1" class="font-weight-bold">거절</v-btn>
-     </v-list-group>
-   </v-list>
-      </v-card>
+    <v-layout align-center justify-end>
+      <!--한칸-->
+      <v-flex xs10 sm10>
+        <p class="text-xs-left" style= "font-size:15pt; font-weight:bold">알림 받기</p>
+      </v-flex>
+      <v-flex xs2 sm2 class="pt-0">
+        <!--스위치-->
+        <v-switch v-model="switch1" class="pt-0"></v-switch>
+      </v-flex>
+      <v-divider></v-divider>
+      <!--끝-->
+    </v-layout>
+    <v-layout align-center justify-end class="mb-2">
+        <v-divider></v-divider>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'ownerHome',
+  name: 'ownerSetting',
   data () {
     return {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
-      switch1: true,
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
@@ -148,54 +116,10 @@ export default {
           title: '환경설정',
           path: '/ownerSetting',
         }
-      ],
-      items:[
-          {
-            title: '주문자1',
-            cost: '10000원',
-            active: true,
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },
-          {
-            title: '주문자2',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자3',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자4',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          }
-        ]
+      ]
     }
   },
   methods: {
-    agree(){
-      alert("확인했습니다"),
-      this.items.active=false;
-    },
-    refuse(){
-      alert("거절했습니다")
-    },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')

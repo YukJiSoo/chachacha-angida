@@ -66,64 +66,23 @@
         </v-toolbar>
         <!-- toolbar end-->
         </v-flex>
-        <v-flex xs12 sm12>
-          <!-- 음식점 이름-->
-          <h1>
-          {{restaurantName}}</h1>
-          <h3>주문관리</h3>
-        </v-flex>
     </v-layout>
-    <!-- system on/off-->
-    <v-layout align-center justify-end fill-height>
-      system 사용
-      <v-flex xs2 sm2>
-        <v-switch ></v-switch>
-    </v-flex>
-  </v-layout>
-  <!--주문정보-->
-  <v-card>
-    <v-list>
-     <v-list-group
-       v-for="item in items"
-       v-model="item.active"
-       :key="item.title"
-       no-action
-     >
-       <v-list-tile slot="activator">
-         <v-list-tile-content>
-           <!--주문자와 가격-->
-           <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}</v-list-tile-title>
-         </v-list-tile-content>
-       </v-list-tile>
-       <v-list-tile
-         v-for="subItem in item.items"
-         :key="subItem.title"
-       >
-         <v-list-tile-content>
-           <!--주문메뉴-->
-           <v-list-tile-title>{{ subItem.menu }}</v-list-tile-title>
-           <!--주문시간-->
-           <v-list-tile-subtitle>{{subItem.time}}</v-list-tile-subtitle>
-         </v-list-tile-content>
+    <v-layout v-layout align-center justify-center row wrap fill-height>
+      <v-flex sm12 sm12>   <h1>음식점을 등록해주세요</h1>
+          </v-flex>
+          <v-flex sm12 sm12>
+  <v-btn color="orange" class="font-weight-bold" @click="goToInfoEdit">음식점 등록하기</v-btn></v-flex></v-layout>
 
-       </v-list-tile>
-       <!--주문 수락 거절 버튼-->
-       <v-btn @click="agree" color="green lighten-1" class="font-weight-bold">수락</v-btn>
-       <v-btn @click="refuse" color="red lighten-1" class="font-weight-bold">거절</v-btn>
-     </v-list-group>
-   </v-list>
-      </v-card>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'ownerHome',
+  name: 'ownerDefault',
   data () {
     return {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
-      switch1: true,
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
@@ -148,57 +107,16 @@ export default {
           title: '환경설정',
           path: '/ownerSetting',
         }
-      ],
-      items:[
-          {
-            title: '주문자1',
-            cost: '10000원',
-            active: true,
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },
-          {
-            title: '주문자2',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자3',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자4',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          }
-        ]
+      ]
     }
   },
   methods: {
-    agree(){
-      alert("확인했습니다"),
-      this.items.active=false;
-    },
-    refuse(){
-      alert("거절했습니다")
-    },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
+    },
+    goToInfoEdit(){
+      this.$router.push('/ownerInfoEdit')
     }
   }
 }

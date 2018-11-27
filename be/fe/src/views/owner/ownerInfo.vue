@@ -66,64 +66,56 @@
         </v-toolbar>
         <!-- toolbar end-->
         </v-flex>
-        <v-flex xs12 sm12>
-          <!-- 음식점 이름-->
-          <h1>
-          {{restaurantName}}</h1>
-          <h3>주문관리</h3>
-        </v-flex>
     </v-layout>
-    <!-- system on/off-->
-    <v-layout align-center justify-end fill-height>
-      system 사용
-      <v-flex xs2 sm2>
-        <v-switch ></v-switch>
-    </v-flex>
-  </v-layout>
-  <!--주문정보-->
-  <v-card>
-    <v-list>
-     <v-list-group
-       v-for="item in items"
-       v-model="item.active"
-       :key="item.title"
-       no-action
-     >
-       <v-list-tile slot="activator">
-         <v-list-tile-content>
-           <!--주문자와 가격-->
-           <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}</v-list-tile-title>
-         </v-list-tile-content>
-       </v-list-tile>
-       <v-list-tile
-         v-for="subItem in item.items"
-         :key="subItem.title"
-       >
-         <v-list-tile-content>
-           <!--주문메뉴-->
-           <v-list-tile-title>{{ subItem.menu }}</v-list-tile-title>
-           <!--주문시간-->
-           <v-list-tile-subtitle>{{subItem.time}}</v-list-tile-subtitle>
-         </v-list-tile-content>
+    <v-layout row wrap justify-center>
+      <v-flex xs12 sm12>
+      <h2 class="mb-3">내 정보</h2>
+      </v-flex>
+      <!--사용자 이름-->
+      <v-flex xs12 sm12>
+        <h4 class="mb-3">사용자 이름</h4>
+        <v-text-field
+        :value="ownerName"
+        solo
+        readonly>
+        </v-text-field>
+        <v-divider></v-divider>
+        <!--등록 음식점 이름-->
+        <h4 class="mt-3 mb-3">등록 음식점</h4>
+        <v-text-field
+        :value="restaurantName"
+        solo
+        readonly>
+        </v-text-field>
+        <v-divider></v-divider>
+        <!--등록 음식점 전화번호-->
+        <h4 class="mt-3 mb-3">등록 음식점 전화번호</h4>
+        <v-text-field
+      :value="restaurantNumber"
+      solo
+      readonly
+    ></v-text-field>
+    <v-divider></v-divider>
+    <div>
+      <!--정보 수정 버튼-->
+    <v-btn @click="goToOwnerInfoEdit" color="orange" class="font-weight-bold">정보 수정하기</v-btn>
+    <!--회원 탈퇴 버튼-->
+    <v-btn @click="quitAngida" color="red" class="font-weight-bold">회원 탈퇴하기</v-btn>
 
-       </v-list-tile>
-       <!--주문 수락 거절 버튼-->
-       <v-btn @click="agree" color="green lighten-1" class="font-weight-bold">수락</v-btn>
-       <v-btn @click="refuse" color="red lighten-1" class="font-weight-bold">거절</v-btn>
-     </v-list-group>
-   </v-list>
-      </v-card>
+  </div>
+    </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'ownerHome',
+  name: 'ownerInfo',
   data () {
     return {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
-      switch1: true,
+      restaurantNumber: '02-0000-0000',
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
@@ -148,53 +140,16 @@ export default {
           title: '환경설정',
           path: '/ownerSetting',
         }
-      ],
-      items:[
-          {
-            title: '주문자1',
-            cost: '10000원',
-            active: true,
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },
-          {
-            title: '주문자2',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자3',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자4',
-            cost: '10000원',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          }
-        ]
+      ]
     }
   },
   methods: {
-    agree(){
-      alert("확인했습니다"),
-      this.items.active=false;
+    quitAngida(){
+      alert("회원 탈퇴되었습니다."),
+      this.$router.push('/')
     },
-    refuse(){
-      alert("거절했습니다")
+    goToOwnerInfoEdit(){
+      this.$router.push('/ownerInfoEdit')
     },
     logout(){
       alert("로그아웃 되었습니다."),

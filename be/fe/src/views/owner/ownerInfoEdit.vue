@@ -1,43 +1,5 @@
 <template>
   <v-container grid-list-md text-xs-center align-center>
-    <v-layout>
-      <!--네비게이션-->
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      temporary
-    >
-    <!--사용자 정보-->
-      <v-list class="pa-1">
-        <v-list-tile avatar :to="ownerInfoPath">
-          <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{restaurantName}}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
-      </v-list>
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-        <!--한칸-->
-        <div v-for="menuItem in menuItems">
-          <v-list-tile :to="menuItem.path">
-            <v-list-tile-content>
-              <v-list-tile-title>{{menuItem.title}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-        </div>
-        <!--끝-->
-      </v-list>
-    </v-navigation-drawer>
-    <!--네비게이션 끝-->
-  </v-layout>
-
     <v-layout row wrap class="mb-0">
       <v-flex xs12 sm12>
         <!-- toolbar -->
@@ -46,8 +8,8 @@
           dark
           class="angida-gradiation">
           <v-icon
-          @click.stop="drawer = !drawer"
-          >list</v-icon>
+          @click="goBack"
+          >keyboard_backspace</v-icon>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
@@ -67,6 +29,38 @@
         <!-- toolbar end-->
         </v-flex>
     </v-layout>
+    <v-layout row wrap justify-center>
+      <v-flex xs12 sm12>
+      <h2>내 정보 수정</h2>
+      </v-flex>
+      <v-flex xs12 sm12>
+        <!--사용자 이름 입력-->
+    <h4 class="mb-3">사용자 이름</h4>
+    <v-text-field
+    solo
+    v-model = "ownerName">
+    </v-text-field>
+    <v-divider></v-divider>
+    <!--등록 음식점 이름 입력-->
+    <h4 class="mt-3 mb-3">등록 음식점</h4>
+    <v-text-field
+    solo
+    v-model = "restaurantName">
+    </v-text-field>
+    <v-divider></v-divider>
+    <!--등록 음식점 전화번호 입력-->
+    <h4 class="mt-3 mb-3">등록 음식점 전화번호</h4>
+    <v-text-field
+    solo
+    v-model = "restaurantNumber">
+    </v-text-field>
+    <v-divider></v-divider>
+    <div>
+      <!--완료 버튼-->
+    <v-btn @click="goToOwnerInfo" color="orange" class="font-weight-bold">정보 수정하기</v-btn>
+  </div>
+    </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -77,6 +71,7 @@ export default {
     return {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
+      restaurantNumber: '02-0000-0000',
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
@@ -101,13 +96,20 @@ export default {
           title: '환경설정',
           path: '/ownerSetting',
         }
-      ],
+      ]
     }
   },
   methods: {
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
+    },
+    goToOwnerInfo(){
+      alert("수정 완료되었습니다."),
+      this.$router.push('/ownerInfo')
+    },
+    goBack(){
+      window.history.back();
     }
   }
 }
