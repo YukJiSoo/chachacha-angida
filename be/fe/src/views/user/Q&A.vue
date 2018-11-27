@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon>
+          <v-btn icon :to="mypagePath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -23,7 +23,7 @@
 
       <!-- 문의하기 버튼-->
       <v-flex xs12 sm12 class="pa-2">
-        <v-btn color="error" @click="goToWriting">문의하기</v-btn>
+        <v-btn color="error" :to="writingQnA">문의하기</v-btn>
       </v-flex>
 
       <!-- QnA목록 -->
@@ -48,6 +48,8 @@
   export default {
     data () {
       return {
+        mypagePath:'/mypage',
+        writingQnA:'writingQnA',
         items: [
           //공지사항 각각 정보
           {
@@ -70,12 +72,6 @@
       }
     },
     methods:{
-      goToWriting(){
-        window.location.href = 'http://localhost:8080/writingQnA';
-      },
-      goToPage (page) {
-        window.location.href = page;
-      },
     }
   }
 </script>

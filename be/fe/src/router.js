@@ -33,6 +33,11 @@ export default new Router({
       component: () => import('./views/user/mypage.vue')
     },
     {
+      path: '/myInfoChange',
+      name: 'myInfoChange',
+      component: () => import('./views/user/myInfoChange.vue')
+    },
+    {
       path: '/choosesignup',
       name: 'choosesignup',
       component: () => import('./views/choosesignup.vue')

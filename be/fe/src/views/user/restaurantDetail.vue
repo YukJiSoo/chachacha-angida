@@ -9,12 +9,14 @@
           height="40"
           class="angida-gradiation">
           <v-btn icon>
-            <v-icon @click="goToMain">keyboard_arrow_left</v-icon>
+            <router-link :to="listPath" class="text--decoration-none">
+              <v-icon color="white">keyboard_arrow_left</v-icon>
+            </router-link>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span @click="goToMain" class="font-weight-bold subheading">토끼정 강남점</span>
+                <span class="font-weight-bold subheading">토끼정 강남점</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -71,10 +73,11 @@
             <v-divider vertical class="ma-0 pa-0"></v-divider>
             <!-- 리뷰 -->
             <v-flex xs5.5 sm12 class="pa-0">
-              <v-layout column wrap align-center @click="goToPage(reviewPage)">
+              <router-link :to="reviewPath" class="text--decoration-none">
+              <v-layout column wrap align-center>
                 <!-- 리뷰-제목 -->
                 <v-flex xs12 sm12 class="pa-0">
-                  <div class="subheading font-weight-black text-xs-center">
+                  <div class="subheading font-weight-black text-xs-center black--text">
                     <span>리뷰</span>
                   </div>
                 </v-flex>
@@ -85,6 +88,7 @@
                   </div>
                 </v-flex>
               </v-layout>
+              </router-link>
             </v-flex>
           </v-layout>
           <v-divider class="mt-2"></v-divider>
@@ -119,7 +123,7 @@
             <v-btn
               color="deep-orange lighten-1"
               class="font-weight-bold headline white--text px-5"
-              @click="goToPage(reservationPage)"
+              :to="reservationPath"
             >
               안아주기
             </v-btn>
@@ -137,18 +141,13 @@ export default {
   data () {
     return {
       rating: 4,
-      detailPage:'http://localhost:8080/restaurantDetail',
-      reservationPage:'http://localhost:8080/reservation',
-      reviewPage: 'http://localhost:8080/review',
+      listPath:'/restaurantList',
+      detailPath:'/restaurantDetail',
+      reservationPath:'/reservation',
+      reviewPath: '/review',
     }
   },
   methods: {
-    goToMain () {
-      window.location.href = 'http://localhost:8080/home';
-    },
-    goToPage (page) {
-      window.location.href = page;
-    }
   }
 }
 </script>

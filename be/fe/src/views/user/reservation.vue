@@ -4,7 +4,7 @@
       <v-flex xs12 sm12>
         <!-- 상단 -->
         <v-layout justify-space-between row>
-          <v-flex xs6 sm12>
+          <v-flex xs7 sm12>
             <div class="pt-3 pl-3 pb-2 font-weight-black headline">
             토끼정 강남점
             </div>
@@ -13,7 +13,7 @@
             <v-btn 
               round color="grey" 
               class="font-weight-bold title white--text"
-              @click="goToMain">
+              :to="mainPath">
               <div>취소</div>
             </v-btn>
           </v-flex>
@@ -228,7 +228,7 @@
                     <v-btn
                       color="deep-orange lighten-1 "
                       class="font-weight-bold headline white--text px-5"
-                      @click="goToPage(paymentPage)"
+                      :to="paymentPath"
                     >
                       결제하기
                     </v-btn>
@@ -247,7 +247,8 @@
     name: 'reservation',
     data () {
       return {
-        paymentPage: 'http://localhost:8080/payment',
+        mainPath: '/home',
+        paymentPath: '/payment',
         sheet: false,
         dialog : true,
         length: 3,
@@ -267,12 +268,6 @@
         this.onboarding = this.onboarding - 1 < 0
           ? this.length - 1
           : this.onboarding - 1
-      },
-      goToMain () {
-        window.location.href = 'http://localhost:8080/home';
-      },
-      goToPage (page) {
-        window.location.href = page;
       },
       menuClick() {
         if(this.menuSelected === false) this.menuSelected = true;
