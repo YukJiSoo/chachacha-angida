@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon>
+          <v-btn dark icon :to="reviewPath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -53,8 +53,8 @@
         </v-form>
         <!-- 완료, 취소 버튼-->
         <div>
-          <v-btn color="primary" @click="complete">완료</v-btn>
-          <v-btn color="error" @click="goBack">취소</v-btn>
+          <v-btn color="primary" @click="complete" :to="reviewPath">완료</v-btn>
+          <v-btn color="error" :to="reviewPath">취소</v-btn>
         </div>
       </v-flex>
     </v-layout>
@@ -67,16 +67,13 @@ export default {
   data () {
     return {
       rating: 3,
+      reviewPath:'/review',
     }
   },
   methods: {
     complete () { //완료 method
       alert("등록되었습니다.")
-      window.location.href = 'http://localhost:8080/home';
     },
-    goBack () { //취소 method
-      window.location.href = 'http://localhost:8080/home';
-    }
   }
 }
 </script>

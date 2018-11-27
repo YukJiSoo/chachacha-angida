@@ -8,13 +8,13 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon>
+          <v-btn icon :to="mypagePath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">Q&A</span>
+                <span class="font-weight-bold subheading">환경설정</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -44,6 +44,7 @@ export default {
   name: 'default',
   data () {
     return {
+      mypagePath:'/mypage',
     }
   },
   methods: {}

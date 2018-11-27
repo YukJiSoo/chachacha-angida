@@ -12,30 +12,27 @@
                <v-container grid-list-md text-xs-center align-center>
                 <v-layout align-center justify-space-around fill-height>
                   <v-flex xs12 sm6>
-                    <v-form ref="form" v-model="valid" lazy-validation>
                       <v-text-field
                         v-model="id"
-                        label="ID"
                         required
+                        label="ID"
                         color="white"
                       ></v-text-field>
                       <v-text-field
                         v-model="password"
-                        label="Password"
                         required
+                        label="Password"
                         color="white"
                       ></v-text-field>
-                      <v-btn flat large color="white" @click="goToHome">
+                      <v-btn flat large color="white" @click="signIn">
                         Login
                       </v-btn>
-                      <v-btn flat large color="white" @click="submit">
+                      <v-btn flat large color="white" :to="signUpPath">
                         SignUp
                       </v-btn>
-                    </v-form>
                 </v-flex>
               </v-layout>
             </v-container>
-
           </v-card>
         </v-dialog>
       </v-flex>
@@ -44,19 +41,51 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'login',
   data () {
     return {
-      dialog : true
+      dialog : true,
+      id: '',
+      password: '',
+      homePath: {
+        path:'/home'
+      },
+      signUpPath:'/choosesignup'
     }
   },
   methods: {
-    goToHome () {
-      window.location.href = 'http://localhost:8080/home';
-    },
-    submit(){
-      window.location.href = 'http://localhost:8080/choosesignup';
+    signIn() {
+      var success= true;
+      
+      // 디비에서 비교하는 부분 추가
+      // axios.post('http://localhost:3000/api/user/signIn', {
+      //   id: this.id, password: this.password
+      // })
+      // .then((r) => {
+      //   if(r.data.success){
+      //     localStorage.setItem('id', this.id);
+      //     this.$router.push('/home');
+      //   }
+      //   else{
+      //     alert('로그인에 실패했습니다')
+      //   }
+      // })
+      // .catch((e) => {
+      //   this.pop(e.message)
+      //   alert('로그인에 실패했습니다')
+      // })
+
+      if(success){
+        localStorage.setItem('id', this.id);
+        this.$router.push('/home');
+      }
+      else{
+        alert('로그인에 실패했습니다')
+      }
+      
     }
   }
 }

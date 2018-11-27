@@ -8,7 +8,7 @@
           flat
           height="40"
           class="angida-gradiation white--text">
-          <v-btn dark icon>
+          <v-btn dark icon :to="restaurantDetailPath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -36,7 +36,7 @@
               </div>
             </v-flex>
             <v-flex xs12>
-              <v-btn outline color="orange" large @click="goToPage(writingPage)">
+              <v-btn outline color="orange" large :to="writingPath">
                 <div class="px-5 mx-4 font-weight-bold subheading">리뷰 작성하기</div>
               </v-btn>
             </v-flex>
@@ -111,13 +111,11 @@ export default {
   data () {
     return {
       rating: 4,
-      writingPage: 'http://localhost:8080/writingReview',
+      writingPath: '/writingReview',
+      restaurantDetailPath: '/restaurantDetail'
     }
   },
   methods: {
-    goToPage (page) {
-      window.location.href = page;
-    },
   }
 }
 </script>

@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon>
+          <v-btn icon :to="mypagePath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -61,7 +61,7 @@
   export default {
     data () {
       return {
-        
+        mypagePath:'/mypage',
       }
     }
   }
