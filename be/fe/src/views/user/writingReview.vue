@@ -82,15 +82,16 @@
 
 <script>
 import firebase from "firebase";
+import fb_config from "../../../config/fb.json"
 var config = {
-  apiKey: "AIzaSyBAISo7Byhxy6xrrDuN2e2P72r2pD-cZeI",
-  authDomain: "angida-fe7f6.firebaseapp.com",
-  databaseURL: "https://angida-fe7f6.firebaseio.com",
-  projectId: "angida-fe7f6",
-  storageBucket: "angida-fe7f6.appspot.com",
-  messagingSenderId: "462555083356"
+  apiKey: fb_config.apiKey,
+  authDomain: fb_config.authDomain,
+  databaseURL: fb_config.databaseURL,
+  projectId: fb_config.projectId,
+  storageBucket: fb_config.storageBucket,
+  messagingSenderId: fb_config.messagingSenderId
 };
-firebase.initializeApp(config);
+firebase.initializeApp(fb_config);
 
 export default {
   name: 'default',
