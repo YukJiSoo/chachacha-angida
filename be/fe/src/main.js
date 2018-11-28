@@ -7,6 +7,10 @@ import './registerServiceWorker'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import Geocoder from "@pderas/vue2-geocoder";
 
+import MyPlugin from './plugins/myPlugin.js'
+
+Vue.use(MyPlugin)
+
 Vue.config.productionTip = false
 Vue.use(VueGoogleMaps, {
   load: {

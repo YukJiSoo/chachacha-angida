@@ -9,7 +9,7 @@
               contain
               height="400"
             ></v-img>
-               <v-container grid-list-md text-xs-center align-center>
+               <v-container grid-list-md text-xs-center align-center class="large">
                 <v-layout align-center justify-space-around fill-height>
                   <v-flex xs12 sm6>
                       <v-text-field
@@ -56,35 +56,38 @@ export default {
       signUpPath:'/choosesignup'
     }
   },
+  mounted() {
+  },
   methods: {
     signIn() {
       var success= true;
       
       // 디비에서 비교하는 부분 추가
-      // axios.post('http://localhost:3000/api/user/signIn', {
-      //   id: this.id, password: this.password
-      // })
-      // .then((r) => {
-      //   if(r.data.success){
-      //     localStorage.setItem('id', this.id);
-      //     this.$router.push('/home');
-      //   }
-      //   else{
-      //     alert('로그인에 실패했습니다')
-      //   }
-      // })
-      // .catch((e) => {
-      //   this.pop(e.message)
-      //   alert('로그인에 실패했습니다')
-      // })
-      
-      if(success){
-        localStorage.setItem('id', this.id);
-        this.$router.push('/home');
-      }
-      else{
+      axios.post('http://localhost:3000/api/user/signIn', {
+        id: this.id, password: this.password
+      })
+      .then((r) => {
+        if(r.data.success){
+          localStorage.setItem('id', this.id);
+          localStorage.setItem('code', r.data.code);
+          this.$router.push('/home');
+        }
+        else{
+          alert('로그인에 실패했습니다')
+        }
+      })
+      .catch((e) => {
+        this.pop(e.message)
         alert('로그인에 실패했습니다')
-      }
+      })
+      
+      // if(success){
+      //   localStorage.setItem('id', this.id);
+      //   this.$router.push('/home');
+      // }
+      // else{
+      //   alert('로그인에 실패했습니다')
+      // }
       
     }
   }

@@ -9,7 +9,7 @@
           height="40"
           class="angida-gradiation">
           <v-btn icon>
-            <v-icon color="white" @click="goBack">keyboard_arrow_left</v-icon>
+            <v-icon color="white" @click="$goBack()">keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
@@ -159,7 +159,8 @@ export default {
       reservationPath: {
         path: '/reservation',
         query: {
-          storeId:''
+          storeId:'',
+          name:''
         }
       },
       reviewPath: {
@@ -173,14 +174,12 @@ export default {
   mounted() {
     this.storeId = this.$route.query.storeId
     this.reservationPath.query.storeId = this.storeId
-    
+    this.reservationPath.query.name = this.name
+
     // getStore()
+    // getMenu()
   },
   methods: {
-    // 뒤로가기 - 플러그인 구현해야댐
-    goBack(){
-      this.$router.go(-1)
-    },
     // 서버에서 가게정보 받아옴
     getStore () {
       axios.get('http://localhost:3000/api/store/',{
@@ -204,12 +203,30 @@ export default {
       this.reviewNum = data.reviewNum
       this.address = data.address
       this.phone = data.phone
-
+    },
+    getMenu () {
+      axios.get('http://localhost:3000/api/store/menu',{
+        storeId: this.storeId
+      })
+      .then((r) => {
+        console.log(r.data)
+        setMenuInfo(r.data)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    // 가게 정보등록
+    setMenuInfo(data){
+      var menuNum = r.data.menu
       // 객체 추가로 수정
-      this.menuItems.img = data.menuImg
-      this.menuItems.price = data.price
-      this.menuItems.name = data.menuName
-      this.menuItems.explain = data.menuExplain
+      for(var i=0; i<menuNum; i++)
+          this.menuItems.push(r.data.menu[i])
+
+      // this.menuItems.img = data.menuImg
+      // this.menuItems.price = data.price
+      // this.menuItems.name = data.menuName
+      // this.menuItems.explain = data.menuExplain
     }
   }
 }

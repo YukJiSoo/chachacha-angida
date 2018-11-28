@@ -8,7 +8,7 @@
           flat
           height="40"
           class="angida-gradiation white--text">
-          <v-btn dark icon :to="restaurantDetailPath">
+          <v-btn dark icon @click="$goBack()">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">

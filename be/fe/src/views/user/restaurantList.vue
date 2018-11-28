@@ -9,9 +9,7 @@
           height="40"
           class="angida-gradiation">
           <v-btn icon>
-            <router-link :to="mainPath" class="text--decoration-none">
-              <v-icon color="white">keyboard_arrow_left</v-icon>
-            </router-link>
+            <v-icon color="white" @click="$goBack()">keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
@@ -65,7 +63,7 @@
                   </v-flex>
                   <!-- 2행 -->
                   <v-flex xs12 sm12 class="pt-0 pb-1">
-                    <v-layout align-center justify-center row fill-height>
+                    <v-layout align-center justify-center row fill-height >
                       <!-- 자리현황-제목 -->
                       <v-flex xs6 sm12 class="pa-0">
                         <div class="body-1 grey--text text--darken-1">

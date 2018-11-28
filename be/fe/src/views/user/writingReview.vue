@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn dark icon :to="reviewPath">
+          <v-btn dark icon @click="$goBack()">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -73,7 +73,7 @@
         <!-- 완료, 취소 버튼-->
         <div>
           <v-btn color="primary" @click="reviewRegister" >완료</v-btn>
-          <v-btn color="error" :to="reviewPath">취소</v-btn>
+          <v-btn color="error" @click="$goBack()">취소</v-btn>
         </div>
       </v-flex>
     </v-layout>
