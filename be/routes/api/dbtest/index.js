@@ -3,7 +3,7 @@ var createError = require('http-errors');
 var router = express.Router();
 
 var oracledb = require('oracledb');
-var dbConfig = require('../../../db_con.js');
+var dbConfig = require('../../../db/db_con.js');
 // var dbConfig = require('be/db_con.js');
 
 /* GET home page. */
