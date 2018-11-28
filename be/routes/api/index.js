@@ -7,6 +7,7 @@ router.use('/dbtest', require('./dbtest'));
 router.use('/store', require('./store'));
 router.use('/notice', require('./notice'));
 router.use('/Q&A', require('./Q&A'));
+router.use('/reservation', require('./reservation'));
 
 router.all('*', function(req, res, next) {
   next(createError(404, '존재하지 않음'));
