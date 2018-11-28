@@ -8,13 +8,13 @@
           flat
           height="40"
           class="angida-gradiation white--text">
-          <v-btn dark icon>
+          <v-btn dark icon :to="mypagePath">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">주문내역</span>
+                <span class="font-weight-bold subheading">예약내역</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -28,6 +28,24 @@
       <v-flex xs12 sm12>
         <div class="body-2 grey--text text--darken-1 px-3 pt-3">
           <span>9/2 (일)</span>
+          <span v-if="i===1">
+            <span class="mx-4 green--text text--darken-2">수락대기</span>
+            <v-btn outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+              예약취소
+            </v-btn>
+          </span>
+          <span v-if="i===2">
+            <span class="mx-4 red--text text--darken-2">예약취소</span>
+          </span>
+          <span v-if="i===3">
+            <span class="mx-4 grey--text text--darken-2">방문완료</span>
+          </span>
+          <span v-if="i===4">
+            <span class="mx-4 blue--text text--darken-2">예약완료</span>
+            <v-btn outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+              예약취소
+            </v-btn>
+          </span>
         </div>
       </v-flex>
       <!-- 가게이름 -->
@@ -45,7 +63,7 @@
       <!-- 안아주기 버튼 -->
       <v-flex xs12 sm12 align-self-center class="mt-2">
         <div>
-          <v-btn outline color="orange" class="angida-gradiation px-5" dark large >
+          <v-btn outline color="orange" class="angida-gradiation px-5" dark large :to="reservationPage">
             <div class="headline font-weight-bold px-5">
               다시 안아주기
             </div>
@@ -54,8 +72,10 @@
       </v-flex>
       <!-- 리뷰작성하러가기 -->
       <v-flex xs12 sm12 align-self-center>
-        <div v-if="i===1" class="caption light-blue--text text--darken-2 font-weight-bold">
-          <span>리뷰 작성하러 가기</span>
+        <div v-if="i===1" class="pt-2 pb-1 caption light-blue--text text--darken-2 font-weight-bold">
+          <router-link :to="writingReviewPage" class="text--decoration-none">
+            <span>리뷰 작성하러 가기</span>
+          </router-link>
         </div>
         <div v-else class="caption grey--text text--darken-2 font-weight-bold">
           <span>리뷰작성기간이 지났습니다</span>
@@ -71,6 +91,9 @@ export default {
   name: 'default',
   data () {
     return {
+      mypagePath:'/mypage',
+      reservationPage:'/reservation',
+      writingReviewPage:'/writingReview',
     }
   },
   methods: {}

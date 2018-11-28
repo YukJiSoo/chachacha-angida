@@ -7,18 +7,18 @@
           app
           dark
           class="angida-gradiation">
-          <v-btn icon>
-            <v-icon @click="goToPage(mypage)">account_circle</v-icon>
+          <v-btn icon :to="myPagePath">
+            <v-icon>account_circle</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span @click="goToMain" class="font-weight-bold caption">음식이 나에게</span>
+                <span class="font-weight-bold caption">음식이 나에게</span>
               </v-flex>
               <v-flex xs8 sm12 class="pl-5">
-                <span @click="goToMain" class="font-weight-bold title">안기다</span>
-                <span @click="goToMain" class="font-weight-bold caption">린다</span>
+                <span class="font-weight-bold title">안기다</span>
+                <span class="font-weight-bold caption">린다</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -26,25 +26,9 @@
           <v-btn icon v-on:click="isHidden = !isHidden" >
             <v-icon>search</v-icon>
           </v-btn>
-          <!-- <v-list>
-            <v-list-tile
-              v-for="(item, i) in items"
-              :key="i"
-              @click=""
-            >
-              <v-list-tile-title>
-                <v-text-field
-                hide-details
-                prepend-icon="search"
-                single-line
-                ></v-text-field>
-              </v-list-tile-title>
-            </v-list-tile>
-          </v-list> -->
 
           <v-toolbar
             dense
-
             absolute
             v-if="!isHidden"
             class="deep-orange accent-3"
@@ -55,7 +39,7 @@
             <v-text-field
               single-line
             >{{ searchWord }}</v-text-field>
-            <v-btn icon @click="goToPage(restaurantListPage)">
+            <v-btn icon @click="keywordSearch">
               <v-icon>search</v-icon>
             </v-btn>
           </v-toolbar>
@@ -78,8 +62,17 @@
         <v-container fluid grid-list-sm class="pa-0 mt-2">
           <v-layout row wrap>
             <v-flex v-for="menuCategory in menuCategoryList" xs4>
-              <img :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" class="image" alt="lorem" width="100%" height="100%"
-                    @click="goToPageWithCategory(`${menuCategory.name}`)">
+              <!-- <router-link :to="restaurantListPath">
+                <img 
+                  :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
+                  class="image" alt="lorem" width="100%" height="100%"
+                  @click="categorySearch(menuCategory.name)"
+                  >
+              </router-link> -->
+              <img 
+                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
+                class="image" alt="lorem" width="100%" height="100%"
+                @click="categorySearch(menuCategory.name)">
               <!-- <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%"> -->
             </v-flex>
           </v-layout>
@@ -138,7 +131,7 @@
                       <v-container fluid grid-list-xl text-xs-center class="pa-0">
                         <v-layout align-center justify-center row>
                           <v-flex xs8 sm6 class="px-1">
-                            <v-btn round dark color="red" @click="goToPage(restaurantListPage)">
+                            <v-btn round dark color="red" @click="locationSearch()">
                               현 위치로 주소 설정
                             </v-btn>
                           </v-flex>
@@ -171,18 +164,15 @@
                 </v-bottom-sheet>
               </v-flex>
 
-              <v-container grid-list-xl flex class="pt-0">
+              <v-container grid-list-xl flex class="pt-2">
                 <v-layout align-center justify-center row fill-height>
-                  <v-flex xs2 sm6 class="pa-0">
-                    <v-icon color="grey" class="pt-0 ml-0" @click="goToPage(restaurantListPage)">my_location</v-icon>
-                  </v-flex>
                   <v-flex xs7 sm6 class="pa-0">
                     <div class="caption text--darken-2">
                       <span>내 위치 : </span>
                       <span>{{ currentLoadName }}</span>
                     </div>
                   </v-flex>
-                  <v-flex xs2 sm6 class="pa-0">
+                  <v-flex xs4 sm6 class="pa-0">
                     <div class="caption text--darken-2">
                       <span>주변 : </span>
                       <span>{{ locationSlider }}</span>
@@ -211,8 +201,12 @@ import axios from 'axios'
     name: 'Home',
     data () {
       return {
-        mypage:'http://localhost:8080/mypage',
-        restaurantListPage:'http://localhost:8080/restaurantList',
+        myPagePath: {
+          path: '/mypage'
+        },
+        restaurantListPath: {
+          path: '/restaurantList'
+        },
         size: 'sm',
         ad_items: [
           {
@@ -297,6 +291,7 @@ import axios from 'axios'
             this.errors.push(e)
           })
       })
+
     },
     computed: {
       google: gmapApi
@@ -335,14 +330,31 @@ import axios from 'axios'
       }
     },
     methods: {
-      goToMain () {
-        window.location.href = 'http://localhost:8080/home';
-      },
-      goToPage (page) {
-        window.location.href = page;
-      },
       goToPageWithCategory (category){
         console.log(category);
+      },
+      keywordSearch() { // 키워드 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          keyword: this.searchWord,
+          locationLimit: this.locationSlider, // 반경
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
+      },
+      categorySearch(categoryName) { // 카테고리 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          category: categoryName,
+          locationLimit: this.locationSlider,
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
+      },
+      locationSearch() { // 위치 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          locationLimit: this.locationSlider,
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
       }
     }
 
