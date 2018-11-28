@@ -11,12 +11,12 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img :src='image'>
+            <img :src='info.avatar'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{restaurantName}}</v-list-tile-title>
+            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
+            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
@@ -74,14 +74,14 @@
         <!--사용자사진-->
       <v-flex xs12 sm12>
         <h4 class="mb-3">사용자 사진</h4>
-        <img :src='image' class="mb-3">
+        <img :src='info.avatar' class="mb-3">
         <v-divider></v-divider>
         </v-flex>
       <!--사용자 이름-->
       <v-flex xs12 sm12>
         <h4 class="mb-3">사용자 이름</h4>
         <v-text-field
-        :value="ownerName"
+        :value="info.ownerName"
         solo
         readonly>
         </v-text-field>
@@ -89,7 +89,7 @@
         <!--등록 음식점 이름-->
         <h4 class="mt-3 mb-3">등록 음식점</h4>
         <v-text-field
-        :value="restaurantName"
+        :value="info.restaurantName"
         solo
         readonly>
         </v-text-field>
@@ -97,9 +97,10 @@
         <!--등록 음식점 전화번호-->
         <h4 class="mt-3 mb-3">등록 음식점 전화번호</h4>
         <v-text-field
-      :value="restaurantNumber"
+      :value="info.restaurantNumber"
       solo
       readonly
+      :mask="phoneMask"
     ></v-text-field>
     <v-divider></v-divider>
     <div>
@@ -119,13 +120,21 @@ export default {
   name: 'ownerInfo',
   data () {
     return {
-      restaurantName: '도스마스 동대점',
-      ownerName: '차민형',
-      restaurantNumber: '02-0000-0000',
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
-      image: 'https://randomuser.me/api/portraits/men/85.jpg',
+      phoneMask: '(###)-####-####',
+      info:{
+        role: 'owner',
+        ownerName: '차민형',
+        ID: 'mpsmhck95@naver.com',
+        phone: '01087215502',
+        sex: 'man',
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        restaurantName: '도스마스 동대점',
+        restaurantNumber: '01012345678',
+        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
+      },
       menuItems: [
         {
           title: '주문관리',

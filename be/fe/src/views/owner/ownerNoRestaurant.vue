@@ -11,12 +11,12 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img :src='image'>
+            <img :src='info.avatar'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{restaurantName}}</v-list-tile-title>
+            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
+            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
@@ -82,11 +82,20 @@ export default {
   image: 'https://randomuser.me/api/portraits/men/85.jpg',
   data () {
     return {
-      restaurantName: '도스마스 동대점',
-      ownerName: '차민형',
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      info:{
+        role: 'owner',
+        ownerName: '차민형',
+        ID: 'mpsmhck95@naver.com',
+        phone: '01087215502',
+        sex: 'man',
+        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        restaurantName: '도스마스 동대점',
+        restaurantNumber: '01012345678',
+        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
+      },
       menuItems: [
         {
           title: '주문관리',

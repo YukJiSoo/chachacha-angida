@@ -40,76 +40,58 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="info.ownerName"
+      v-model="restaurantNamename"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
-      label="이름"
+      label="음식점 이름"
       type="name"
     ></v-text-field>
-    <!--이메일아이디-->
-    <v-text-field
-      v-model="info.ID"
-      :value="info.ID"
-      :rules="[rules.email]"
-      box
-      color="deep-purple"
-      label="이메일(아이디)"
-      type="email"
-    ></v-text-field>
-    <!--비밀번호-->
-      <v-text-field
-        v-model="password"
-        :rules="[rules.password, rules.length(6)]"
-        box
-        color="deep-purple"
-        counter="6"
-        label="비밀번호"
-        style="min-height: 96px"
-        type="password"
-      ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="info.phone"
+        v-model="restaurantNumber"
         box
         color="deep-purple"
-        label="전화번호"
+        label="매장 전화번호"
         :mask="phoneMask"
         :rules="[rules.required]"
       ></v-text-field>
-      <!--성별-->
-      <h4 align="left" color="">성별</h4>
-      <v-radio-group v-model="info.sex" row>
-      <v-radio label="남자" value="man" default></v-radio>
-      <v-radio label="여자" value="woman"></v-radio>
-    </v-radio-group>
+      <!--매장주소-->
+      <v-text-field
+        v-model="restaurantLocation"
+        box
+        color="deep-purple"
+        label="매장 주소"
+        :rules="[rules.required]"
+      ></v-text-field>
       <!--사진등록-->
     <v-flex xs12 sm12>
-      <h4 class="mb-3" align="left">회원 사진</h4>
-      <img :src='info.avatar' class="mb-3">
+      <h4 class="mb-3" align="left">매장 사진</h4>
+      <img :src='image' class="mb-3">
       <div id="fileApp">
-        <div class="filebox" v-if="!info.avatar">
-          <label for="userImg">사진등록</label>
-          <input type="file" id="userImg" @change="onFileChange" class="mb-3">
+        <div class="filebox" v-if="!image">
+          <label for="restaurnatImg">사진등록</label>
+          <input type="file" id="restaurnatImg" @change="onFileChange" class="mb-3">
         </div>
         <div v-else>
           <v-btn @click="removeImage">이미지 삭제</v-btn>
         </div>
       </div>
     </v-flex>
+      </v-checkbox>
     </v-form>
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <!--수정 완료-->
+      <!--회원가입 버튼-->
       <v-btn
         :disabled="!form"
         :loading="isLoading"
         class="white--text"
         color="deep-purple accent-4"
         depressed
-        :to="ownerInfo"
-      >수정완료</v-btn>
+        @click="submit"
+      >매장등록</v-btn>
     </v-card-actions>
   </v-card>
     </v-layout>
@@ -122,24 +104,12 @@ export default {
   data () {
     return {
       mainPath: '/',
-      ownerInfo: '/ownerInfo',
-      agreement: false,
-      dialog: false,
+      restaurantName: undefined,
+      restaurantNumber: undefined,
       form: false,
       isLoading: false,
-      password: undefined,
       phoneMask: '(###)-####-####',
-      info:{
-        role: 'owner',
-        ownerName: '차민형',
-        ID: 'mpsmhck95@naver.com',
-        phone: '01087215502',
-        sex: 'man',
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        restaurantName: '도스마스 동대점',
-        restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
-      },
+      image: '',
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -154,7 +124,7 @@ export default {
       window.history.back();
     },
       submit(){
-        alert('수정 완료되었습니다')
+        alert('매장 등록되었습니다')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -168,12 +138,12 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.info.avatar = e.target.result;
+        vm.image = e.target.result;
       };
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.info.avatar=''
+      this.image=''
     }
   }
 }

@@ -33,6 +33,11 @@ export default new Router({
       component: () => import('./views/owner/ownerReviewManage.vue')
     },
     {
+      path: '/ownerRestaurantRegister',
+      name: 'ownerRestaurantRegister',
+      component: () => import('./views/ownerRestaurantRegister')
+    },
+    {
       path: '/ownerNoRestaurant',
       name: 'ownerNoRestaurant',
       component: () => import('./views/owner/ownerNoRestaurant.vue')
