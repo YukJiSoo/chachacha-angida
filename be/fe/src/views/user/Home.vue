@@ -63,14 +63,14 @@
           <v-layout row wrap>
             <v-flex v-for="menuCategory in menuCategoryList" xs4>
               <!-- <router-link :to="restaurantListPath">
-                <img 
-                  :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
+                <img
+                  :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`"
                   class="image" alt="lorem" width="100%" height="100%"
                   @click="categorySearch(menuCategory.name)"
                   >
               </router-link> -->
-              <img 
-                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
+              <img
+                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`"
                 class="image" alt="lorem" width="100%" height="100%"
                 @click="categorySearch(menuCategory.name)">
               <!-- <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%"> -->
@@ -79,8 +79,8 @@
         </v-container>
 
         <!-- 위치기반 검색 창 푸터 -->
-        <v-footer 
-          :fixed="false" 
+        <v-footer
+          :fixed="false"
           app
           height="auto"
           color="grey lighten-4"

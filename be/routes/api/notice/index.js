@@ -2,10 +2,16 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-router.use('/user', require('./user'));
-router.use('/dbtest', require('./dbtest'));
-router.use('/store', require('./store'));
-router.use('/notice', require('./notice'));
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  console.log("notice test");
+
+});
+
+/* POST home page. */
+router.post('/', (req, res, next) => {
+
+})
 
 router.all('*', function(req, res, next) {
   next(createError(404, '존재하지 않음'));
