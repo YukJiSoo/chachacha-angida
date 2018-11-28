@@ -79,8 +79,9 @@
         </v-container>
 
         <!-- 위치기반 검색 창 푸터 -->
-        <v-footer 
-          :fixed="false" 
+        <v-footer
+          :fixed="false"
+
           app
           height="auto"
           color="grey lighten-4"
@@ -357,8 +358,7 @@ import axios from 'axios'
         }});
       }
     }
-
-  }
+}
 </script>
 <style>
 .footer-style {

@@ -34,73 +34,44 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="name"
+      v-model="restaurantNamename"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
-      label="이름"
+      label="음식점 이름"
       type="name"
     ></v-text-field>
-    <!--이메일아이디-->
-    <v-text-field
-      v-model="email"
-      :rules="[rules.email]"
-      box
-      color="deep-purple"
-      label="이메일(아이디)"
-      type="email"
-    ></v-text-field>
-    <!--비밀번호-->
-      <v-text-field
-        v-model="password"
-        :rules="[rules.password, rules.length(6)]"
-        box
-        color="deep-purple"
-        counter="6"
-        label="비밀번호"
-        style="min-height: 96px"
-        type="password"
-      ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="phone"
+        v-model="restaurantNumber"
         box
         color="deep-purple"
-        label="전화번호"
+        label="매장 전화번호"
         :mask="phoneMask"
         :rules="[rules.required]"
       ></v-text-field>
-      <!--성별-->
-      <h4 align="left" color="">성별</h4>
-      <v-radio-group v-model="sex" row>
-      <v-radio label="남자" value="man"></v-radio>
-      <v-radio label="여자" value="woman"></v-radio>
-    </v-radio-group>
+      <!--매장주소-->
+      <v-text-field
+        v-model="restaurantLocation"
+        box
+        color="deep-purple"
+        label="매장 주소"
+        :rules="[rules.required]"
+      ></v-text-field>
       <!--사진등록-->
     <v-flex xs12 sm12>
-      <h4 class="mb-3" align="left">회원 사진</h4>
+      <h4 class="mb-3" align="left">매장 사진</h4>
       <img :src='image' class="mb-3">
       <div id="fileApp">
         <div class="filebox" v-if="!image">
-          <label for="userImg">사진등록</label>
-          <input type="file" id="userImg" @change="onFileChange" class="mb-3">
+          <label for="restaurnatImg">사진등록</label>
+          <input type="file" id="restaurnatImg" @change="onFileChange" class="mb-3">
         </div>
         <div v-else>
           <v-btn @click="removeImage">이미지 삭제</v-btn>
         </div>
       </div>
     </v-flex>
-    <!--규정-->
-      <v-checkbox
-        v-model="agreement"
-        :rules="[rules.required]"
-        color="deep-purple"
-      >
-        <template slot="label">
-          저는&nbsp;
-          <a href="#" @click.stop.prevent="dialog = true">관련규정</a>
-          &nbsp;에 대해 동의합니다.
-        </template>
       </v-checkbox>
     </v-form>
     <v-divider></v-divider>
@@ -113,38 +84,9 @@
         class="white--text"
         color="deep-purple accent-4"
         depressed
-        :to="registerRestaurant"
-      >매장 등록하기</v-btn>
+        @click="submit"
+      >매장등록</v-btn>
     </v-card-actions>
-    <v-dialog
-      v-model="dialog"
-      absolute
-      max-width="400"
-      persistent
-    >
-      <v-card>
-        <v-card-title class="headline grey lighten-3">규정</v-card-title>
-        <v-card-text>
-        양도하지마세요</v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn
-            flat
-            @click="agreement = false, dialog = false"
-          >
-            No
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-            class="white--text"
-            color="deep-purple accent-4"
-            @click="agreement = true, dialog = false"
-          >
-            Yes
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-card>
     </v-layout>
   </v-container>
@@ -156,16 +98,10 @@ export default {
   data () {
     return {
       mainPath: '/',
-      registerRestaurant: '/ownerRestaurantRegister',
-      agreement: false,
-      dialog: false,
-      name: undefined,
-      email: undefined,
+      restaurantName: undefined,
+      restaurantNumber: undefined,
       form: false,
       isLoading: false,
-      password: undefined,
-      phone: undefined,
-      sex: 'man',
       phoneMask: '(###)-####-####',
       image: '',
       rules: {
@@ -178,11 +114,9 @@ export default {
     }
   },
   methods: {
-    goBack(){
-      window.history.back();
-    },
-      submit(){
-        alert('회원가입되었습니다')
+    submit(){
+      alert('회원가입이 완료되었고 매장이 등록되었습니다. ')
+      this.$router.push('/')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;

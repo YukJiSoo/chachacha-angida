@@ -46,14 +46,69 @@ export default new Router({
       component: () => import('./views/choosesignup.vue')
     },
     {
-      path: '/ownersignup',
-      name: 'ownersignup',
+      path: '/userSignup',
+      name: 'userSignup',
+      component: () => import('./views/userSignup.vue')
+    },
+    {
+      path: '/ownerSignup',
+      name: 'ownerSignup',
       component: () => import('./views/ownersignup.vue')
+    },
+    {
+      path: '/ownerReviewManage',
+      name: 'ownerReviewManage',
+      component: () => import('./views/owner/ownerReviewManage.vue')
+    },
+    {
+      path: '/ownerRestaurantRegister',
+      name: 'ownerRestaurantRegister',
+      component: () => import('./views/ownerRestaurantRegister')
+    },
+    {
+      path: '/ownerNoRestaurant',
+      name: 'ownerNoRestaurant',
+      component: () => import('./views/owner/ownerNoRestaurant.vue')
+    },
+    {
+      path: '/ownerHome',
+      name: 'ownerHome',
+      component: () => import('./views/owner/ownerHome.vue')
+    },
+    {
+      path: '/ownerInfo',
+      name: 'ownerInfo',
+      component: () => import('./views/owner/ownerInfo.vue')
+    },
+    {
+      path: '/ownerInfoEdit',
+      name: 'ownerInfoEdit',
+      component: () => import('./views/owner/ownerInfoEdit.vue')
+    },
+    {
+      path: '/menuEdit',
+      name: 'menuEdit',
+      component: () => import('./views/owner/menuEdit.vue')
+    },
+    {
+      path: '/ownerMenuManage',
+      name: 'ownerMenuManage',
+      component: () => import('./views/owner/ownerMenuManage.vue')
     },
     {
       path: '/home',
       name: 'home',
       component: () => import('./views/user/Home.vue')
+    },
+    {
+      path: '/ownerSetting',
+      name: 'ownerSetting',
+      component: () => import('./views/owner/ownerSetting.vue')
+    },
+    {
+      path: '/ownerSaleManage',
+      name: 'ownerSaleManage',
+      component: () => import('./views/owner/ownerSaleManage.vue')
     },
     {
       path: '/notice',

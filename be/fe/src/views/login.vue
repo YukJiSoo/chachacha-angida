@@ -24,10 +24,13 @@
                         label="Password"
                         color="white"
                       ></v-text-field>
-                      <v-btn flat large color="white" @click="signIn">
+                      <v-btn flat color="white" @click="signIn">
                         Login
                       </v-btn>
-                      <v-btn flat large color="white" :to="signUpPath">
+                      <v-btn flat color="white" :to="ownerHomePath">
+                        OwnerLogin
+                      </v-btn>
+                      <v-btn flat color="white" :to="signUpPath">
                         SignUp
                       </v-btn>
                 </v-flex>
@@ -53,6 +56,7 @@ export default {
       homePath: {
         path:'/home'
       },
+      ownerHomePath:'/ownerHome',
       signUpPath:'/choosesignup'
     }
   },
@@ -88,7 +92,6 @@ export default {
       // else{
       //   alert('로그인에 실패했습니다')
       // }
-      
     }
   }
 }
