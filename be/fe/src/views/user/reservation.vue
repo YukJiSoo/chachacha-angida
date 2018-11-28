@@ -10,8 +10,8 @@
             </div>
           </v-flex>
           <v-flex xs4 sm12>
-            <v-btn 
-              round color="grey" 
+            <v-btn
+              round color="grey"
               class="font-weight-bold title white--text"
               :to="mainPath">
               <div>취소</div>
@@ -66,7 +66,7 @@
                         <v-flex
                           v-for="menu in menuItems"
                           :key="n"
-                          xs6 sm4 md2 
+                          xs6 sm4 md2
                         >
                           <v-card>
                             <v-img 
@@ -99,11 +99,11 @@
             </v-window-item>
           </v-window>
 
-          
+
             <!-- 다음바닥 -->
             <v-footer
               v-if="onboarding !== 2"
-              :fixed="false" 
+              :fixed="false"
               app
               color="transparent"
             >
@@ -117,11 +117,11 @@
                 </v-btn>
               </v-layout>
             </v-footer>
-            
+
             <!-- 결제바닥 -->
-            <v-footer 
+            <v-footer
               v-if="onboarding === 2"
-              :fixed="false" 
+              :fixed="false"
               app
               height="auto"
               color="grey lighten-4"
@@ -193,7 +193,7 @@
                               </v-flex>
                             </v-layout>
                           </v-container>
-                          
+
                         </v-container>
                       </v-list>
                     </v-bottom-sheet>
@@ -236,7 +236,7 @@
                 </v-layout>
               </v-container>
             </v-footer>
-          
+
       </v-flex>
     </v-layout>
   </v-container>

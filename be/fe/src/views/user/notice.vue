@@ -39,32 +39,45 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     data () {
       return {
         mypagePath:'/mypage',
-        items: [
-          //공지사항 각각 정보
-          {
-            title: '공지사항 1', //제목
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          },
-          {
-            title: '공지사항 2',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          },
-          {
-            title: '공지사항 3',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          },
-          {
-            title: '공지사항 4',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          }
-        ]
+        items:[]
+        // items: [
+        //   //공지사항 각각 정보
+        //   {
+        //     title: '공지사항 1', //제목
+        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        //   },
+        //   {
+        //     title: '공지사항 2',
+        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        //   },
+        //   {
+        //     title: '공지사항 3',
+        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        //   },
+        //   {
+        //     title: '공지사항 4',
+        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        //   }
+        // ]
       }
     },
     methods: {
+    },
+    mounted() {
+      axios.get('http://localhost:3000/api/notice')
+      .then((r) => {
+        this.items = r.data.notice
+        console.log(r)
+      })
+      .catch((e) => {
+        console.error(e.message)
+      })
     }
   }
 </script>
