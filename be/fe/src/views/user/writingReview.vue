@@ -81,6 +81,7 @@
 </template>
 
 <script>
+//const fbUtil = require("../../plugins/fbUtil")
 import firebase from "firebase";
 import fb_config from "../../../config/fb.json"
 var config = {
@@ -113,28 +114,33 @@ export default {
       console.log(this.reviewContent);
       console.log(downloadURL)
       console.log("리뷰등록완료");
+      this.$router.push({path: '/reservationHistory', query: {
+
+      }});
     },
     reviewRegister () {
       if(this.reviewContent.length < this.contentLimit){
         alert(this.contentLimit+"글자 이상 내용을 입력해주세요.");
         return;
       }
-      this.upload(this.complete);
-    },
-    upload (callbackFun) {
-      if(!this.image) { // 이미지가 없으면
-        callbackFun();
-        return;
+      if(this.uploadfile) { // 이미지가 있으면
+        this.upload('images/', this.uploadfile, this.complete);
+        //fbUtil.uploadTest('images/', this.uploadfile, this.complete);
+      } else {
+        console.log("이미지 없이 리뷰 등록");
+        this.complete();
       }
+    },
+    upload (imgDir, file, callbackFun) {
       var storage = firebase.storage();
       var storageRef = storage.ref();
-      var file = this.uploadfile;
+      //var file = this.uploadfile;
       // Create the file metadata
       var metadata = {
         contentType: 'image/jpeg'
       };
       // Upload file and metadata to the object 'images/mountains.jpg'
-      var uploadTask = storageRef.child('images/' + this.filename).put(file, metadata);
+      var uploadTask = storageRef.child(imgDir + this.filename).put(file, metadata);
 
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -198,6 +204,7 @@ export default {
     },
     removeImage: function (e) {
       this.image = '';
+      this.uploadfile = '';
     }
   }
 }
@@ -208,7 +215,8 @@ export default {
   text-align: center;
 }
 img {
-  width: 30%;
+  width: 100px;
+  height: 90px;
   margin: auto;
   display: block;
   margin-bottom: 10px;

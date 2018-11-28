@@ -30,9 +30,13 @@
           <span>9/2 (일)</span>
           <span v-if="i===1">
             <span class="mx-4 green--text text--darken-2">수락대기</span>
-            <v-btn outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+            <v-btn v-if="progress" outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
               예약취소
             </v-btn>
+            <v-btn v-if="!progress" outline color="red" class="angida-gradiation px-0 mx-2" dark small>
+              취소불가
+            </v-btn>
+            <span class="mx-4 red--text text--darken-2">{{times[0].time}} : {{times[1].time}}</span>
           </span>
           <span v-if="i===2">
             <span class="mx-4 red--text text--darken-2">예약취소</span>
@@ -50,6 +54,9 @@
       </v-flex>
       <!-- 가게이름 -->
       <v-flex xs12 sm12>
+        <div v-if="!progress" class="red--text body-2 px-4 pt-2">
+          예약취소를 원하시면 식당에 직접 연락해주세요.
+        </div>
         <div class="title font-weight-bold px-3 pt-3">
           <span>강서 동국대점</span>
         </div>
@@ -94,9 +101,50 @@ export default {
       mypagePath:'/mypage',
       reservationPage:'/reservation',
       writingReviewPage:'/writingReview',
+      startTime: "July 9, 2019 13:54:00",
+      endTime: "Nov 29, 2018 01:06:30",
+      times: [
+        { id: 0, time: 1 },
+        { id: 1, time: 1 },
+      ],
+      progress: 100,
+      // isActive: false,
+      timeinterval: undefined
     }
   },
-  methods: {}
+  created: function() {
+    this.updateTimer();
+    this.timeinterval = setInterval(this.updateTimer, 1000);
+  },
+  methods: {
+    updateTimer: function() {
+      if (
+        this.times[1].time > 0 ||
+        this.times[0].time > 0
+      ) {
+        this.getTimeRemaining();
+      } else {
+        clearTimeout(this.timeinterval);
+        // this.times[3].time = this.times[2].time = this.times[1].time = this.times[0].time = 0;
+         this.progress = 0;
+
+      }
+    },
+    getTimeRemaining: function() {
+      let t = Date.parse(new Date(this.endTime)) - Date.parse(new Date());
+      if(t >= 0){
+        this.times[1].time = Math.floor(t / 1000 % 60); //seconds
+        this.times[0].time = Math.floor(t / 1000 / 60 % 60); //minutes
+        if(this.times[0].time<10)
+          this.times[0].time = '0' + this.times[0].time
+        if(this.times[1].time<10)
+          this.times[1].time = '0' + this.times[1].time
+      }else {
+        this.times[1].time = this.times[0].time  = 0;
+        this.progress = 0;
+      }
+    }
+  }
 }
 </script>
 
