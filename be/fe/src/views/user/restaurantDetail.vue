@@ -105,7 +105,24 @@
           <!-- 5행 메뉴종류 -->
           <v-layout row wrap class="mt-2">
             <v-flex v-for="menu in menuItems" xs6 class="pa-1">
-              <img :src="`${menu.img}`" class="image" alt="lorem" width="100%" height="100%">
+              <v-card>
+                <v-img 
+                  :src="`${menu.img}`"
+                  aspect-ratio="1"
+                >
+                <!-- 메뉴이름 -->
+                </v-img>
+                <v-card-text class="pa-1">
+                  <v-layout align-center justify-space-between column>
+                    <v-flex xs12 class="pt-1 pb-0">
+                      <div class="py-0 subheading font-weight-bold">{{menu.name}}</div>
+                    </v-flex>
+                    <v-flex xs12 class="pt-0 pb-1">
+                      <div class="py-0 mx-5 body-1">{{menu.price}}</div>
+                    </v-flex>
+                  </v-layout>
+                </v-card-text>
+              </v-card>
             </v-flex>
           </v-layout>
         </v-flex>

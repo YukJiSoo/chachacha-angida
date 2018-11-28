@@ -55,7 +55,6 @@
           </v-textarea>
         </v-form>
         <div>
-
           <div id="fileApp">
             <div class="filebox" v-if="!image">
               <!--<v-btn v-if="!image" color="primary" @click="complete">사진등록</v-btn>-->
