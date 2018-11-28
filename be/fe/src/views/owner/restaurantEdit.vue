@@ -28,65 +28,85 @@
         </v-toolbar>
         <!-- toolbar end-->
         </v-flex>
-        <v-flex xs12 sm12>
-          <!-- 음식점 이름-->
-          <h1>
-          {{info.restaurantName}}</h1>
-          <v-card>
-            <!--메뉴사진 칸-->
-            <v-flex xs12 sm12>
-              <h4 class="mb-3" align="left">메뉴 사진</h4>
-              <img :src='image' class="mb-3">
-              <div id="fileApp">
-                <div class="filebox" v-if="!image">
-                  <label for="userImg">사진등록</label>
-                  <input type="file" id="userImg" @change="onFileChange" class="mb-3">
-                </div>
-                <div v-else>
-                  <v-btn @click="removeImage">이미지 삭제</v-btn>
-                </div>
-              </div>
-            </v-flex>
-            <!--메뉴이름 칸-->
-  <v-card-text>
-    <h3 align="left">메뉴이름</h3>
+    </v-layout>
+  <v-card
+    class="mx-auto"
+    style="max-width: 500px;"
+  >
+    <v-form
+      ref="form"
+      v-model="form"
+      class="pa-3 pt-4"
+    >
+    <!--이름-->
     <v-text-field
-    label="메뉴 이름을 적어주세요"
-    solo>
-  </v-text-field>
-  </v-card-text>
-  <!--메뉴가격 칸-->
-  <v-card-text>
-    <h3 align="left">메뉴가격</h3>
-    <v-text-field
-    label="메뉴 가격을 적어주세요"
-    solo>
-  </v-text-field>
-</v-card-text>
-<!--메뉴설명 칸-->
-<v-card-text>
-  <h3 align="left">메뉴설명</h3>
-  <v-textarea
-  label="메뉴 설명을 적어주세요"
-  solo>
-</v-textarea>
-</v-card-text>
-<!--작성완료 버튼-->
-<v-btn color="orange" class="font-weight-bold" @click="goToOwnerMenuManage">작성 완료</v-btn>
-</v-card>
-        </v-flex>
+      v-model="info.restaurantName"
+      :rules="[rules.length(1)]"
+      box
+      color="deep-purple"
+      label="음식점 이름"
+      type="name"
+    ></v-text-field>
+      <!--전화번호-->
+      <v-text-field
+        v-model="info.restaurantNumber"
+        box
+        color="deep-purple"
+        label="매장 전화번호"
+        :mask="phoneMask"
+        :rules="[rules.required]"
+      ></v-text-field>
+      <!--매장주소-->
+      <v-text-field
+        v-model="info.restaurantLocation"
+        box
+        color="deep-purple"
+        label="매장 주소"
+        :rules="[rules.required]"
+      ></v-text-field>
+      <!--사진등록-->
+    <v-flex xs12 sm12>
+      <h4 class="mb-3" align="left">매장 사진</h4>
+      <img :src='info.restaurantImage' class="mb-3">
+      <div id="fileApp">
+        <div class="filebox" v-if="!info.restaurantImage">
+          <label for="restaurnatImg">사진등록</label>
+          <input type="file" id="restaurnatImg" @change="onFileChange" class="mb-3">
+        </div>
+        <div v-else>
+          <v-btn @click="removeImage">이미지 삭제</v-btn>
+        </div>
+      </div>
+    </v-flex>
+      </v-checkbox>
+    </v-form>
+    <v-divider></v-divider>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <!--회원가입 버튼-->
+      <v-btn
+        :disabled="!form"
+        :loading="isLoading"
+        class="white--text"
+        color="deep-purple accent-4"
+        depressed
+        @click="goToOwnerInfo"
+      >수정 완료</v-btn>
+    </v-card-actions>
+  </v-card>
     </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'menuEdit',
+  name: 'ownerDefault',
   data () {
     return {
-      drawer: null,ownerInfoPath: '/ownerInfo',
-      image: 'https://randomuser.me/api/portraits/men/85.jpg',
-      mainPath: '/ownerHome',
+      mainPath: '/',
+      form: false,
+      isLoading: false,
+      phoneMask: '(###)-####-####',
       info:{
         role: 'owner',
         ownerName: '차민형',
@@ -98,18 +118,17 @@ export default {
         restaurantNumber: '01012345678',
         restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
         restaurantLocation: '동대입구 앞'
+      },
+      rules: {
+        email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
+        length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
+        password: v => (v || '').match(/^(?=.*[a-z])(?=.*\d)(?=.*(_|[^\w])).+$/) ||
+          '숫자와 특수문자가 포함된 비밀번호를 작성해주세요',
+        required: v => !!v || '필수입니다'
       }
     }
   },
   methods: {
-    logout(){
-      alert("로그아웃 되었습니다."),
-      this.$router.push('/')
-    },
-    goToOwnerMenuManage(){
-      alert("완료되었습니다."),
-      this.$router.push('/ownerMenuManage')
-    },
     goBack(){
       window.history.back();
     },
@@ -131,6 +150,10 @@ export default {
     },
     removeImage(){
       this.image=''
+    },
+    goToOwnerInfo(){
+      alert("수정되었습니다"),
+      this.$router.push('/ownerInfo')
     }
   }
 }

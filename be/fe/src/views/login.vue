@@ -56,13 +56,13 @@ export default {
   },
   methods: {
     goToHome () {
-      window.location.href = 'http://localhost:8080/home';
+      this.$router.push('/home')
     },
     goToOwnerLogin () {
-      window.location.href = 'http://localhost:8080/ownerHome';
+      this.$router.push('/ownerHome')
     },
     submit(){
-      window.location.href = 'http://localhost:8080/choosesignup';
+      this.$router.push('/choosesignup')
     }
   }
 }

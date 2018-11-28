@@ -40,8 +40,8 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="restaurantNamename"
-      :rules="[rules.length(2)]"
+      v-model="restaurantName"
+      :rules="[rules.length(1)]"
       box
       color="deep-purple"
       label="음식점 이름"

@@ -58,6 +58,11 @@ export default new Router({
       component: () => import('./views/owner/ownerInfoEdit.vue')
     },
     {
+      path: '/restaurantEdit',
+      name: 'restaurantEdit',
+      component: () => import('./views/owner/restaurantEdit.vue')
+    },
+    {
       path: '/menuEdit',
       name: 'menuEdit',
       component: () => import('./views/owner/menuEdit.vue')
