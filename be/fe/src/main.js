@@ -5,7 +5,8 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import * as VueGoogleMaps from 'vue2-google-maps'
-import Geocoder from "@pderas/vue2-geocoder";
+import Geocoder from "@pderas/vue2-geocoder"
+import google_config from "../config/google.json"
 
 import MyPlugin from './plugins/myPlugin.js'
 
@@ -14,12 +15,12 @@ Vue.use(MyPlugin)
 Vue.config.productionTip = false
 Vue.use(VueGoogleMaps, {
   load: {
-    key:'AIzaSyBXFrZJqgTE4OSbcv_ewXkpHro-P9dfg80',
+    key:google_config.google_api_key,
     libraries: 'places',
   }
 })
 Vue.use(Geocoder, {
-    googleMapsApiKey: 'AIzaSyBXFrZJqgTE4OSbcv_ewXkpHro-P9dfg80'
+    googleMapsApiKey: google_config.google_api_key
 })
 
 new Vue({
