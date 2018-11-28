@@ -16,7 +16,11 @@
               결제금액
             </div>
             <div class="pt-2 pb-2 font-weight-bold headline">
-              28,000원
+              <span>28,000원</span>
+            </div>
+            <div class="font-weight-bold headline">
+              <span class="grey--text text--darken-2 body-2">포인트 - 100P</span>
+              <span class="pl-3 grey--text text--darken-2 body-2">할인쿠폰 - 2,000원</span>
             </div>
           </v-flex>
         </v-layout>
@@ -79,19 +83,21 @@
     <!-- 쿠폰 -->
     <v-layout align-center justify-space-around>
       <!-- 쿠폰-제목 -->
-      <v-flex xs9 sm12 class="pa-2 mb-1">
+      <v-flex xs7 sm12 class="pa-2 mb-1">
         <div class="font-weight-black subheading">
           할인쿠폰
         </div>
       </v-flex>
       <!-- 쿠폰사용여부, 선택 -->
       <v-layout align-end column>
-        <v-flex xs3 sm12 class="pa-2 mb-1">
+        <v-flex xs5 sm12 class="pa-2 mb-1">
           <v-dialog v-model="dialogCoupone" fullscreen hide-overlay transition="dialog-bottom-transition">
             <!-- 선택 -->
-            <div class="body-1 grey--text text--darken-2" slot="activator">
+            <v-card slot="activator" class="px-4 py-2">
+              <div class="body-1 grey--text text--darken-2">
                 쿠폰사용 X
               </div>
+            </v-card>
             <v-card>
             <!-- 상단 -->
             <v-list >
@@ -180,7 +186,7 @@
     <v-layout align-center column class="mt-5">
       <v-flex xs12>
         <div>
-          <v-btn class="angida-gradiation px-5" dark large @click="goToPage(paySuccessPage)">
+          <v-btn class="angida-gradiation px-5" dark large :to="paySuccessPath">
             <div class="headline font-weight-bold px-5">
               결제하기
             </div>
@@ -197,7 +203,7 @@ export default {
   name: 'default',
   data () {
     return {
-      paySuccessPage: 'http://localhost:8080/home',
+      paySuccessPath: '/home',
       dialogPayRule: false,
       dialogCoupone: false,
     }
