@@ -39,7 +39,7 @@
             <v-text-field
               single-line
             >{{ searchWord }}</v-text-field>
-            <v-btn icon :to="restaurantListPath">
+            <v-btn icon @click="keywordSearch">
               <v-icon>search</v-icon>
             </v-btn>
           </v-toolbar>
@@ -62,11 +62,17 @@
         <v-container fluid grid-list-sm class="pa-0 mt-2">
           <v-layout row wrap>
             <v-flex v-for="menuCategory in menuCategoryList" xs4>
-              <router-link :to="restaurantListPath">
+              <!-- <router-link :to="restaurantListPath">
                 <img 
                   :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
-                  class="image" alt="lorem" width="100%" height="100%">
-              </router-link>
+                  class="image" alt="lorem" width="100%" height="100%"
+                  @click="categorySearch(menuCategory.name)"
+                  >
+              </router-link> -->
+              <img 
+                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`" 
+                class="image" alt="lorem" width="100%" height="100%"
+                @click="categorySearch(menuCategory.name)">
               <!-- <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%"> -->
             </v-flex>
           </v-layout>
@@ -125,7 +131,7 @@
                       <v-container fluid grid-list-xl text-xs-center class="pa-0">
                         <v-layout align-center justify-center row>
                           <v-flex xs8 sm6 class="px-1">
-                            <v-btn round dark color="red" :to="restaurantListPath">
+                            <v-btn round dark color="red" @click="locationSearch()">
                               현 위치로 주소 설정
                             </v-btn>
                           </v-flex>
@@ -285,7 +291,7 @@ import axios from 'axios'
             this.errors.push(e)
           })
       })
-      console.log('id : ', this.$store.state.id);
+
     },
     computed: {
       google: gmapApi
@@ -326,6 +332,29 @@ import axios from 'axios'
     methods: {
       goToPageWithCategory (category){
         console.log(category);
+      },
+      keywordSearch() { // 키워드 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          keyword: this.searchWord,
+          locationLimit: this.locationSlider, // 반경
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
+      },
+      categorySearch(categoryName) { // 카테고리 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          category: categoryName,
+          locationLimit: this.locationSlider,
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
+      },
+      locationSearch() { // 위치 기반 검색
+        this.$router.push({path: '/restaurantList', query: {
+          locationLimit: this.locationSlider,
+          lat: this.currentLocation.lat,
+          lng: this.currentLocation.lng
+        }});
       }
     }
 
