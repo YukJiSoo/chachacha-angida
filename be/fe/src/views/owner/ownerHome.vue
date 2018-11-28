@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -108,7 +108,7 @@
 
        </v-list-tile>
        <!--주문 수락 거절 버튼-->
-       <v-btn @click="agree" color="green lighten-1" class="font-weight-bold">수락</v-btn>
+       <v-btn @click="agree" color="blue lighten-1" class="font-weight-bold">수락</v-btn>
        <v-btn @click="refuse" color="red lighten-1" class="font-weight-bold">거절</v-btn>
      </v-list-group>
    </v-list>
@@ -125,6 +125,7 @@ export default {
       ownerName: '차민형',
       switch1: true,
       drawer: null,
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
       menuItems: [

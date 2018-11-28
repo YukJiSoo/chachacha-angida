@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -79,6 +79,7 @@
 <script>
 export default {
   name: 'ownerDefault',
+  image: 'https://randomuser.me/api/portraits/men/85.jpg',
   data () {
     return {
       restaurantName: '도스마스 동대점',

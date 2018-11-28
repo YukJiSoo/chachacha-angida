@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -79,11 +79,11 @@
       <v-card>
         <v-list two-line>
           <!--메뉴등록 버튼-->
-          <v-btn color="orange" class="font-weight-bold title" @click="editMenu">메뉴 등록</v-btn>
+          <v-btn color="orange" class="font-weight-bold title mb-3" @click="editMenu">메뉴 등록</v-btn>
           <template v-for="item in items">
             <v-divider></v-divider>
               <img :src="item.avatar"
-              class="mt-3 ">
+              class="mt-3">
             <v-list-tile
               @click=""
             >
@@ -120,6 +120,7 @@ export default {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
       drawer: null,
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
       items: [

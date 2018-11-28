@@ -37,11 +37,16 @@
             <v-card-text>
             <h3 align="left">메뉴사진</h3></v-card-text>
             <v-flex xs12 sm12>
-            <img :src="avatar"
-            class="mt-3 ">
-            <v-spacer></v-spacer>
-            <v-btn>사진 선택</v-btn>
-            </v-flex>
+              <img :src='image'>
+              <div v-if="!image">
+          <input type="file" @change="onFileChange" class="mb-3">
+        </div>
+              <div
+              v-else>
+              <v-btn @click="removeImage" class="mb-3">이미지 삭제</v-btn>
+              </div>
+              <v-divider></v-divider>
+              </v-flex>
             <!--메뉴이름 칸-->
   <v-card-text>
     <h3 align="left">메뉴이름</h3>
@@ -82,6 +87,7 @@ export default {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
       drawer: null,ownerInfoPath: '/ownerInfo',
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       mainPath: '/ownerHome',
       avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
       menuItems: [
@@ -119,6 +125,25 @@ export default {
     },
     goBack(){
       window.history.back();
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage(){
+      this.image=''
     }
   }
 }

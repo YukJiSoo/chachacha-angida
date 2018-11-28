@@ -31,8 +31,21 @@
     </v-layout>
     <v-layout row wrap justify-center>
       <v-flex xs12 sm12>
-      <h2>내 정보 수정</h2>
+      <h2 class="mb-3">내 정보 수정</h2>
       </v-flex>
+      <!--사용자사진-->
+      <v-flex xs12 sm12>
+        <h4 class="mb-3">사용자 사진</h4>
+        <img :src='image' class="mb-3">
+        <div v-if="!image">
+    <input type="file" @change="onFileChange" class="mb-3">
+  </div>
+        <div
+        v-else>
+        <v-btn @click="removeImage">이미지 삭제</v-btn>
+        </div>
+        <v-divider></v-divider>
+        </v-flex>
       <v-flex xs12 sm12>
         <!--사용자 이름 입력-->
     <h4 class="mb-3">사용자 이름</h4>
@@ -73,6 +86,7 @@ export default {
       ownerName: '차민형',
       restaurantNumber: '02-0000-0000',
       drawer: null,
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
       menuItems: [
@@ -110,7 +124,28 @@ export default {
     },
     goBack(){
       window.history.back();
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+      this.createImage(files[0]);
+    },
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = (e) => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+    removeImage(){
+      this.image=''
     }
+
+
   }
 }
 </script>

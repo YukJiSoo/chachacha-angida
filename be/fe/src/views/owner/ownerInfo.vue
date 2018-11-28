@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -71,6 +71,12 @@
       <v-flex xs12 sm12>
       <h2 class="mb-3">내 정보</h2>
       </v-flex>
+        <!--사용자사진-->
+      <v-flex xs12 sm12>
+        <h4 class="mb-3">사용자 사진</h4>
+        <img :src='image' class="mb-3">
+        <v-divider></v-divider>
+        </v-flex>
       <!--사용자 이름-->
       <v-flex xs12 sm12>
         <h4 class="mb-3">사용자 이름</h4>
@@ -119,6 +125,7 @@ export default {
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       menuItems: [
         {
           title: '주문관리',

@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -78,6 +78,7 @@ export default {
       restaurantName: '도스마스 동대점',
       ownerName: '차민형',
       drawer: null,
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
       menuItems: [

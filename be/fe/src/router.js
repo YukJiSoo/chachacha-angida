@@ -18,6 +18,16 @@ export default new Router({
       component: () => import('./views/choosesignup.vue')
     },
     {
+      path: '/userSignup',
+      name: 'userSignup',
+      component: () => import('./views/userSignup.vue')
+    },
+    {
+      path: '/ownerSignup',
+      name: 'ownerSignup',
+      component: () => import('./views/ownerSignup.vue')
+    },
+    {
       path: '/ownerReviewManage',
       name: 'ownerReviewManage',
       component: () => import('./views/owner/ownerReviewManage.vue')
@@ -97,6 +107,7 @@ export default new Router({
       name: 'restaurnantInfo',
       component: () => import('./views/restaurantInfo.vue')
     },
+
     // {
     //   path: '/about',
     //   name: 'about',

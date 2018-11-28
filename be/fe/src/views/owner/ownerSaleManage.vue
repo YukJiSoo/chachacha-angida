@@ -11,7 +11,7 @@
       <v-list class="pa-1">
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/men/85.jpg">
+            <img :src='image'>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -150,6 +150,7 @@ export default {
       modal: false,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      image: 'https://randomuser.me/api/portraits/men/85.jpg',
       items:[
           {
             title: '주문자1',
