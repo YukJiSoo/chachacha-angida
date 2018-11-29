@@ -1,17 +1,23 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-const User = require('../../../models/users');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  User.find()
-    .then(r => {
-      res.send({ success: true, users: r })
-    })
-    .catch(e => {
-      res.send({ success: false })
-    })
+/* GET point  . */
+router.get('/:id', function(req, res, next) {
+  console.log('유저 포인트 받아오기 - 100으로 가정 - 디비 연결 추가해야함')
+  const id = req.params.id
+  console.log(id)
+
+  res.json({ point: 100 })
+});
+
+/* GET point detail . */
+router.get('/list/:id', function(req, res, next) {
+  console.log('유저 포인트 상세내역 받아오기 -  - 디비 연결 추가해야함')
+  const id = req.params.id
+  console.log(id)
+
+  res.json([{ store: '토끼정', date: '2018.11.23', point: 100 }])
 });
 
 /* POST home page. */
@@ -34,9 +40,9 @@ router.post('/signIn', (req, res, next) => {
   console.log(password)
   
   var success = true;
-  if(success) res.json({ success: true, code: 66 })
+  if(success) res.json({ success: true})
   else res.json({ success: false}) 
-
+  
   //const u = new User{ name, age })
   // u.save()
   //   .then(r => {
@@ -74,7 +80,7 @@ router.delete('/:id', (req, res, next) => {
   res.send({ success: true, msg: 'del ok' })
 })
 
-router.all('*', function(req, res, next) {
+router.all('*', function(req, res, next) {  
   next(createError(404, '존재하지 않음'));
 });
 

@@ -3,10 +3,10 @@
     <v-layout>
       <v-flex xs12 sm12>
         <!-- 상단 -->
-        <v-layout justify-space-between row>
+        <v-layout align-center justify-space-between row>
           <v-flex xs7 sm12>
-            <div class="pt-3 pl-3 pb-2 font-weight-black headline">
-            토끼정 강남점
+            <div class="pt-3 pl-3 pb-2 font-use large">
+            {{name}}
             </div>
           </v-flex>
           <v-flex xs4 sm12>
@@ -86,27 +86,27 @@
                     <v-container grid-list-sm fluid class="pa-0">
                       <v-layout row wrap>
                         <v-flex
-                          v-for="n in menuNum"
+                          v-for="menu in menuItems"
                           :key="n"
                           xs6 sm4 md2
                         >
                           <v-card>
-                            <v-img
-                              :menuSelected="menuSelected"
-                              :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+                            <v-img 
+                              :menuSelected="`${menu.selected}`"
+                              :src="`${menu.img}`"
                               aspect-ratio="1"
-                              @click="menuClick"
-                              :class="{'v-card--reveal': menuSelected}"
+                              @click="addCart(menu)"
+                              :class="{'v-card--reveal': menu.selected}"
                             >
                             <!-- 메뉴이름 -->
                             </v-img>
                             <v-card-text class="pa-1">
                               <v-layout justify-space-between column>
                                 <v-flex xs12 class="pt-1 pb-0">
-                                  <div class="py-0 subheading font-weight-bold">메뉴 이름</div>
+                                  <div class="py-0 subheading font-weight-bold">{{menu.name}}</div>
                                 </v-flex>
                                 <v-flex xs12 class="pt-0 pb-1">
-                                  <div class="py-0 mx-5 body-1">가격</div>
+                                  <div class="py-0 mx-5 body-1">{{menu.price}}</div>
                                 </v-flex>
                               </v-layout>
                             </v-card-text>
@@ -175,32 +175,32 @@
                             <v-flex xs6 sm6>
                               <div class="body-2 text--darken-2">
                                 <span>현재합계금액 : </span>
-                                <span>15000원</span>
+                                <span>{{allPrice}}원</span>
                               </div>
                             </v-flex>
                           </v-layout>
 
-                          <v-container class="px-0">
+                          <v-container v-for="menu in cart" class="px-0">
                             <v-layout align-center justify-center row fill-height>
                               <v-flex xs6 sm6>
                                 <div class="title text--darken-2">
-                                  <span>날치알 크림우동</span>
+                                  <span>{{menu.name}}</span>
                                 </div>
                               </v-flex>
 
                               <v-layout text-xs-center align-center justify-space-arround row fill-height class="ml-5 mb-1">
                                 <v-flex xs3 sm6 class="pa-0 mr-2">
-                                  <v-btn icon small dark color="indigo">
+                                  <v-btn icon small dark color="indigo" @click="countDown(menu)">
                                     <v-icon dark>remove</v-icon>
                                   </v-btn>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
                                   <div class="headline text--darken-2">
-                                    <span>2</span>
+                                    <span>{{menu.num}}</span>
                                   </div>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
-                                  <v-btn icon small dark color="indigo">
+                                  <v-btn icon small dark color="indigo" @click="countUp(menu)">
                                     <v-icon dark>add</v-icon>
                                   </v-btn>
                                 </v-flex>
@@ -210,7 +210,7 @@
                             <v-layout align-end justify-end row fill-height>
                               <v-flex xs3 sm6>
                                 <div class="grey--text body-2 text--darken-2">
-                                  <span>10000원</span>
+                                  <span>{{menu.price*menu.num}}원</span>
                                 </div>
                               </v-flex>
                             </v-layout>
@@ -240,7 +240,7 @@
                     <v-flex xs6 sm6>
                       <div class="body-2 text--darken-2">
                         <span>현재합계금액 : </span>
-                        <span>15000원</span>
+                        <span>{{allPrice}}원</span>
                       </div>
                     </v-flex>
                   </v-layout>
@@ -250,7 +250,7 @@
                     <v-btn
                       color="deep-orange lighten-1 "
                       class="font-weight-bold headline white--text px-5"
-                      :to="paymentPath"
+                      @click="pay"
                     >
                       결제하기
                     </v-btn>
@@ -269,12 +269,50 @@
     name: 'reservation',
     data () {
       return {
+        hour: 0,
+        minute: 0,
+        peopleNum: 0,
+        allPrice:0,
+        storeId: 0,
+        hour: 0,
+        minute: 0,
+        peopleNum: 0,
+        
+        storeId: '',
+        name: '토끼정',
+
+        menuNum: 9,
+        menuItems: [
+          {
+            img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+            price:10000,
+            name:'토끼고기',
+            explain:'토끼토끼',
+            selected: false
+          },
+          {
+            img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+            price:10000,
+            name:'토끼고기',
+            explain:'토끼토끼',
+            selected: false
+          }
+        ],
+        cart: [
+          // {
+          //   name: '날치알 파스타',
+          //   price: 10000,
+          //   num: 2
+          // }
+        ],
+        
         mainPath: '/home',
-        paymentPath: '/payment',
+
         sheet: false,
         dialog : true,
         length: 3,
         onboarding: 0,
+<<<<<<< HEAD
         menuNum: 9,
         menuSelected: false,
         menu: [],
@@ -308,7 +346,14 @@
           '4',
           '5'
         ]
+=======
+>>>>>>> frontend-dev
       }
+    },
+    mounted() {
+      this.storeId = this.$route.query.storeId
+      this.name = this.$route.query.name
+      // getMenu()
     },
     methods : {
       next () {
@@ -321,9 +366,71 @@
           ? this.length - 1
           : this.onboarding - 1
       },
-      menuClick() {
-        if(this.menuSelected === false) this.menuSelected = true;
-        else this.menuSelected = false;
+      getMenu () {
+        axios.get('http://localhost:3000/api/store/menu',{
+          storeId: this.storeId
+        })
+        .then((r) => {
+          console.log(r.data)
+          setMenuInfo(r.data)
+        })
+        .catch((e) => {
+        this.pop(e.message)
+        })
+      },
+      // 가게 정보등록
+      setMenuInfo(data){
+        var menuNum = r.data.menu
+        // 객체 추가로 수정
+        for(var i=0; i<menuNum; i++)
+            this.menuItems.push(r.data.menu[i])
+
+        // this.menuItems.img = data.menuImg
+        // this.menuItems.price = data.price
+        // this.menuItems.name = data.menuName
+        // this.menuItems.explain = data.menuExplain
+      },
+      addCart(menu){
+        if(menu.selected) return
+
+        menu.selected = true
+        var newMenu = {
+          name: menu.name,
+          price: menu.price,
+          num: 1
+        }
+
+        this.cart.push(newMenu)
+        this.allPrice += menu.price
+
+      },
+      removeCart(menuName){
+        this.cart.forEach((v,i) => {
+          if(menuName === v.name) this.cart.splice(i,1)
+        });
+        this.menuItems.forEach((v,i) => {
+          if(menuName === v.name) v.selected = false
+        });
+      },
+      countUp(menu){
+        menu.num = menu.num + 1
+        this.allPrice += menu.price
+      },
+      countDown(menu){
+        if(menu.num === 1) this.removeCart(menu.name)
+        else if(menu.num <= 0) return
+
+        menu.num = menu.num - 1
+        this.allPrice -= menu.price
+      },
+      pay(){
+        this.$router.push({path:'/payment', query: {
+          storeId: this.storeId,
+          hour: this.hour,
+          minute: this.minute,
+          peopleNum: this.peopleNum,
+          allPrice: this.allPrice,
+        }})
       }
     }
   }

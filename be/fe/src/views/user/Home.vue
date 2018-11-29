@@ -13,12 +13,12 @@
           <v-spacer></v-spacer>
           <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <span class="font-weight-bold caption">음식이 나에게</span>
+              <v-flex xs12 sm12 class="pt-1">
+                <span class=" small">음식이 나에게</span>
               </v-flex>
               <v-flex xs8 sm12 class="pl-5">
-                <span class="font-weight-bold title">안기다</span>
-                <span class="font-weight-bold caption">린다</span>
+                <span class="xlarge">안기다</span>
+                <span class=" small">린다</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -87,7 +87,7 @@
           class="footer-style pb-3"
         >
           <v-container grid-list-xl class="pt-2">
-            <v-layout align-center justify-center column fill-height>
+            <v-layout align-center justify-center column fill-height class="medium">
               <v-flex class="pa-0">
                 <v-bottom-sheet>
                   <v-btn slot="activator" small flat icon color="grey">
@@ -357,8 +357,7 @@ import axios from 'axios'
         }});
       }
     }
-
-  }
+}
 </script>
 <style>
 .footer-style {

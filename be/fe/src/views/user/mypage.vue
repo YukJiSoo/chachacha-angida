@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon :to="mainPath">
+          <v-btn icon @click="$goBack()">
             <v-icon >keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -21,10 +21,10 @@
         </v-toolbar>
       </v-flex>
 
-      <!-- 내역 -->
+      <!-- 포인트, 쿠폰, 주문내역, 리뷰관리 -->
       <v-container fluid grid-list-sm class="pa-0">
         <v-layout row wrap>
-          <v-flex v-for="userMenu in userMenuList" :key="userMenu" xs3>
+          <v-flex v-for="userMenu in userMenuList" xs3>
             <router-link :to="userMenu.to">
               <img :src="`${userMenu.url}`" class="image" alt="lorem" width="100%" height="100%">
             </router-link>
@@ -40,7 +40,6 @@
               <v-avatar>
                 <img
                   src="https://cdn.vuetifyjs.com/images/john.jpg"
-                  alt="John"
                 >
               </v-avatar>
             </v-flex>
@@ -52,7 +51,7 @@
               </v-flex>
               <v-flex xs12 sm6 class="pt-0 pl-2">
                 <div class="body-1 orange--text text--darken-4 font-weight-bold">
-                  <span>300p</span>
+                  <span>{{point}}p</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -65,7 +64,7 @@
         <v-container grid-list-md text-xs-center align-center class="pa-0">
           <v-layout column wrap>
             <v-flex 
-              v-for="anotherMenu in anotherMenuList" :key="anotherMenu"
+              v-for="anotherMenu in anotherMenuList"
               xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" >
               <router-link :to="anotherMenu.to" class="text--decoration-none">
                 <div class="subheading white--text font-weight-bold">
@@ -83,11 +82,16 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'default',
   data () {
     return {
       myId: localStorage.getItem('id'),
+      userCode: localStorage.getItem('code'),
+      point: 0,
+
       mainPath: '/home',
       message: [
         {
@@ -159,12 +163,21 @@ export default {
       }
     }
   },
-  computed: {
-    id() {
-      return this.$store.getters.getId;
-    }
+  mounted() {
+    this.getPoint()
   },
   methods: {
+    getPoint(){
+      axios.get(`http://localhost:3000/api/point/${this.userCode}`)
+      .then((r) => {
+        console.log(r.data)
+        this.point = r.data.point
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })  
+      
+    }
   }
 }
 </script>

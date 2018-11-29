@@ -8,7 +8,7 @@
           flat
           height="40"
           class="angida-gradiation white--text">
-          <v-btn dark icon :to="mypagePath">
+          <v-btn dark icon @click="$goBack()">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -27,7 +27,7 @@
           <v-layout align-center column wrap>
             <v-flex xs12>
               <div class="headline font-weight-bold pt-4">
-                <span>보유포인트 1000P</span>
+                <span>보유포인트 {{pointHave}}P</span>
               </div>
             </v-flex>
             <v-flex xs12>
@@ -37,7 +37,7 @@
             </v-flex>
             <v-flex xs12>
               <div class="caption grey--text py-3">
-                <span>이번 달 소멸 예정포인트 0원</span>
+                <span>이번 달 소멸 예정포인트 {{pointRemove}}원</span>
               </div>
             </v-flex>
           </v-layout>
@@ -54,7 +54,7 @@
               </div>
             </v-flex>
             <!-- 이용내역 아이템 -->
-            <v-layout v-for="i in 3" row wrap class="pt-1">
+            <v-layout v-for="pointItem in pointHistorys" row wrap class="pt-1">
               <v-flex xs12>
                 <v-divider></v-divider>
               </v-flex>
@@ -64,12 +64,12 @@
                 <v-layout column wrap>
                   <v-flex xs12>
                     <div class="body-2 ">
-                      <span>강서 동국대점</span>
+                      <span>{{pointItem.store}}</span>
                     </div>
                   </v-flex>
                   <v-flex xs12>
                     <div class="caption grey--text pt-1">
-                      <span>2018.10.03 (2018.12.23 소멸)</span>
+                      <span>{{pointItem.date}} ({{getPointRemoveDay(pointItem.date)}})</span>
                     </div>
                   </v-flex>
                 </v-layout>                  
@@ -78,7 +78,7 @@
               <!-- 적립, 소멸포인트 값 -->
               <v-flex xs3>
                 <div class="body-1 orange--text pt-2">
-                  <span>+16원 적립</span>
+                  <span>+{{pointItem.point}}원 적립</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -93,15 +93,65 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'default',
   data () {
     return {
       mypagePath:'/mypage',
+      userCode: localStorage.getItem('code'),
+      pointHave: 0,
+      pointRemove: 0,
+      pointHistorys: [
+        {
+          store: '',
+          date: '',
+          point: '',
+        }
+      ],
       
     }
   },
-  methods: {}
+  mounted() {
+    //this.userCode = localStorage.getItem('code')
+
+    this.getPoint()
+    this.getPointHistory()
+  },
+  methods: {
+    getPoint(){
+      axios.get(`http://localhost:3000/api/point/${this.userCode}`)
+      .then((r) => {
+        console.log(r.data)
+        this.point = r.data.point
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })  
+      
+    },
+    getPointHistory(){
+      axios.get(`http://localhost:3000/api/point/list/${this.userCode}`)
+      .then((r) => {
+        console.log(r.data)
+        for(var i=0; i<r.data.length; i++){
+          console.log(r.data[i])
+          this.pointHistorys.push(r.data[i])
+        }
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })  
+      
+    },
+    getPointRemoveDay(date){
+      var dateArr = date.split('.')
+      var month = dateArr[1]
+
+      return '2018.12.23 소멸';
+    }
+  }
 }
 </script>
 
