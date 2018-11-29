@@ -108,7 +108,7 @@
         class="white--text"
         color="deep-purple accent-4"
         depressed
-        :to="ownerInfo"
+        @click="goToOwnerInfo"
       >수정완료</v-btn>
     </v-card-actions>
   </v-card>
@@ -122,7 +122,6 @@ export default {
   data () {
     return {
       mainPath: '/',
-      ownerInfo: '/ownerInfo',
       agreement: false,
       dialog: false,
       form: false,
@@ -138,7 +137,8 @@ export default {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
         restaurantName: '도스마스 동대점',
         restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
+        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
+        restaurantLocation: '동대입구 앞'
       },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
@@ -174,6 +174,10 @@ export default {
     },
     removeImage(){
       this.info.avatar=''
+    },
+    goToOwnerInfo(){
+      alert("수정되었습니다"),
+      this.$router.push('/ownerInfo')
     }
   }
 }

@@ -86,6 +86,14 @@
         readonly>
         </v-text-field>
         <v-divider></v-divider>
+        <!--사용자 전화번호-->
+        <h4 class="mt-3 mb-3">사용자 전화번호</h4>
+        <v-text-field
+      :value="info.phone"
+      solo
+      readonly
+      :mask="phoneMask"
+    ></v-text-field>
         <!--등록 음식점 이름-->
         <h4 class="mt-3 mb-3">등록 음식점</h4>
         <v-text-field
@@ -105,10 +113,11 @@
     <v-divider></v-divider>
     <div>
       <!--정보 수정 버튼-->
-    <v-btn @click="goToOwnerInfoEdit" color="orange" class="font-weight-bold">정보 수정하기</v-btn>
+    <v-btn @click="goToOwnerInfoEdit" color="orange" class="font-weight-bold">내 정보 수정하기</v-btn>
+    <!--정보 수정 버튼-->
+  <v-btn @click="goToRestaurantEdit" color="orange" class="font-weight-bold">매장 정보 수정하기</v-btn>
     <!--회원 탈퇴 버튼-->
     <v-btn @click="quitAngida" color="red" class="font-weight-bold">회원 탈퇴하기</v-btn>
-
   </div>
     </v-flex>
     </v-layout>
@@ -133,7 +142,8 @@ export default {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
         restaurantName: '도스마스 동대점',
         restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
+        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
+        restaurantLocation: '동대입구 앞'
       },
       menuItems: [
         {
@@ -166,6 +176,9 @@ export default {
     },
     goToOwnerInfoEdit(){
       this.$router.push('/ownerInfoEdit')
+    },
+    goToRestaurantEdit(){
+      this.$router.push('/restaurantEdit')
     },
     logout(){
       alert("로그아웃 되었습니다."),

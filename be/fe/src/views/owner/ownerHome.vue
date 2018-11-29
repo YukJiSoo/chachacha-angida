@@ -134,7 +134,8 @@ export default {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
         restaurantName: '도스마스 동대점',
         restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg'
+        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
+        restaurantLocation: '동대입구 앞'
       },
       menuItems: [
         {
