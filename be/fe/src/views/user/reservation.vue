@@ -117,7 +117,7 @@
                           >
                             <v-card>
                               <v-card-title class="large">{{menu.name}}</v-card-title>
-                              <v-img 
+                              <v-img
                                 :src="`${menu.img}`"
                                 aspect-ratio="1"
                                 width="100%"
@@ -441,7 +441,7 @@
               this.allPrice -= (v.num * v.price)
               this.cart.splice(i,1)
             }
-          });     
+          });
         }
         else {
           menu.selected = true
@@ -493,7 +493,7 @@
   opacity: .5;
 }
 .footer-style {
-  
+
   box-shadow: 3px 3px 3px 3px #000808;
 }
 </style>
