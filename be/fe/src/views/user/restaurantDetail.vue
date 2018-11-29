@@ -64,6 +64,7 @@
                     background-color="yellow darken-3"
                     color="yellow darken-3"
                     small
+                    readonly="true"
                   ></v-rating>
                 </v-flex>
               </v-layout>
@@ -106,7 +107,7 @@
           <v-layout row wrap class="mt-2">
             <v-flex v-for="menu in menuItems" xs6 class="pa-1">
               <v-card @click="menuDialog = true">
-                <v-img 
+                <v-img
                   :src="`${menu.img}`"
                   aspect-ratio="1"
                 >
@@ -129,7 +130,7 @@
               >
                 <v-card>
                   <v-card-title class="large">{{menu.name}}</v-card-title>
-                  <v-img 
+                  <v-img
                     :src="`${menu.img}`"
                     aspect-ratio="1"
                     width="100%"
@@ -160,7 +161,7 @@
 
         <!-- 안아주기 버튼 -->
         <v-footer
-          :fixed="false" 
+          :fixed="false"
           app
           color="transparent"
           class="mb-2"
