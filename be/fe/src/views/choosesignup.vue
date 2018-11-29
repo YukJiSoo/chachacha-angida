@@ -71,7 +71,10 @@ export default {
     return {
       mainPath: '/',
       userSignup: '/userSignup',
-      ownerSignup: '/ownerSignup'
+      ownerSignup: '/ownerSignup',
+      info:{
+        role:undefined
+      }
     }
   },
   methods: {

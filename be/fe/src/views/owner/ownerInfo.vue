@@ -19,7 +19,7 @@
             <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
+        <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
       </v-list>
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
@@ -75,7 +75,6 @@
       <v-flex xs12 sm12>
         <h4 class="mb-3">사용자 사진</h4>
         <img :src='info.avatar' class="mb-3">
-        <v-divider></v-divider>
         </v-flex>
       <!--사용자 이름-->
       <v-flex xs12 sm12>
@@ -85,7 +84,6 @@
         solo
         readonly>
         </v-text-field>
-        <v-divider></v-divider>
         <!--사용자 전화번호-->
         <h4 class="mt-3 mb-3">사용자 전화번호</h4>
         <v-text-field
@@ -101,7 +99,6 @@
         solo
         readonly>
         </v-text-field>
-        <v-divider></v-divider>
         <!--등록 음식점 전화번호-->
         <h4 class="mt-3 mb-3">등록 음식점 전화번호</h4>
         <v-text-field

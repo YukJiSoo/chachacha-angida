@@ -19,7 +19,7 @@
             <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
+        <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
       </v-list>
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
@@ -221,11 +221,6 @@ export default {
     }
   },
   methods: {
-    mounted() {
-      for(item in this.items) {
-        this.totalcost = this.totalcost + item.cost;
-      }
-    },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
