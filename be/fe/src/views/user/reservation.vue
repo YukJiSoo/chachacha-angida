@@ -30,8 +30,19 @@
                     " 언제 도착 하시나요?
                     </div>
                     <div class="font-weight-black xlarge mt-5 pt-5">
-                      <span>__시</span>
-                      <span> &nbsp&nbsp&nbsp__분에 도착합니다.</span>
+                      <v-layout>
+                        <v-combobox
+                          v-model="select"
+                          :items="items"
+                          suffix="시"
+                        ></v-combobox>
+                        <v-combobox
+                          v-model="select"
+                          :items="items2"
+                          suffix="분"
+                        ></v-combobox>
+                     </v-layout>
+                     에 도착합니다.
                     </div>
                   </v-flex>
                 </v-layout>
@@ -40,15 +51,26 @@
 
             <!-- 몇 명? -->
             <v-window-item>
-              <v-container grid-list-md text-xs-center align-center>
-                <v-layout align-center justify-center row fill-height>
+              <v-container grid-list-md align-center>
+                <v-layout align-center  row fill-height>
                   <v-flex xs12 sm6>
                     <div class="grey--text text--darken-0 xlarge mt-5 pt-5">
                     " 방문 인원을 선택해주세요
                     </div>
                     <div class="font-weight-black xlarge mt-5 pt-5">
-                      <span>__명</span>
-                      <span> 입니다.</span>
+                      <v-layout>
+                        <v-flex xs5>
+                          <v-combobox
+                            v-model="select"
+                            :items="items3"
+                            suffix="명"
+                          ></v-combobox>
+                        </v-flex>
+                        <v-flex xs5>
+                          <br>
+                          <h4>입니다.</h4>
+                        </v-flex>
+                      </v-layout>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -69,7 +91,7 @@
                           xs6 sm4 md2
                         >
                           <v-card>
-                            <v-img 
+                            <v-img
                               :menuSelected="`${menu.selected}`"
                               :src="`${menu.img}`"
                               aspect-ratio="1"
@@ -300,7 +322,7 @@
         hour: 0,
         minute: 0,
         peopleNum: 0,
-        
+
         storeId: '',
         name: '토끼정',
 
@@ -328,7 +350,38 @@
           //   num: 2
           // }
         ],
-        
+
+        items: [
+          '10',
+          '11',
+          '12',
+          '13',
+          '14',
+          '15',
+          '16',
+          '17',
+          '18',
+          '19',
+          '20',
+          '21',
+          '22'
+        ],
+        items2: [
+          '00',
+          '10',
+          '20',
+          '30',
+          '40',
+          '50'
+        ],
+        items3: [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5'
+        ],
+
         mainPath: '/home',
 
         sheet: false,

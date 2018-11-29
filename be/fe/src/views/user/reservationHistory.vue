@@ -145,6 +145,9 @@ export default {
       .catch((e) => {
         console.error(e.message)
       })
+    },
+    cancelSuccess(){
+      alert("취소가 완료되었습니다.")
     }
   },
   mounted() {
