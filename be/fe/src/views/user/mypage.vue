@@ -21,35 +21,16 @@
         </v-toolbar>
       </v-flex>
 
-      <!-- 포인트, 쿠폰, 주문내역, 리뷰관리
-      <v-container fluid grid-list-sm class="pa-0">
-        <v-layout row wrap>
-          <v-flex v-for="userMenu in userMenuList" xs3>
-            <router-link :to="userMenu.to">
-              <img :src="`${userMenu.url}`" class="image" alt="lorem" width="100%" height="100%">
-            </router-link>
-          </v-flex>
-        </v-layout>
-      </v-container> -->
-
       <!-- 포인트, 쿠폰, 주문내역, 리뷰관리 -->
-      <v-container text-xs-center fluid grid-list-sm class="pa-0 mt-2">
-        <v-layout align-center justify-center row wrap>
-          <v-flex xs2.5 class="white py-2 mx-1">
-            <v-icon large >local_parking</v-icon>
-            <div class="medium">포인트</div>
-          </v-flex>
-          <v-flex xs2.5 class="white py-2 mx-1">
-            <v-icon large>copyright</v-icon>
-            <div class="medium">쿠폰</div>
-          </v-flex>
-          <v-flex xs2.5 class="white py-2 mx-1">
-            <v-icon large>credit_card</v-icon>
-            <div class="medium">주문내역</div>
-          </v-flex>
-          <v-flex xs2.5 class="white py-2 mx-1">
-            <v-icon large>more_horiz</v-icon>
-            <div class="medium">리뷰관리</div>
+      <v-container text-xs-center fluid grid-list-sm class="pa-1 mt-1">
+        <v-layout row wrap align-center justify-center>
+          <v-flex v-for="userMenu in userMenuList" xs3>
+            <router-link :to="userMenu.to" class="text--decoration-none">
+            <v-card class="py-2">
+              <v-icon large class="orange--text text--darken-4">{{userMenu.icon}}</v-icon>
+              <div class="medium orange--text text--darken-4">{{userMenu.name}}</div>
+            </v-card>
+            </router-link>
           </v-flex>
         </v-layout>
       </v-container>
@@ -125,32 +106,36 @@ export default {
       ],
       userMenuList: {
         userMenu1:{
-          name: 'point-list',
+          name: '포인트',
           url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fpoint.PNG?alt=media&token=c7d405ae-8998-46fd-8bb1-9a098d02de0a',
           to:{
             path:'/point',
-          }
+          },
+          icon: 'local_parking'
         },
         userMenu2:{
-          name: 'coupon-list',
+          name: '쿠폰',
           url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fcoupon.PNG?alt=media&token=36e4eeac-f052-4123-bb64-bd89c7036d73',
           to:{
             path:'/coupon',
-          }
+          },
+          icon: 'copyright'
         },
         userMenu3:{
-          name: 'order-list',
+          name: '주문내역',
           url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Forder.PNG?alt=media&token=579ed091-4142-43a3-8ce3-6d15cc58ad9d',
           to:{
             path:'/reservationHistory',
-          }
+          },
+          icon: 'credit_card'
         },
         userMenu4:{
-          name: 'review-list',
+          name: '리뷰관리',
           url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Freview.PNG?alt=media&token=9d7c78ab-1a29-4e66-a89a-92516c7b1a2f',
           to:{
             path:'/reviewManage',
-          }
+          },
+          icon: 'more_horiz'
         },
       },
       anotherMenuList: {
