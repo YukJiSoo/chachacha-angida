@@ -38,11 +38,11 @@ router.post('/signIn', (req, res, next) => {
   const { id, password } = req.body
   console.log(id)
   console.log(password)
-  
+
   var success = true;
   if(success) res.json({ success: true})
-  else res.json({ success: false}) 
-  
+  else res.json({ success: false})
+
   //const u = new User{ name, age })
   // u.save()
   //   .then(r => {
@@ -80,7 +80,7 @@ router.delete('/:id', (req, res, next) => {
   res.send({ success: true, msg: 'del ok' })
 })
 
-router.all('*', function(req, res, next) {  
+router.all('*', function(req, res, next) {
   next(createError(404, '존재하지 않음'));
 });
 

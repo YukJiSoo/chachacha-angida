@@ -32,7 +32,7 @@
           <span class="medium">{{i.arrival_time}}</span>
           <span>
             <span class="mx-4 green--text text--darken-2 medium">{{i.status}}</span>
-            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small :to="reservationPage">
+            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small @click="cancelSuccess">
               예약취소
             </v-btn>
             <v-btn v-if="!progress" outline color="red" class="medium px-0 mx-2" dark small>
@@ -94,6 +94,7 @@ export default {
       writingReviewPage:'/writingReview',
       startTime: "July 9, 2019 13:54:00",
       endTime: "Nov 29, 2018 01:06:30",
+      userCode: localStorage.getItem('code'),
       times: [
         { id: 0, time: 1 },
         { id: 1, time: 1 },
@@ -137,7 +138,7 @@ export default {
       }
     },
     getReservationHistory(){
-      axios.get('http://localhost:3000/api/reservation')
+      axios.get('http://localhost:3000/api/reservation/${this.userCode}`')
       .then((r) => {
         this.items = r.data.reserv_list
         console.log(r)

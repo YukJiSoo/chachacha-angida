@@ -3,7 +3,8 @@ var createError = require('http-errors');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
+  const id = req.params.id
   const reserv_lists = [
     {
       store_name: '강서 동국대점',
