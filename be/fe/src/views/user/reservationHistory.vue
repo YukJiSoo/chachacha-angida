@@ -32,7 +32,7 @@
           <span class="medium">{{i.arrival_time}}</span>
           <span>
             <span class="mx-4 green--text text--darken-2 medium">{{i.status}}</span>
-            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small :to="reservationPage">
+            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small>
               예약취소
             </v-btn>
             <v-btn v-if="!progress" outline color="red" class="medium px-0 mx-2" dark small>

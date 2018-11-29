@@ -2,7 +2,7 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET home page. */
+/* GET reservation history - client side */
 router.get('/', function(req, res, next) {
   const reserv_lists = [
     {
@@ -47,6 +47,55 @@ router.get('/', function(req, res, next) {
     },
   ]
   res.send({reserv_list: reserv_lists});
+});
+
+/* GET reservation history - client side */
+router.get('/owner/wait', function(req, res, next) {
+  const orderItems = [
+    {
+      title: '주문자1',
+      cost: '10000원',
+      active: true,
+      status: false,
+      items: [
+        { menu: '음식1, 음식2, 음식3' },
+        { time: '오전 1시 10분' }
+      ]
+    },
+    {
+      title: '주문자2',
+      cost: '10000원',
+      active: true,
+      status: false,
+      items: [
+
+        { menu: '음식1, 음식2, 음식3' },
+        { time: '오전 1시 10분' }
+      ]
+    },{
+      title: '주문자3',
+      cost: '10000원',
+      active: true,
+      status: false,
+      items: [
+
+        { menu: '음식1, 음식2, 음식3' },
+        { time: '오전 1시 10분' }
+      ]
+    },{
+      title: '주문자4',
+      cost: '10000원',
+      active: true,
+      status: false,
+      items: [
+
+        { menu: '음식1, 음식2, 음식3' },
+        { time: '오전 1시 10분' }
+      ]
+    }
+  ]
+  
+  res.send({orderItems: orderItems});
 });
 
 router.all('*', function(req, res, next) {

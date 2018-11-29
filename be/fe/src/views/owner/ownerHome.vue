@@ -1,43 +1,42 @@
 <template>
   <v-container grid-list-md text-xs-center align-center>
     <v-layout>
-      <!--네비게이션-->
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      temporary
-    >
-    <!--사용자 정보-->
-      <v-list class="pa-1">
-        <v-list-tile avatar :to="ownerInfoPath">
-          <v-list-tile-avatar>
-            <img :src='info.avatar'>
-          </v-list-tile-avatar>
+        <!--네비게이션-->
+      <v-navigation-drawer
+        v-model="drawer"
+        absolute
+        temporary
+      >
+      <!--사용자 정보-->
+        <v-list>
+          <v-list-tile avatar :to="ownerInfoPath">
+            <v-list-tile-avatar>
+              <v-img :src="info.img"></v-img>
+            </v-list-tile-avatar>
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
-      </v-list>
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-        <!--한칸-->
-        <div v-for="menuItem in menuItems">
-          <v-list-tile :to="menuItem.path">
             <v-list-tile-content>
-              <v-list-tile-title>{{menuItem.title}}</v-list-tile-title>
+              <v-list-tile-title class="font-use">{{info.ownerName}}</v-list-tile-title>
+              <v-list-tile-title class="xlarge">{{info.restaurantName}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
+          <v-btn color="orange" class="font-use font-weight-bold white--text" @click="logout">로그아웃</v-btn>
+        </v-list>
+        <v-list class="pt-0" dense>
           <v-divider></v-divider>
-        </div>
-        <!--끝-->
-      </v-list>
-    </v-navigation-drawer>
-    <!--네비게이션 끝-->
-  </v-layout>
-
+          <!--한칸-->
+          <div v-for="menuItem in menuItems">
+            <v-list-tile :to="menuItem.path">
+              <v-list-tile-content>
+                <v-list-tile-title class="medium">{{menuItem.title}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider></v-divider>
+          </div>
+          <!--끝-->
+        </v-list>
+      </v-navigation-drawer>
+      <!--네비게이션 끝-->
+    </v-layout>
     <v-layout row wrap class="mb-0">
       <v-flex xs12 sm12>
         <!-- toolbar -->
@@ -50,109 +49,104 @@
           >list</v-icon>
           <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
+              <v-flex xs12 sm12 class="pb-0">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="small white--text">음식이 나에게</span>
                 </router-link>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
+              <v-flex xs8 sm12 class="pt-0 pl-5">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="xlarge white--text">안기다</span>
+                  <span class="small white--text">린다</span>
                 </router-link>
               </v-flex>
             </v-layout>
           </v-container>
         </v-toolbar>
         <!-- toolbar end-->
-        </v-flex>
-        <v-flex xs12 sm12>
-          <!-- 음식점 이름-->
-          <h1>
-          {{info.restaurantName}}</h1>
-          <h3>주문관리</h3>
-        </v-flex>
+      </v-flex>
     </v-layout>
+
+    <v-flex xs12 sm12>
+      <!-- 음식점 이름-->
+      <h1 class="large">{{info.restaurantName}}</h1>
+      <h3 class="xlarge">주문관리</h3>
+    </v-flex>
     <!-- system on/off-->
     <v-layout align-center justify-end fill-height>
-      system 사용
+      <span class="medium">system 사용</span>
       <v-flex xs2 sm2>
-        <v-switch ></v-switch>
-    </v-flex>
-  </v-layout>
-  <!--주문정보-->
-  <v-card>
-    <v-list>
-     <v-list-group
-       v-for="(item,index) in items"
-       v-model="item.active"
-       :key="item.title"
-       no-action
-     >
-       <v-list-tile slot="activator"
-       v-model="item.tile">
-         <v-list-tile-content>
-           <!--주문자와 가격-->
+        <v-switch></v-switch>
+      </v-flex>
+    </v-layout>
 
-             <div id="status">
-           <div v-if="item.status===false">
-             <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
-               수락 대기중</v-list-tile-title>
-           </div>
-           <div v-else>
-             <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
-               수락 완료</v-list-tile-title>
-           </div>
-         </div>
+    <!--주문정보-->
+    <v-card>
+      <v-list>
+        <v-list-group
+          v-for="(item,index) in orderItems"
+          v-model="item.active"
+          :key="item.title"
+          no-action
+        >
+          <v-list-tile slot="activator" v-model="item.tile">
+            <v-list-tile-content>
+              <!--주문자와 가격-->
+              <div id="status">
+                <div v-if="item.status===false">
+                  <v-list-tile-title class="medium">{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+                    수락 대기중</v-list-tile-title>
+                </div>
+                <div v-else>
+                  <v-list-tile-title class="medium">{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+                    수락 완료</v-list-tile-title>
+                </div>
+              </div>
 
-         </v-list-tile-content>
-       </v-list-tile>
-       <v-list-tile
-         v-for="subItem in item.items"
-         :key="subItem.title"
-       >
-         <v-list-tile-content>
-           <!--주문메뉴-->
-           <v-list-tile-title>{{ subItem.menu }}</v-list-tile-title>
-           <!--주문시간-->
-           <v-list-tile-subtitle>{{subItem.time}}</v-list-tile-subtitle>
-         </v-list-tile-content>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile
+            v-for="subItem in item.items"
+          >
+            <v-list-tile-content>
+              <!--주문메뉴-->
+              <v-list-tile-title class="medium">{{ subItem.menu }}</v-list-tile-title>
+              <!--주문시간-->
+              <v-list-tile-title class="medium">{{subItem.time}}</v-list-tile-title>
+            </v-list-tile-content>
 
-       </v-list-tile>
-       <!--주문 수락 거절 버튼-->
-       <div id='agreeButton'>
-         <div v-if="item.status===false">
-       <v-btn @click="agree(item)" color="blue lighten-2" class="font-weight-bold white--text">수락</v-btn>
-       </div>
-       </div>
-       <v-btn @click="refuse(index)" color="red lighten-2" class="font-weight-bold white--text">거절</v-btn>
-     </v-list-group>
-   </v-list>
-      </v-card>
+          </v-list-tile>
+          <!--주문 수락 거절 버튼-->
+          <div>
+            <v-btn v-if="item.status===false" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
+            <v-btn @click="refuse(index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
+          </div>
+          
+        </v-list-group>
+      </v-list>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'ownerHome',
+  name: 'default',
   data () {
     return {
+      ownerCode: localStorage.getItem('code'),
+      info:{
+        // 필요한 정보
+        // ownerName: '차민형',
+        // img: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        // restaurantName: '도스마스 동대점',
+      },
+
       switch1: true,
       drawer: null,
+
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
-      info:{
-        role: 'owner',
-        ownerName: '차민형',
-        ID: 'mpsmhck95@naver.com',
-        phone: '01087215502',
-        sex: 'man',
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        restaurantName: '도스마스 동대점',
-        restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
-        restaurantLocation: '동대입구 앞'
-      },
+
       menuItems: [
         {
           title: '주문관리',
@@ -175,52 +169,84 @@ export default {
           path: '/ownerSetting',
         }
       ],
-      items:[
-          {
-            title: '주문자1',
-            cost: '10000원',
-            active: true,
-            status: false,
-            items: [
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },
-          {
-            title: '주문자2',
-            cost: '10000원',
-            active: true,
-            status: false,
-            items: [
+      orderItems:[
+          // {
+          //   title: '주문자1',
+          //   cost: '10000원',
+          //   active: true,
+          //   status: false,
+          //   items: [
+          //     { menu: '음식1, 음식2, 음식3' },
+          //     { time: '오전 1시 10분' }
+          //   ]
+          // },
+          // {
+          //   title: '주문자2',
+          //   cost: '10000원',
+          //   active: true,
+          //   status: false,
+          //   items: [
 
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자3',
-            cost: '10000원',
-            active: true,
-            status: false,
-            items: [
+          //     { menu: '음식1, 음식2, 음식3' },
+          //     { time: '오전 1시 10분' }
+          //   ]
+          // },{
+          //   title: '주문자3',
+          //   cost: '10000원',
+          //   active: true,
+          //   status: false,
+          //   items: [
 
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자4',
-            cost: '10000원',
-            active: true,
-            status: false,
-            items: [
+          //     { menu: '음식1, 음식2, 음식3' },
+          //     { time: '오전 1시 10분' }
+          //   ]
+          // },{
+          //   title: '주문자4',
+          //   cost: '10000원',
+          //   active: true,
+          //   status: false,
+          //   items: [
 
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          }
-        ]
+          //     { menu: '음식1, 음식2, 음식3' },
+          //     { time: '오전 1시 10분' }
+          //   ]
+          // }
+      ]
     }
   },
+  mounted() {
+    this.getUserInfo()
+    this.getOrders()
+  },
   methods: {
+    getUserInfo(){
+      this.$axios.get('http://localhost:3000/api/user/owner',{
+        code: this.ownerCode
+      })
+      .then((r) => {
+        console.log(r.data)
+        this.info = r.data
+        console.log(this.info)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    getOrders(){
+      this.$axios.get('http://localhost:3000/api/reservation/owner/wait',{
+        code: this.ownerCode
+      })
+      .then((r) => {
+        console.log(r.data)
+        
+        // for(var i=0; i<r.data.length; i++)
+        // this.orderItems.push(r.data[i])
+        this.orderItems = r.data.orderItems
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
     agree(item){
       item.active=false,
       item.status= true,
@@ -228,7 +254,7 @@ export default {
 
     },
     refuse(index){
-      this.$delete(this.items, index),
+      this.$delete(this.orderItems, index),
       alert("거절했습니다")
     },
     logout(){
@@ -240,11 +266,5 @@ export default {
 </script>
 
 <style scoped>
-.angida-gradiation{
-   background: #fc8e53;
-   background: -moz-linear-gradient(left, #fc8e53 0%, #f17432 0%, #fc8e53 0%, #fc8e53 17%, #ea5507 55%, #f70000 100%);
-   background: -webkit-linear-gradient(left, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
-   background: linear-gradient(to right, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
-   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8e53', endColorstr='#f70000',GradientType=1 );
-}
+
 </style>
