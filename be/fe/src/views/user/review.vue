@@ -26,18 +26,18 @@
         <v-card flat class="pb-3">
           <v-layout align-center column wrap>
             <v-flex xs12>
-              <div class="headline font-weight-bold pt-4">
+              <div class="large font-weight-bold pt-4">
                 <span>강서 동국대점</span>
               </div>
             </v-flex>
             <v-flex xs12>
-              <div class="body-2 py-1">
+              <div class="medium py-1">
                 <span>총 <strong class="orange--text">10</strong>개의 리뷰가 있어요</span>
               </div>
             </v-flex>
             <v-flex xs12>
               <v-btn outline color="orange" large :to="writingPath">
-                <div class="px-5 mx-4 font-weight-bold subheading">리뷰 작성하기</div>
+                <div class="px-5 mx-4 font-weight-black xlarge">리뷰 작성하기</div>
               </v-btn>
             </v-flex>
           </v-layout>
@@ -66,13 +66,13 @@
                 <v-layout column wrap>
                   <!-- 아이디 -->
                   <v-flex xs12 class="pl-2">
-                    <div class="caption">
+                    <div class="small">
                       <span>wltn3231</span>
                     </div>
                   </v-flex>
                   <!-- 날짜 -->
                   <v-flex xs12 class="pl-1">
-                    <div class="caption grey--text pt-1">
+                    <div class="small grey--text pt-1">
                       <span>2018.10.03</span>
                     </div>
                   </v-flex>
@@ -88,7 +88,7 @@
                   <!-- 이미지 -->
                   <!-- 내용 -->
                   <v-flex xs12>
-                    <div class="caption grey--text text--darken-1 pt-1">
+                    <div class="small grey--text text--darken-1 pt-1">
                       <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
                     </div>
                   </v-flex>

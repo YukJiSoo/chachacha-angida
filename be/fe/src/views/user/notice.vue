@@ -26,9 +26,9 @@
           <v-expansion-panel-content
             v-for="(item, index) in items"
           >
-            <div slot="header">{{item.title}}</div>
+            <div slot="header" class="medium">{{item.title}}</div>
             <v-card>
-              <v-card-text>{{item.content}}</v-card-text>
+              <v-card-text class="medium">{{item.content}}</v-card-text>
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>

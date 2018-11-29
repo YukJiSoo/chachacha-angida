@@ -21,13 +21,35 @@
         </v-toolbar>
       </v-flex>
 
-      <!-- 포인트, 쿠폰, 주문내역, 리뷰관리 -->
+      <!-- 포인트, 쿠폰, 주문내역, 리뷰관리
       <v-container fluid grid-list-sm class="pa-0">
         <v-layout row wrap>
           <v-flex v-for="userMenu in userMenuList" xs3>
             <router-link :to="userMenu.to">
               <img :src="`${userMenu.url}`" class="image" alt="lorem" width="100%" height="100%">
             </router-link>
+          </v-flex>
+        </v-layout>
+      </v-container> -->
+
+      <!-- 포인트, 쿠폰, 주문내역, 리뷰관리 -->
+      <v-container text-xs-center fluid grid-list-sm class="pa-0 mt-2">
+        <v-layout align-center justify-center row wrap>
+          <v-flex xs2.5 class="white py-2 mx-1">
+            <v-icon large >local_parking</v-icon>
+            <div class="medium">포인트</div>
+          </v-flex>
+          <v-flex xs2.5 class="white py-2 mx-1">
+            <v-icon large>copyright</v-icon>
+            <div class="medium">쿠폰</div>
+          </v-flex>
+          <v-flex xs2.5 class="white py-2 mx-1">
+            <v-icon large>credit_card</v-icon>
+            <div class="medium">주문내역</div>
+          </v-flex>
+          <v-flex xs2.5 class="white py-2 mx-1">
+            <v-icon large>more_horiz</v-icon>
+            <div class="medium">리뷰관리</div>
           </v-flex>
         </v-layout>
       </v-container>
@@ -45,12 +67,12 @@
             </v-flex>
             <v-layout column>
               <v-flex xs12 sm6>
-                <div class="title ">
+                <div class="xlarge">
                   <span>{{myId}}</span>
                 </div>
               </v-flex>
               <v-flex xs12 sm6 class="pt-0 pl-2">
-                <div class="body-1 orange--text text--darken-4 font-weight-bold">
+                <div class="medium orange--text text--darken-4 font-weight-bold">
                   <span>{{point}}p</span>
                 </div>
               </v-flex>
@@ -67,7 +89,7 @@
               v-for="anotherMenu in anotherMenuList"
               xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" >
               <router-link :to="anotherMenu.to" class="text--decoration-none">
-                <div class="subheading white--text font-weight-bold">
+                <div class="xlarge white--text">
                   <span>{{anotherMenu.name}}</span>
                 </div>
               </router-link>

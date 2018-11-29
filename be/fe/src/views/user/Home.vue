@@ -98,7 +98,7 @@
                     <v-container grid-list-xl class="pt-0">
                       <v-layout align-center justify-center column fill-height>
                         <v-flex xs12 sm12 class="pa-1">
-                          <div class="grey--text caption text--darken-2">장소설정</div>
+                          <div class="grey--text small text--darken-2">장소설정</div>
                         </v-flex>
                       </v-layout>
                       <v-divider></v-divider>
@@ -131,7 +131,7 @@
                       <v-container fluid grid-list-xl text-xs-center class="pa-0">
                         <v-layout align-center justify-center row>
                           <v-flex xs8 sm6 class="px-1">
-                            <v-btn round dark color="red" @click="locationSearch()">
+                            <v-btn round dark color="red" @click="locationSearch()" class="medium">
                               현 위치로 주소 설정
                             </v-btn>
                           </v-flex>
@@ -144,7 +144,7 @@
                       <v-container fluid grid-list-lg class="pa-0">
                         <v-layout row wrap>
                           <v-flex xs12 class="px-3 py-0">
-                            <v-subheader class="mt-1 pb-4 px-0 black--text font-weight-bold">검색반경</v-subheader>
+                            <v-subheader class="mt-1 pb-4 px-0 black--text medium">검색반경</v-subheader>
                             <v-slider
                               v-model="locationSlider"
                               color="red"

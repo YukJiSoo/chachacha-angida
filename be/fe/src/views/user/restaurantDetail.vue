@@ -33,13 +33,13 @@
             </v-flex>
             <!-- 이름 -->
             <v-flex xs12 sm12 class="pt-4 pl-2 pb-0">
-              <div class="display-2 font-weight-bold">
+              <div class="font-use font-weight-bold" style="font-size:50px">
                 <span>{{name}}</span>
               </div>
             </v-flex>
             <!-- 간단한 설명 -->
             <v-flex xs12 sm12 class="pl-4 pt-3 pr-4">
-              <div class="caption grey--text text--darken-2">
+              <div class="medium grey--text text--darken-2">
                 <span>{{explain}} </span>
               </div>
             </v-flex>
@@ -53,7 +53,7 @@
               <v-layout column wrap align-center>
                 <!-- 별 -->
                 <v-flex xs12 sm12 class="pa-0">
-                  <div class="display-2 font-weight-bold red--text text-xs-center">
+                  <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:40px">
                     <span>{{rating}}</span>
                   </div>
                 </v-flex>
@@ -75,13 +75,13 @@
               <v-layout column wrap align-center>
                 <!-- 리뷰-제목 -->
                 <v-flex xs12 sm12 class="pa-0">
-                  <div class="subheading font-weight-black text-xs-center black--text">
+                  <div class="medium text-xs-center black--text">
                     <span>리뷰</span>
                   </div>
                 </v-flex>
                 <!-- 리뷰개수 -->
                 <v-flex xs12 sm12 class="pa-0">
-                  <div class="display-2 font-weight-bold red--text text-xs-center">
+                  <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:50px">
                     <span>{{reviewNum}}</span>
                   </div>
                 </v-flex>
@@ -93,10 +93,10 @@
 
           <!-- 4행 주소, 전화번호 -->
           <v-flex xs12 sm12 class="pl-4 pt-3 pr-4 pb-2">
-            <div class="caption grey--text text--darken-2">
+            <div class="small grey--text text--darken-2">
               <span>주소 : </span><span>{{address}}</span>
             </div>
-            <div class="caption grey--text text--darken-2">
+            <div class="small grey--text text--darken-2">
               <span>전화번호 : </span><span>{{phone}}</span>
             </div>
           </v-flex>
@@ -105,7 +105,7 @@
           <!-- 5행 메뉴종류 -->
           <v-layout row wrap class="mt-2">
             <v-flex v-for="menu in menuItems" xs6 class="pa-1">
-              <v-card>
+              <v-card @click="menuDialog = true">
                 <v-img 
                   :src="`${menu.img}`"
                   aspect-ratio="1"
@@ -115,14 +115,45 @@
                 <v-card-text class="pa-1">
                   <v-layout align-center justify-space-between column>
                     <v-flex xs12 class="pt-1 pb-0">
-                      <div class="py-0 subheading font-weight-bold">{{menu.name}}</div>
+                      <div class="py-0 medium font-weight-bold">{{menu.name}}</div>
                     </v-flex>
                     <v-flex xs12 class="pt-0 pb-1">
-                      <div class="py-0 mx-5 body-1">{{menu.price}}</div>
+                      <div class="py-0 small mx-5 body-1">{{menu.price}}</div>
                     </v-flex>
                   </v-layout>
                 </v-card-text>
               </v-card>
+              <v-dialog
+                v-model="menuDialog"
+                max-width="290"
+              >
+                <v-card>
+                  <v-card-title class="large">{{menu.name}}</v-card-title>
+                  <v-img 
+                    :src="`${menu.img}`"
+                    aspect-ratio="1"
+                    width="100%"
+                    height="100%"
+                  >
+                  </v-img>
+                  <v-card-text class="medium">
+                    {{menu.explain}}
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                      color="orange darken-1"
+                      flat="flat"
+                      @click="menuDialog = false"
+                      class="font-use"
+                    >
+                      닫기
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-flex>
           </v-layout>
         </v-flex>
@@ -137,7 +168,7 @@
           <v-layout align-center justify-center row fill-height>
             <v-btn
               color="deep-orange lighten-1"
-              class="font-weight-bold headline white--text px-5"
+              class="large white--text px-5"
               :to="reservationPath"
             >
               안아주기
@@ -172,7 +203,6 @@ export default {
         }
       ],
 
-
       reservationPath: {
         path: '/reservation',
         query: {
@@ -186,6 +216,8 @@ export default {
           storeId:''
         }
       },
+
+      menuDialog: false
     }
   },
   mounted() {

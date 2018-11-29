@@ -27,33 +27,33 @@
       <!-- 예약일 -->
       <v-flex xs12 sm12>
         <div class="body-2 grey--text text--darken-1 px-3 pt-3">
-          <span>{{i.reservation_time}}</span>
+          <span class="medium">{{i.reservation_time}}</span>
           <br>
-          <span>{{i.arrival_time}}</span>
+          <span class="medium">{{i.arrival_time}}</span>
           <span>
-            <span class="mx-4 green--text text--darken-2">{{i.status}}</span>
-            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+            <span class="mx-4 green--text text--darken-2 medium">{{i.status}}</span>
+            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small :to="reservationPage">
               예약취소
             </v-btn>
-            <v-btn v-if="!progress" outline color="red" class="angida-gradiation px-0 mx-2" dark small>
+            <v-btn v-if="!progress" outline color="red" class="medium px-0 mx-2" dark small>
               취소불가
             </v-btn>
-            <span class="mx-4 red--text text--darken-2">{{times[0].time}} : {{times[1].time}}</span>
+            <span class="mx-4 red--text text--darken-2 medium">{{times[0].time}} : {{times[1].time}}</span>
           </span>
         </div>
       </v-flex>
       <!-- 가게이름 -->
       <v-flex xs12 sm12>
-        <div v-if="!progress" class="red--text body-2 px-4 pt-2">
+        <div v-if="!progress" class="red--text medium px-4 pt-2">
           예약취소를 원하시면 식당에 직접 연락해주세요.
         </div>
-        <div class="title font-weight-bold px-3 pt-3">
+        <div class="xlarge font-weight-bold px-3 pt-3">
           <span>{{i.store_name}}</span>
         </div>
       </v-flex>
       <!-- 주문내역-간단히 -->
       <v-flex xs12 sm12>
-        <div class="body-2 px-4 pt-2">
+        <div class="medium px-4 pt-2">
           <span>{{i.menu_list}}</span>
           &nbsp;
           <span>{{i.total_price}}</span>
@@ -63,7 +63,7 @@
       <v-flex xs12 sm12 align-self-center class="mt-2">
         <div>
           <v-btn v-if="i.status==='방문완료'" outline color="orange" class="angida-gradiation px-5" dark large :to="reservationPage">
-            <div class="headline font-weight-bold px-5">
+            <div class="xlarge font-weight-bold px-5">
               다시 안아주기
             </div>
           </v-btn>
@@ -71,8 +71,8 @@
       </v-flex>
       <!-- 리뷰작성하러가기 -->
       <v-flex xs12 sm12 align-self-center>
-        <div v-if="i.status==='방문완료'"class="pt-2 pb-1 caption light-blue--text text--darken-2 font-weight-bold">
-          <router-link :to="writingReviewPage" class="text--decoration-none">
+        <div v-if="i.status==='방문완료'"class="pt-1 pb-1 light-blue--text text--darken-2 font-weight-bold">
+          <router-link :to="writingReviewPage" class="text--decoration-none small">
             <span>리뷰 작성하러 가기</span>
           </router-link>
         </div>

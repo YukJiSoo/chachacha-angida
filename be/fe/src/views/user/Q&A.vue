@@ -23,7 +23,7 @@
 
       <!-- 문의하기 버튼-->
       <v-flex xs12 sm12 class="pa-2">
-        <v-btn color="error" :to="writingQnA">문의하기</v-btn>
+        <v-btn color="error" :to="writingQnA" class="medium">문의하기</v-btn>
       </v-flex>
 
       <!-- QnA목록 -->
@@ -32,9 +32,9 @@
           <v-expansion-panel-content
             v-for="(item, index) in items"
           >
-            <div slot="header">{{item.title}}</div>
+            <div slot="header" class="medium">{{item.title}}</div>
             <v-card>
-              <v-card-text>{{item.content}}</v-card-text>
+              <v-card-text class="medium">{{item.content}}</v-card-text>
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>

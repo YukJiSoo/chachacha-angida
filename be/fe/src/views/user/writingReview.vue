@@ -23,7 +23,7 @@
 
       <v-layout align-center row>
         <v-flex xs4 sm12>
-          <div class="subheading pt-1">
+          <div class=" pt-1 xlarge">
             <span>별점</span>
           </div>
         </v-flex>
@@ -50,6 +50,7 @@
             color="orange"
             value=""
             height="300"
+            class="medium"
           >
           {{ reviewContent }}
           </v-textarea>
@@ -58,12 +59,12 @@
           <div id="fileApp">
             <div class="filebox" v-if="!image">
               <!--<v-btn v-if="!image" color="primary" @click="complete">사진등록</v-btn>-->
-                <label for="ex_file">사진업로드</label>
+                <label for="ex_file" class="medium">사진업로드</label>
                 <input type="file" id="ex_file" @change="onFileChange">
             </div>
             <div class="filebox" v-else>
               <img :src="image" />
-              <label for="ex_file">Remove image</label>
+              <label for="ex_file" class="medium">Remove image</label>
               <input type="button" id="ex_file" @click="removeImage">
               <!-- <button @click="removeImage">Remove image</button> -->
             </div>
@@ -71,8 +72,8 @@
         </div>
         <!-- 완료, 취소 버튼-->
         <div>
-          <v-btn color="primary" @click="reviewRegister" >완료</v-btn>
-          <v-btn color="error" @click="$goBack()">취소</v-btn>
+          <v-btn color="primary" @click="reviewRegister" class="medium">완료</v-btn>
+          <v-btn color="error" @click="$goBack()" class="medium">취소</v-btn>
         </div>
       </v-flex>
     </v-layout>

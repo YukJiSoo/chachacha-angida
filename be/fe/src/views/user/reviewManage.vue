@@ -31,7 +31,7 @@
               <v-flex xs12>
                 <v-layout align-center justify-center row wrap>
                   <v-flex xs8>
-                    <div class="subheading font-weight-bold pl-3 py-0 orange--text">
+                    <div class="xlarge pl-3 py-0 orange--text">
                       <span>강서 동국대점</span>
                     </div>
                   </v-flex>
@@ -58,13 +58,13 @@
                 <v-layout column wrap>
                   <!-- 아이디 -->
                   <v-flex xs12 class="pl-2">
-                    <div class="caption">
+                    <div class="medium">
                       <span>wltn3231</span>
                     </div>
                   </v-flex>
                   <!-- 날짜 -->
                   <v-flex xs12 class="pl-1">
-                    <div class="caption grey--text pt-1">
+                    <div class="small grey--text pt-1">
                       <span>2018.10.03</span>
                     </div>
                   </v-flex>
@@ -80,7 +80,7 @@
                   <!-- 이미지 -->
                   <!-- 내용 -->
                   <v-flex xs12>
-                    <div class="caption grey--text text--darken-1 pt-1">
+                    <div class="small grey--text text--darken-1 pt-1">
                       <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
                     </div>
                   </v-flex>

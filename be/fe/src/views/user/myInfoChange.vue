@@ -25,6 +25,7 @@
         <v-text-field
           label="주소"
           color="orange"
+          class="medium"
         ></v-text-field>
       </v-flex>
 
@@ -32,17 +33,19 @@
         <v-text-field
           label="핸드폰번호"
           color="orange"
+          class="medium"
         ></v-text-field>
       </v-flex>
     </v-layout>
 
     <v-divider class="mx-2 mt-4"></v-divider>
-    <v-subheader>카드정보</v-subheader>
+    <v-subheader class="small">카드정보</v-subheader>
     <v-layout row wrap>
       <v-flex v-for="input in cardInputs" xs12 sm6 md3 class="px-3">
         <v-text-field
           :label="`${input.name}`"
           color="orange"
+          class="medium"
         ></v-text-field>
       </v-flex>
 
@@ -50,12 +53,12 @@
       <v-flex xs12 sm6 md3 class="px-3" id="fileApp">
         <div class="filebox" v-if="!image">
           <!--<v-btn v-if="!image" color="primary" @click="complete">사진등록</v-btn>-->
-            <label for="ex_file">사진변경</label>
+            <label for="ex_file" class="medium">사진변경</label>
             <input type="file" id="ex_file" @change="onFileChange">
         </div>
         <div class="filebox" v-else>
           <img :src="image" />
-          <label for="ex_file">Remove image</label>
+          <label for="ex_file" class="medium">Remove image</label>
           <input type="button" id="ex_file" @click="removeImage">
           <!-- <button @click="removeImage">Remove image</button> -->
         </div>

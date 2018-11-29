@@ -29,6 +29,7 @@
             label="Title"
             required
             color="orange"
+            class="medium"
           ></v-text-field>
           <!-- Q&A내용-->
           <v-textarea
@@ -38,12 +39,13 @@
             color="orange"
             value=""
             height="300"
+            class="medium"
           ></v-textarea>
         </v-form>
         <!-- 완료, 취소 버튼-->
         <div>
-          <v-btn color="primary" @click="complete" :to="qnaPath">완료</v-btn>
-          <v-btn color="error" :to="qnaPath">취소</v-btn>
+          <v-btn color="primary" @click="complete" :to="qnaPath" class="medium">완료</v-btn>
+          <v-btn color="error" :to="qnaPath" class="medium">취소</v-btn>
         </div>
       </v-flex>
     </v-layout>

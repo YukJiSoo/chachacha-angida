@@ -5,14 +5,14 @@
         <!-- 상단 -->
         <v-layout align-center justify-space-between row>
           <v-flex xs7 sm12>
-            <div class="pt-3 pl-3 pb-2 font-use large">
+            <div class="pt-3 pl-3 pb-2 large">
             {{name}}
             </div>
           </v-flex>
           <v-flex xs4 sm12>
             <v-btn
               round color="grey"
-              class="font-weight-bold title white--text"
+              class="xlarge white--text"
               :to="mainPath">
               <div>취소</div>
             </v-btn>
@@ -26,10 +26,10 @@
               <v-container grid-list-md text-xs-center align-center>
                 <v-layout align-center justify-center row fill-height>
                   <v-flex xs12 sm6>
-                    <div class="grey--text text--darken-0 headline mt-5 pt-5">
+                    <div class="grey--text text--darken-0 xlarge mt-5 pt-5">
                     " 언제 도착 하시나요?
                     </div>
-                    <div class="font-weight-black headline mt-5 pt-5">
+                    <div class="font-weight-black xlarge mt-5 pt-5">
                       <span>__시</span>
                       <span> &nbsp&nbsp&nbsp__분에 도착합니다.</span>
                     </div>
@@ -43,10 +43,10 @@
               <v-container grid-list-md text-xs-center align-center>
                 <v-layout align-center justify-center row fill-height>
                   <v-flex xs12 sm6>
-                    <div class="grey--text text--darken-0 headline mt-5 pt-5">
+                    <div class="grey--text text--darken-0 xlarge mt-5 pt-5">
                     " 방문 인원을 선택해주세요
                     </div>
-                    <div class="font-weight-black headline mt-5 pt-5">
+                    <div class="font-weight-black xlarge mt-5 pt-5">
                       <span>__명</span>
                       <span> 입니다.</span>
                     </div>
@@ -73,22 +73,60 @@
                               :menuSelected="`${menu.selected}`"
                               :src="`${menu.img}`"
                               aspect-ratio="1"
-                              @click="addCart(menu)"
+                              @click="choiceMenu(menu)"
                               :class="{'v-card--reveal': menu.selected}"
                             >
                             <!-- 메뉴이름 -->
                             </v-img>
-                            <v-card-text class="pa-1">
+                            <v-card-text class="pa-1" @click="menuDialog = true">
                               <v-layout justify-space-between column>
                                 <v-flex xs12 class="pt-1 pb-0">
-                                  <div class="py-0 subheading font-weight-bold">{{menu.name}}</div>
+                                  <div class="py-0 medium font-weight-bold">{{menu.name}}</div>
                                 </v-flex>
                                 <v-flex xs12 class="pt-0 pb-1">
-                                  <div class="py-0 mx-5 body-1">{{menu.price}}</div>
+                                  <div class="py-0 mx-5 small">{{menu.price}}</div>
                                 </v-flex>
                               </v-layout>
                             </v-card-text>
                           </v-card>
+                          <v-dialog
+                            v-model="menuDialog"
+                            max-width="290"
+                          >
+                            <v-card>
+                              <v-card-title class="large">{{menu.name}}</v-card-title>
+                              <v-img 
+                                :src="`${menu.img}`"
+                                aspect-ratio="1"
+                                width="100%"
+                                height="100%"
+                              >
+                              </v-img>
+                              <v-card-text class="medium">
+                                {{menu.explain}}
+                              </v-card-text>
+
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                  color="orange darken-1"
+                                  flat="flat"
+                                  @click="menuDialog = false"
+                                  class="font-use"
+                                >
+                                  장바구니에 담기
+                                </v-btn>
+                                <v-btn
+                                  color="orange darken-1"
+                                  flat="flat"
+                                  @click="menuDialog = false"
+                                  class="font-use"
+                                >
+                                  닫기
+                                </v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-dialog>
                         </v-flex>
                       </v-layout>
                     </v-container>
@@ -110,7 +148,7 @@
               <v-layout align-center justify-center row fill-height>
                 <v-btn
                   color="deep-orange lighten-1"
-                  class="font-weight-bold headline white--text px-5"
+                  class="xlarge white--text px-5"
                   @click="next"
                 >
                   다음
@@ -124,34 +162,31 @@
               :fixed="false"
               app
               height="auto"
-              color="grey lighten-4"
-              class="footer-style pb-3"
+              color="grey lighten-3 footer-style"
             >
-              <v-container grid-list-xl class="pt-2">
-                <v-layout align-center justify-center column fill-height>
-                  <v-flex class="pa-0">
+              <v-container class="pt-2">
+                <v-layout align-space-around justify-center column fill-height>
+                  <v-flex xs12 class="pa-0">
                     <!-- 장바구니 목록 -->
                     <v-bottom-sheet v-model="sheet">
-                      <v-btn slot="activator" small flat icon color="grey" size="10">
-                        <v-icon>keyboard_arrow_up</v-icon>
-                      </v-btn>
+                      <v-icon slot="activator" color="grey">keyboard_arrow_up</v-icon>
                       <v-list class="pt-0">
                         <v-container grid-list-xl class="pt-0">
                           <v-layout align-center justify-center column fill-height>
                             <v-flex xs12 sm12 class="pa-1">
-                              <div class="grey--text caption text--darken-2">장바구니</div>
+                              <div class="grey--text small text--darken-2">장바구니</div>
                             </v-flex>
                           </v-layout>
                           <v-divider></v-divider>
                           <v-layout align-center justify-center row fill-height>
                             <v-flex xs6 sm6>
-                              <div class="body-2 text--darken-2">
+                              <div class="medium text--darken-2">
                                 <span>최소결제금액 : </span>
                                 <span>10000원</span>
                               </div>
                             </v-flex>
                             <v-flex xs6 sm6>
-                              <div class="body-2 text--darken-2">
+                              <div class="medium text--darken-2">
                                 <span>현재합계금액 : </span>
                                 <span>{{allPrice}}원</span>
                               </div>
@@ -161,24 +196,24 @@
                           <v-container v-for="menu in cart" class="px-0">
                             <v-layout align-center justify-center row fill-height>
                               <v-flex xs6 sm6>
-                                <div class="title text--darken-2">
+                                <div class="xlarge text--darken-2">
                                   <span>{{menu.name}}</span>
                                 </div>
                               </v-flex>
 
                               <v-layout text-xs-center align-center justify-space-arround row fill-height class="ml-5 mb-1">
                                 <v-flex xs3 sm6 class="pa-0 mr-2">
-                                  <v-btn icon small dark color="indigo" @click="countDown(menu)">
+                                  <v-btn icon small dark color="orange" @click="countDown(menu)">
                                     <v-icon dark>remove</v-icon>
                                   </v-btn>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
-                                  <div class="headline text--darken-2">
+                                  <div class="large text--darken-2">
                                     <span>{{menu.num}}</span>
                                   </div>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
-                                  <v-btn icon small dark color="indigo" @click="countUp(menu)">
+                                  <v-btn icon small dark color="orange" @click="countUp(menu)">
                                     <v-icon dark>add</v-icon>
                                   </v-btn>
                                 </v-flex>
@@ -187,7 +222,7 @@
 
                             <v-layout align-end justify-end row fill-height>
                               <v-flex xs3 sm6>
-                                <div class="grey--text body-2 text--darken-2">
+                                <div class="grey--text small text--darken-2">
                                   <span>{{menu.price*menu.num}}원</span>
                                 </div>
                               </v-flex>
@@ -201,33 +236,43 @@
                   </v-flex>
 
                   <!-- 장바구니 제목 -->
-                  <v-flex class="pa-0">
-                    <div class="grey--text caption text--darken-2">
+                  <v-flex xs12 class="pa-0">
+                    <div class="grey--text small text--darken-2">
                       <span>장바구니</span>
                     </div>
                   </v-flex>
 
                   <!-- 금액창 -->
-                  <v-layout align-center justify-center row fill-height>
-                    <v-flex xs6 sm6>
-                      <div class="body-2 text--darken-2">
-                        <span>최소결제금액 : </span>
-                        <span>10000원</span>
-                      </div>
-                    </v-flex>
-                    <v-flex xs6 sm6>
-                      <div class="body-2 text--darken-2">
-                        <span>현재합계금액 : </span>
-                        <span>{{allPrice}}원</span>
-                      </div>
-                    </v-flex>
-                  </v-layout>
+                  <v-flex xs12 class="pt-2">
+                    <v-layout align-center row fill-height>
+                      <v-flex xs3 sm6 class="px-0">
+                        <div class="medium text--darken-2">
+                          <span>최소결제금액 </span>
+                        </div>
+                      </v-flex>
+                      <v-flex xs3 sm6 class="px-0">
+                        <div class="medium text--darken-2">
+                          <span>10000원</span>
+                        </div>
+                      </v-flex>
+                      <v-flex xs3 sm6 class="px-0">
+                        <div class="medium text--darken-2">
+                          <span>현재합계금액 </span>
+                        </div>
+                      </v-flex>
+                      <v-flex xs3 sm6 class="px-0">
+                        <div class="medium text--darken-2">
+                          <span>{{allPrice}}원</span>
+                        </div>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
 
                   <!-- 결제버튼 -->
                   <v-flex class="pb-0 pt-0">
                     <v-btn
                       color="deep-orange lighten-1 "
-                      class="font-weight-bold headline white--text px-5"
+                      class="xlarge white--text px-5"
                       @click="pay"
                     >
                       결제하기
@@ -290,6 +335,7 @@
         dialog : true,
         length: 3,
         onboarding: 0,
+        menuDialog: false
       }
     },
     mounted() {
@@ -332,18 +378,29 @@
         // this.menuItems.name = data.menuName
         // this.menuItems.explain = data.menuExplain
       },
-      addCart(menu){
-        if(menu.selected) return
+      choiceMenu(menu){
+        if(menu.selected) {
+          menu.selected = false
 
-        menu.selected = true
-        var newMenu = {
-          name: menu.name,
-          price: menu.price,
-          num: 1
+          var menuName = menu.name
+          this.cart.forEach((v,i) => {
+            if(menuName === v.name) {
+              this.allPrice -= (v.num * v.price)
+              this.cart.splice(i,1)
+            }
+          });     
         }
+        else {
+          menu.selected = true
+          var newMenu = {
+            name: menu.name,
+            price: menu.price,
+            num: 1
+          }
 
-        this.cart.push(newMenu)
-        this.allPrice += menu.price
+          this.cart.push(newMenu)
+          this.allPrice += menu.price
+        }
 
       },
       removeCart(menuName){
@@ -383,8 +440,7 @@
   opacity: .5;
 }
 .footer-style {
-  border-radius: 20px;
-  bottom: -30px;
-  box-shadow: 0px 0px 2px 0px #000808;
+  
+  box-shadow: 3px 3px 3px 3px #000808;
 }
 </style>

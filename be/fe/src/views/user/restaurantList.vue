@@ -36,7 +36,7 @@
                 <v-layout row wrap>
                   <!-- 이름 -->
                   <v-flex xs12 sm12 class="pt-0 pb-0">
-                    <div class="headline font-weight-bold black--text">
+                    <div class="xlarge font-weight-bold black--text">
                       <span>{{store.name}}</span>
                     </div>
                   </v-flex>
@@ -55,7 +55,7 @@
                       </v-flex>
                       <!-- 위치 -->
                       <v-flex xs6 sm12 class="pa-0">
-                        <div class="body-1 grey--text text--darken-2 font-weight-bold">
+                        <div class="medium grey--text text--darken-2 font-weight-bold">
                           <span>약 300m</span>
                         </div>
                       </v-flex>
@@ -66,13 +66,13 @@
                     <v-layout align-center justify-center row fill-height >
                       <!-- 자리현황-제목 -->
                       <v-flex xs6 sm12 class="pa-0">
-                        <div class="body-1 grey--text text--darken-1">
+                        <div class="medium grey--text text--darken-1">
                           <span>자리현황</span>
                         </div>
                       </v-flex>
                       <!-- 자리현황-내용 -->
                       <v-flex xs6 sm12 class="pa-0">
-                        <div class="body-1">
+                        <div class="medium">
                           <span class="green--text">{{store.nowSeat}}</span><span> / </span><span>{{store.limitSeat}}</span><span>석</span>
                         </div>
                       </v-flex>
@@ -83,7 +83,7 @@
                     <v-layout align-center justify-center row fill-height>
                       <!-- 태그들 -->
                       <v-flex v-for="tag in store.tags" xs4 sm12 class="pa-0">
-                        <div class="body-1 pink--text text--lighten-3">
+                        <div class="medium pink--text text--lighten-3">
                           <span>{{tag}}</span>
                         </div>
                       </v-flex>

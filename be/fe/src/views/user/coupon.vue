@@ -21,7 +21,7 @@
         </v-toolbar>
       </v-flex>
 
-      <div class="body-2 grey--text text--darken-1 px-3 pt-3">
+      <div class="medium grey--text text--darken-1 px-3 pt-3">
         <span>보유 쿠폰 {{couponNum}}개</span>
       </div>
 
@@ -33,19 +33,19 @@
             <v-flex xs7 align-self-center>
               <v-layout column>
                 <v-flex xs12>
-                  <div class="subheading font-weight-bold px-2">
+                  <div class="medium font-weight-bold px-2">
                     <span>{{coupon.name}}</span>
                   </div>
                 </v-flex>
                 <v-flex xs12>
-                  <div class="caption grey--text px-3">
+                  <div class="medium grey--text px-3">
                     <span>{{coupon.firstDay}} ~ {{coupon.lastDay}}</span>
                   </div>
                 </v-flex>
               </v-layout>
             </v-flex>
             <v-flex xs5 text-xs-center class="py-4">
-              <div class="display-1 orange--text text--darken-3">
+              <div class="large orange--text text--darken-3">
                 <span>-{{coupon.discount}}원</span>
               </div>
             </v-flex>

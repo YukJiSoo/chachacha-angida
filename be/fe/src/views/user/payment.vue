@@ -4,23 +4,21 @@
     <v-layout align-space-around column>
       <v-flex xs12 sm12>
         <!-- 상단 -->
-        <v-btn icon class="ma-1" @click="$goBack()">
-          <v-icon>keyboard_arrow_left</v-icon>
-        </v-btn>
+        <v-icon @click="$goBack()" class="pl-3 pt-2">keyboard_arrow_left</v-icon>
         <v-divider class="mx-3 mt-2"></v-divider>
 
         <!-- 금액 -->
         <v-layout justify-space-between row class="pl-4 mt-2">
           <v-flex xs12 sm12>
-            <div class="pt-3 pb-1 title">
+            <div class="pt-3 pb-1 xlarge">
               결제금액
             </div>
-            <div class="pt-2 pb-2 font-weight-bold headline">
+            <div class="pt-2 pb-2 font-weight-bold large">
               <span>{{allPrice-pointUsing-couponChoice.discount}}원</span>
             </div>
-            <div class="font-weight-bold headline">
-              <span class="grey--text text--darken-2 body-2">포인트 - {{pointUsing}}P</span>
-              <span class="pl-3 grey--text text--darken-2 body-2">할인쿠폰 - {{couponChoice.discount}}원</span>
+            <div>
+              <span class="grey--text text--darken-2 small">포인트 - {{pointUsing}}P</span>
+              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{couponChoice.discount}}원</span>
             </div>
           </v-flex>
         </v-layout>
@@ -33,7 +31,7 @@
         <v-dialog v-model="dialogPayRule" fullscreen hide-overlay transition="dialog-bottom-transition">
           <!-- 선택 -->
           <v-card hover slot="activator">
-            <div class="px-5 py-3 mx-5 title font-weight-bold" :class="`${payMethod.color}--text`">
+            <div class="px-5 py-2 mx-5 xlarge " :class="`${payMethod.color}--text`">
               {{payMethod.name}}
             </div>
           </v-card>
@@ -47,7 +45,7 @@
                     <v-icon>close</v-icon>
                   </v-btn>
                 </v-list-tile-action>
-                <div class="subheading font-weight-bold">
+                <div class="xlarge font-weight-bold">
                   결제수단
                 </div>
               </v-list-tile>
@@ -61,7 +59,7 @@
                 :value="method"
                  color="orange"
               >
-                <div slot="label" class="headline black-text font-weight-bold">{{method.name}}</div>
+                <div slot="label" class="xlarge black-text">{{method.name}}</div>
               </v-radio>
             </v-radio-group>
           </v-card>
@@ -77,6 +75,7 @@
           placeholder="요청사항"
           v-model="requirement"
           solo
+          class="xlarge"
         ></v-text-field>
       </v-flex>
     </v-layout>
@@ -85,7 +84,7 @@
     <v-layout align-center justify-space-around>
       <!-- 쿠폰-제목 -->
       <v-flex xs4 sm12 class="pa-2 mb-1">
-        <div class="font-weight-black subheading">
+        <div class="xlarge">
           할인쿠폰
         </div>
       </v-flex>
@@ -95,7 +94,7 @@
           <v-dialog v-model="dialogCoupone" fullscreen hide-overlay transition="dialog-bottom-transition">
             <!-- 선택 -->
             <v-card slot="activator" class="px-4 py-2">
-              <div class="body-1 grey--text text--darken-2">
+              <div class="medium grey--text text--darken-2">
                 {{couponChoice.name}}
               </div>
             </v-card>
@@ -108,7 +107,7 @@
                     <v-icon>close</v-icon>
                   </v-btn>
                 </v-list-tile-action>
-                <div class="subheading font-weight-bold">
+                <div class="xlarge font-weight-bold">
                   할인쿠폰
                 </div>
               </v-list-tile>
@@ -123,7 +122,7 @@
                 color="orange"
                 class="mb-4"
               >
-                <div slot="label" class="title black-text font-weight-bold">{{coupon.name}}</div>
+                <div slot="label" class="xlarge black-text">{{coupon.name}}</div>
               </v-radio>
             </v-radio-group>
 
@@ -138,7 +137,7 @@
     <v-layout align-center justify-space-around>
       <!-- 보유포인트-제목 -->
       <v-flex xs7 sm12 class="pa-2 mb-1">
-        <div class="font-weight-black subheading">
+        <div class="xlarge">
           보유 포인트
         </div>
       </v-flex>
@@ -146,12 +145,12 @@
       <v-flex xs5 sm12 class="pa-2 mb-1">
         <v-layout align-end column>
           <v-flex xs12>
-            <div class="body-1 grey--text text--darken-2">
+            <div class="medium grey--text text--darken-2">
               {{pointHave}} P
             </div>
           </v-flex>
           <v-flex xs12>
-            <div class="caption grey--text text--darken-2">
+            <div class="small grey--text text--darken-2">
               {{allPrice/100}}P 적립예정
             </div>
           </v-flex>
@@ -164,7 +163,7 @@
     <v-layout align-center justify-space-around>
       <!-- 포인트사용-제목 -->
       <v-flex xs7  sm12 class="pa-2 mb-1">
-        <div class="font-weight-black subheading">
+        <div class="xlarge">
           포인트 사용
         </div>
       </v-flex>
@@ -178,6 +177,7 @@
               hint="1000P 이상 사용가능"
               v-model="pointUsing"
               persistent-hint
+              class="medium"
             ></v-text-field>
           </v-flex>
         </v-layout>
@@ -190,7 +190,7 @@
       <v-flex xs12>
         <div>
           <v-btn class="angida-gradiation px-5" dark large :to="paySuccessPath" @click="paySuccess">
-            <div class="headline font-weight-bold px-5">
+            <div class="large px-5">
               결제하기
             </div>
           </v-btn>
