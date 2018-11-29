@@ -30,19 +30,25 @@
                     " 언제 도착 하시나요?
                     </div>
                     <div class="font-weight-black xlarge mt-5 pt-5">
-                      <v-layout>
-                        <v-combobox
-                          v-model="select"
-                          :items="items"
-                          suffix="시"
-                        ></v-combobox>
-                        <v-combobox
-                          v-model="select"
-                          :items="items2"
-                          suffix="분"
-                        ></v-combobox>
+                      <v-layout align-center justify-center class="pl-2">
+                        <v-flex xs3>
+                          <v-combobox
+                            v-model="hour"
+                            :items="items"
+                            suffix="시"
+                          ></v-combobox>
+                        </v-flex>
+                        <v-flex xs3>
+                          <v-combobox
+                            v-model="minute"
+                            :items="items2"
+                            suffix="분"
+                          ></v-combobox>
+                        </v-flex>
+                        <v-flex xs6>
+                          에 도착합니다.
+                        </v-flex>
                      </v-layout>
-                     에 도착합니다.
                     </div>
                   </v-flex>
                 </v-layout>
@@ -58,17 +64,16 @@
                     " 방문 인원을 선택해주세요
                     </div>
                     <div class="font-weight-black xlarge mt-5 pt-5">
-                      <v-layout>
-                        <v-flex xs5>
+                      <v-layout align-center justify-center class="pl-2">
+                        <v-flex xs3 >
                           <v-combobox
-                            v-model="select"
+                            v-model="peopleNum"
                             :items="items3"
                             suffix="명"
                           ></v-combobox>
                         </v-flex>
-                        <v-flex xs5>
-                          <br>
-                          <h4>입니다.</h4>
+                        <v-flex xs3>
+                          입니다.
                         </v-flex>
                       </v-layout>
                     </div>
@@ -493,7 +498,6 @@
   opacity: .5;
 }
 .footer-style {
-
   box-shadow: 3px 3px 3px 3px #000808;
 }
 </style>

@@ -141,30 +141,32 @@ export default {
       anotherMenuList: {
         anotherMenu1:{
           name: '공지사항',
-          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fpoint.PNG?alt=media&token=c7d405ae-8998-46fd-8bb1-9a098d02de0a',
           to:{
             path:'/notice',
           }
         },
         anotherMenu2:{
           name: '내정보 변경',
-          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Fcoupon.PNG?alt=media&token=36e4eeac-f052-4123-bb64-bd89c7036d73',
           to:{
             path:'/myInfoChange',
           }
         },
         anotherMenu3:{
           name: 'QnA',
-          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Forder.PNG?alt=media&token=579ed091-4142-43a3-8ce3-6d15cc58ad9d',
           to:{
             path:'/Q&A',
           }
         },
         anotherMenu4:{
           name: '환경설정',
-          url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/usermenu%2Freview.PNG?alt=media&token=9d7c78ab-1a29-4e66-a89a-92516c7b1a2f',
           to:{
             path:'/setting',
+          }
+        },
+        anotherMenu5:{
+          name: '로그아웃',
+          to:{
+            path:'/',
           }
         },
       }
