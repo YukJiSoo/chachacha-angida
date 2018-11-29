@@ -19,7 +19,7 @@
             <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold" @click="logout">로그아웃</v-btn>
+        <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
       </v-list>
       <v-list class="pt-0" dense>
         <v-divider></v-divider>
@@ -84,15 +84,27 @@
   <v-card>
     <v-list>
      <v-list-group
-       v-for="item in items"
+       v-for="(item,index) in items"
        v-model="item.active"
        :key="item.title"
        no-action
      >
-       <v-list-tile slot="activator">
+       <v-list-tile slot="activator"
+       v-model="item.tile">
          <v-list-tile-content>
            <!--주문자와 가격-->
-           <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}</v-list-tile-title>
+
+             <div id="status">
+           <div v-if="item.status===false">
+             <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+               수락 대기중</v-list-tile-title>
+           </div>
+           <div v-else>
+             <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+               수락 완료</v-list-tile-title>
+           </div>
+         </div>
+
          </v-list-tile-content>
        </v-list-tile>
        <v-list-tile
@@ -108,8 +120,12 @@
 
        </v-list-tile>
        <!--주문 수락 거절 버튼-->
-       <v-btn @click="agree" color="blue lighten-1" class="font-weight-bold">수락</v-btn>
-       <v-btn @click="refuse" color="red lighten-1" class="font-weight-bold">거절</v-btn>
+       <div id='agreeButton'>
+         <div v-if="item.status===false">
+       <v-btn @click="agree(item)" color="blue lighten-2" class="font-weight-bold white--text">수락</v-btn>
+       </div>
+       </div>
+       <v-btn @click="refuse(index)" color="red lighten-2" class="font-weight-bold white--text">거절</v-btn>
      </v-list-group>
    </v-list>
       </v-card>
@@ -164,8 +180,8 @@ export default {
             title: '주문자1',
             cost: '10000원',
             active: true,
+            status: false,
             items: [
-
               { menu: '음식1, 음식2, 음식3' },
               { time: '오전 1시 10분' }
             ]
@@ -173,6 +189,8 @@ export default {
           {
             title: '주문자2',
             cost: '10000원',
+            active: true,
+            status: false,
             items: [
 
               { menu: '음식1, 음식2, 음식3' },
@@ -181,6 +199,8 @@ export default {
           },{
             title: '주문자3',
             cost: '10000원',
+            active: true,
+            status: false,
             items: [
 
               { menu: '음식1, 음식2, 음식3' },
@@ -189,6 +209,8 @@ export default {
           },{
             title: '주문자4',
             cost: '10000원',
+            active: true,
+            status: false,
             items: [
 
               { menu: '음식1, 음식2, 음식3' },
@@ -199,11 +221,14 @@ export default {
     }
   },
   methods: {
-    agree(){
-      alert("확인했습니다"),
-      this.items.active=false;
+    agree(item){
+      item.active=false,
+      item.status= true,
+      alert("확인했습니다")
+
     },
-    refuse(){
+    refuse(index){
+      this.$delete(this.items, index),
       alert("거절했습니다")
     },
     logout(){

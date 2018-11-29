@@ -168,6 +168,9 @@ export default {
       sex: 'man',
       phoneMask: '(###)-####-####',
       image: '',
+      info:{
+        role:'owner'
+      },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
