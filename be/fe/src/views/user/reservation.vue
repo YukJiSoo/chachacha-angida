@@ -91,7 +91,7 @@
                           xs6 sm4 md2
                         >
                           <v-card>
-                            <v-img 
+                            <v-img
                               :menuSelected="`${menu.selected}`"
                               :src="`${menu.img}`"
                               aspect-ratio="1"
@@ -277,7 +277,7 @@
         hour: 0,
         minute: 0,
         peopleNum: 0,
-        
+
         storeId: '',
         name: '토끼정',
 
@@ -305,17 +305,7 @@
           //   num: 2
           // }
         ],
-        
-        mainPath: '/home',
 
-        sheet: false,
-        dialog : true,
-        length: 3,
-        onboarding: 0,
-<<<<<<< HEAD
-        menuNum: 9,
-        menuSelected: false,
-        menu: [],
         items: [
           '10',
           '11',
@@ -345,9 +335,14 @@
           '3',
           '4',
           '5'
-        ]
-=======
->>>>>>> frontend-dev
+        ],
+
+        mainPath: '/home',
+
+        sheet: false,
+        dialog : true,
+        length: 3,
+        onboarding: 0,
       }
     },
     mounted() {

@@ -32,7 +32,7 @@
           <span>{{i.arrival_time}}</span>
           <span>
             <span class="mx-4 green--text text--darken-2">{{i.status}}</span>
-            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+            <v-btn v-if="i.status==='수락대기'" outline color="orange" class="angida-gradiation px-0 mx-2" dark small @click="cancelSuccess">
               예약취소
             </v-btn>
             <v-btn v-if="!progress" outline color="red" class="angida-gradiation px-0 mx-2" dark small>
@@ -145,6 +145,9 @@ export default {
       .catch((e) => {
         console.error(e.message)
       })
+    },
+    cancelSuccess(){
+      alert("취소가 완료되었습니다.")
     }
   },
   mounted() {
