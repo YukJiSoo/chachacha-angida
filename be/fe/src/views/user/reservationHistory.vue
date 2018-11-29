@@ -35,17 +35,17 @@
             <v-btn v-if="i.status==='수락대기'" outline color="orange" class="medium px-0 mx-2" dark small @click="cancelSuccess">
               예약취소
             </v-btn>
-            <v-btn v-if="!progress" outline color="red" class="medium px-0 mx-2" dark small>
+            <v-btn disabled v-if="(!progress && i.status==='수락대기') || i.status==='예약완료'" outline color="red" class="medium px-0 mx-2" small>
               취소불가
             </v-btn>
-            <span class="mx-4 red--text text--darken-2 medium">{{times[0].time}} : {{times[1].time}}</span>
+            <span v-if="i.status==='수락대기'" class="mx-4 red--text text--darken-2 medium"> <br>{{times[0].time}} : {{times[1].time}}</span>
           </span>
         </div>
       </v-flex>
       <!-- 가게이름 -->
       <v-flex xs12 sm12>
-        <div v-if="!progress" class="red--text medium px-4 pt-2">
-          예약취소를 원하시면 식당에 직접 연락해주세요.
+        <div v-if="(!progress && i.status==='수락대기') || (!progress && i.status==='예약완료')" class="red--text medium px-4 pt-2">
+                <!-- 조건을 바꿔야할수도? -->예약취소를 원하시면 식당에 직접 연락해주세요.
         </div>
         <div class="xlarge font-weight-bold px-3 pt-3">
           <span>{{i.store_name}}</span>
@@ -93,7 +93,7 @@ export default {
       reservationPage:'/reservation',
       writingReviewPage:'/writingReview',
       startTime: "July 9, 2019 13:54:00",
-      endTime: "Nov 29, 2018 01:06:30",
+      endTime: "Nov 29, 2018 21:42:15",
       userCode: localStorage.getItem('code'),
       times: [
         { id: 0, time: 1 },
