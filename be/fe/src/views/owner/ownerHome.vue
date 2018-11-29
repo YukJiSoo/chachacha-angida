@@ -76,7 +76,7 @@
     <v-layout align-center justify-end fill-height>
       <span class="medium">system 사용</span>
       <v-flex xs2 sm2>
-        <v-switch></v-switch>
+        <v-checkbox :input-value="onOff" @change="switchOnOff"></v-checkbox>
       </v-flex>
     </v-layout>
 
@@ -110,7 +110,7 @@
           >
             <v-list-tile-content>
               <!--주문메뉴-->
-              <v-list-tile-title class="medium">{{ subItem.menu }}</v-list-tile-title>
+              <v-list-tile-title class="medium">{{subItem.menu}}</v-list-tile-title>
               <!--주문시간-->
               <v-list-tile-title class="medium">{{subItem.time}}</v-list-tile-title>
             </v-list-tile-content>
@@ -134,18 +134,15 @@ export default {
   data () {
     return {
       ownerCode: localStorage.getItem('code'),
-      info:{
-        // 필요한 정보
-        // ownerName: '차민형',
-        // img: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        // restaurantName: '도스마스 동대점',
-      },
+      info:{},
 
-      switch1: true,
+      onOff: false,
       drawer: null,
 
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      
+      orderItems:[],
 
       menuItems: [
         {
@@ -169,60 +166,16 @@ export default {
           path: '/ownerSetting',
         }
       ],
-      orderItems:[
-          // {
-          //   title: '주문자1',
-          //   cost: '10000원',
-          //   active: true,
-          //   status: false,
-          //   items: [
-          //     { menu: '음식1, 음식2, 음식3' },
-          //     { time: '오전 1시 10분' }
-          //   ]
-          // },
-          // {
-          //   title: '주문자2',
-          //   cost: '10000원',
-          //   active: true,
-          //   status: false,
-          //   items: [
-
-          //     { menu: '음식1, 음식2, 음식3' },
-          //     { time: '오전 1시 10분' }
-          //   ]
-          // },{
-          //   title: '주문자3',
-          //   cost: '10000원',
-          //   active: true,
-          //   status: false,
-          //   items: [
-
-          //     { menu: '음식1, 음식2, 음식3' },
-          //     { time: '오전 1시 10분' }
-          //   ]
-          // },{
-          //   title: '주문자4',
-          //   cost: '10000원',
-          //   active: true,
-          //   status: false,
-          //   items: [
-
-          //     { menu: '음식1, 음식2, 음식3' },
-          //     { time: '오전 1시 10분' }
-          //   ]
-          // }
-      ]
     }
   },
   mounted() {
     this.getUserInfo()
     this.getOrders()
+    this.getOnOff()
   },
   methods: {
     getUserInfo(){
-      this.$axios.get('http://localhost:3000/api/user/owner',{
-        code: this.ownerCode
-      })
+      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
       .then((r) => {
         console.log(r.data)
         this.info = r.data
@@ -233,33 +186,71 @@ export default {
       })
     },
     getOrders(){
-      this.$axios.get('http://localhost:3000/api/reservation/owner/wait',{
-        code: this.ownerCode
-      })
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`)
       .then((r) => {
         console.log(r.data)
         
         // for(var i=0; i<r.data.length; i++)
         // this.orderItems.push(r.data[i])
         this.orderItems = r.data.orderItems
+        console.log(this.orderItems)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    getOnOff(){
+      this.$axios.get(`http://localhost:3000/api/store/onOff/${this.ownerCode}`)
+      .then((r) => {
+        console.log(r.data)
+        
+        this.onOff = r.data
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    putOrderStatus(status, code){
+      this.$axios.put(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`,{ status: status, code: code })
+      .then((r) => {
+        console.log(r.data)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    putOnOff(){
+      this.$axios.put(`http://localhost:3000/api/store/onOff/${this.ownerCode}`,{ status: this.onOff })
+      .then((r) => {
+        console.log(r.data)
+        //this.orderItems = r.data
       })
       .catch((e) => {
       this.pop(e.message)
       })
     },
     agree(item){
-      item.active=false,
-      item.status= true,
+      item.active= false
+      item.status= true
       alert("확인했습니다")
 
+      this.putOrderStatus('agree', item.code)
     },
     refuse(index){
       this.$delete(this.orderItems, index),
       alert("거절했습니다")
+
+      this.putOrderStatus('refuse', item.code)
     },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
+    },
+    switchOnOff(){
+      if(this.onOff) this.onOff = false
+      else this.onOff = true
+      
+      this.putOnOff()
     }
   }
 }

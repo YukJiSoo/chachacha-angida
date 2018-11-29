@@ -3,6 +3,9 @@ var createError = require('http-errors');
 var router = express.Router();
 const cal = require('../../../models/distance')
 /* GET home page. */
+
+router.use('/onOff', require('./onOff'));
+
 router.get('/list', function(req, res, next) {
   console.log("list test");
   console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))

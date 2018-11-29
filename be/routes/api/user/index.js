@@ -3,6 +3,8 @@ var createError = require('http-errors');
 var router = express.Router();
 const User = require('../../../models/users');
 
+router.use('/owner', require('./owner'));
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   User.find()
@@ -12,24 +14,6 @@ router.get('/', function(req, res, next) {
     .catch(e => {
       res.send({ success: false })
     })
-});
-
-/* GET home page. */
-router.get('/owner', function(req, res, next) {
-  const userInfo = {
-    role: 'owner',
-    ownerName: '차민형',
-    ID: 'mpsmhck95@naver.com',
-    phone: '01087215502',
-    sex: 'man',
-    img: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-    restaurantName: '도스마스 동대점',
-    restaurantNumber: '01012345678',
-    restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
-    restaurantLocation: '동대입구 앞'
-  }
-
-  res.json(userInfo);
 });
 
 /* POST home page. */

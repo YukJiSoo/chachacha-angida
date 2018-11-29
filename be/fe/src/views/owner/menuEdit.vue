@@ -12,15 +12,15 @@
           >keyboard_backspace</v-icon>
           <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
+              <v-flex xs12 sm12 class="pb-0">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="small white--text">음식이 나에게</span>
                 </router-link>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
+              <v-flex xs8 sm12 class="pt-0 pl-5">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="xlarge white--text">안기다</span>
+                  <span class="small white--text">린다</span>
                 </router-link>
               </v-flex>
             </v-layout>
@@ -28,14 +28,15 @@
         </v-toolbar>
         <!-- toolbar end-->
         </v-flex>
+
         <v-flex xs12 sm12>
           <!-- 음식점 이름-->
-          <h1>
+          <h1 class="large">
           {{info.restaurantName}}</h1>
-          <v-card>
+          <v-card class="medium">
             <!--메뉴사진 칸-->
-            <v-flex xs12 sm12>
-              <h4 class="mb-3" align="left">메뉴 사진</h4>
+            <v-flex xs12 sm12 class="medium">
+              <h4 class="mt-3 mb-1" align="center">메뉴 사진</h4>
               <img :src='image' class="mb-3">
               <div id="fileApp">
                 <div class="filebox" v-if="!image">
@@ -72,7 +73,7 @@
 </v-textarea>
 </v-card-text>
 <!--작성완료 버튼-->
-<v-btn color="orange" class="font-weight-bold" @click="goToOwnerMenuManage">작성 완료</v-btn>
+<v-btn color="orange" dark class="font-weight-bold" @click="goToOwnerMenuManage">작성 완료</v-btn>
 </v-card>
         </v-flex>
     </v-layout>

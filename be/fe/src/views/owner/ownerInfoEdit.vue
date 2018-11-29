@@ -12,15 +12,15 @@
           >keyboard_backspace</v-icon>
           <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
+              <v-flex xs12 sm12 class="pb-0">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="small white--text">음식이 나에게</span>
                 </router-link>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
+              <v-flex xs8 sm12 class="pt-0 pl-5">
+                <router-link :to="mainPath" class="text--decoration-none">
+                  <span class="xlarge white--text">안기다</span>
+                  <span class="small white--text">린다</span>
                 </router-link>
               </v-flex>
             </v-layout>
@@ -29,6 +29,7 @@
         <!-- toolbar end-->
         </v-flex>
     </v-layout>
+
   <v-card
     class="mx-auto"
     style="max-width: 500px;"
@@ -36,7 +37,7 @@
     <v-form
       ref="form"
       v-model="form"
-      class="pa-3 pt-4"
+      class="pa-3 pt-4 medium"
     >
     <!--이름-->
     <v-text-field
@@ -63,7 +64,7 @@
         :rules="[rules.password, rules.length(6)]"
         box
         color="deep-purple"
-        counter="6"
+        counter="18"
         label="비밀번호"
         style="min-height: 96px"
         type="password"
@@ -86,9 +87,9 @@
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">회원 사진</h4>
-      <img :src='info.avatar' class="mb-3">
+      <img :src='info.img' class="mb-3">
       <div id="fileApp">
-        <div class="filebox" v-if="!info.avatar">
+        <div class="filebox" v-if="!info.img">
           <label for="userImg">사진등록</label>
           <input type="file" id="userImg" @change="onFileChange" class="mb-3">
         </div>
@@ -121,6 +122,9 @@ export default {
   name: 'ownerDefault',
   data () {
     return {
+      ownerCode: localStorage.getItem('code'),
+      info:{},
+      
       mainPath: '/',
       agreement: false,
       dialog: false,
@@ -128,18 +132,6 @@ export default {
       isLoading: false,
       password: undefined,
       phoneMask: '(###)-####-####',
-      info:{
-        role: 'owner',
-        ownerName: '차민형',
-        ID: 'mpsmhck95@naver.com',
-        phone: '01087215502',
-        sex: 'man',
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        restaurantName: '도스마스 동대점',
-        restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
-        restaurantLocation: '동대입구 앞'
-      },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -149,12 +141,38 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getUserInfo()
+  },
   methods: {
+    getUserInfo(){
+      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
+      .then((r) => {
+        console.log(r.data)
+        this.info = r.data
+        console.log(this.info)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    putUserInfo(info){
+      this.$axios.put(`http://localhost:3000/api/user/owner/${this.ownerCode}`,info)
+      .then((r) => {
+        console.log(r.data)
+        this.info = r.data
+        console.log(this.info)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    logout(){
+      alert("로그아웃 되었습니다."),
+      this.$router.push('/')
+    },
     goBack(){
       window.history.back();
-    },
-      submit(){
-        alert('수정 완료되었습니다')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -168,14 +186,15 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.info.avatar = e.target.result;
+        vm.info.img = e.target.result;
       };
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.info.avatar=''
+      this.info.img=''
     },
     goToOwnerInfo(){
+      this.putUserInfo(this.info)
       alert("수정되었습니다"),
       this.$router.push('/ownerInfo')
     }

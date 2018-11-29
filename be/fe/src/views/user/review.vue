@@ -50,7 +50,7 @@
           <v-layout column wrap class="px-3 pt-2">
             <!-- 이용내역 아이템 -->
             <v-layout v-for="i in 3" row wrap class="py-3">
-              
+
               <!-- 가게이름, 예약날짜, 소멸예정날짜 -->
               <v-flex xs2>
                 <v-avatar>
@@ -83,6 +83,7 @@
                       background-color="yellow darken-3"
                       color="yellow darken-3"
                       small
+                      readonly="true"
                     ></v-rating>
                   </v-flex>
                   <!-- 이미지 -->
@@ -92,7 +93,7 @@
                       <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
                     </div>
                   </v-flex>
-                </v-layout>                  
+                </v-layout>
               </v-flex>
             </v-layout>
 

@@ -2,8 +2,11 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET reservation history - client side */
-router.get('/', function(req, res, next) {
+router.use('/owner', require('./owner'));
+
+/* GET home page. */
+router.get('/:id', function(req, res, next) {
+  const id = req.params.id
   const reserv_lists = [
     {
       store_name: '강서 동국대점',
@@ -49,54 +52,20 @@ router.get('/', function(req, res, next) {
   res.send({reserv_list: reserv_lists});
 });
 
-/* GET reservation history - client side */
-router.get('/owner/wait', function(req, res, next) {
-  const orderItems = [
-    {
-      title: '주문자1',
-      cost: '10000원',
-      active: true,
-      status: false,
-      items: [
-        { menu: '음식1, 음식2, 음식3' },
-        { time: '오전 1시 10분' }
-      ]
-    },
-    {
-      title: '주문자2',
-      cost: '10000원',
-      active: true,
-      status: false,
-      items: [
 
-        { menu: '음식1, 음식2, 음식3' },
-        { time: '오전 1시 10분' }
-      ]
-    },{
-      title: '주문자3',
-      cost: '10000원',
-      active: true,
-      status: false,
-      items: [
-
-        { menu: '음식1, 음식2, 음식3' },
-        { time: '오전 1시 10분' }
-      ]
-    },{
-      title: '주문자4',
-      cost: '10000원',
-      active: true,
-      status: false,
-      items: [
-
-        { menu: '음식1, 음식2, 음식3' },
-        { time: '오전 1시 10분' }
-      ]
-    }
-  ]
-  
-  res.send({orderItems: orderItems});
-});
+/* PUT 예약상태 수정 */
+router.put('/:id', (req, res, next) => {
+  const id = req.params.id
+  const { name, age } = req.body
+  User.updateOne({ _id: id }, { $set: { name, age }})
+    .then(r => {
+      res.send({ success: true, msg: r })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
+    })
+  // res.send({ success: true, msg: 'put ok' })
+})
 
 router.all('*', function(req, res, next) {
   next(createError(404, '존재하지 않음'));
