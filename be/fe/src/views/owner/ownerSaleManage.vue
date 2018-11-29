@@ -8,15 +8,15 @@
       temporary
     >
     <!--사용자 정보-->
-      <v-list class="pa-1">
+      <v-list>
         <v-list-tile avatar :to="ownerInfoPath">
           <v-list-tile-avatar>
-            <img :src='info.avatar'>
+            <v-img :src='info.avatar'></v-img>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
+            <v-list-tile-title class="font-use">{{info.ownerName}}</v-list-tile-title>
+            <v-list-tile-title class="xlarge">{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -27,7 +27,7 @@
         <div v-for="menuItem in menuItems">
           <v-list-tile :to="menuItem.path">
             <v-list-tile-content>
-              <v-list-tile-title>{{menuItem.title}}</v-list-tile-title>
+              <v-list-tile-title class="medium">{{menuItem.title}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -69,16 +69,15 @@
 
         <v-flex xs12 sm12>
           <!-- 음식점 이름-->
-          <h1>
-          {{info.restaurantName}}</h1>
-          <h3>매출관리</h3>
+          <h1 class="large">{{info.restaurantName}}</h1>
+          <h3 class="xlarge">매출관리</h3>
         </v-flex>
     </v-layout>
   <!--주문정보-->
   <v-card>
     <v-list>
       <v-layout justify-center>
-      <v-subheader>당일 총 매출:{{totalcost}}원
+      <v-subheader class="xlarge">당일 총 매출:{{totalcost}}원
       </v-subheader>
       </v-layout>
       <v-divider></v-divider>
@@ -97,7 +96,7 @@
           label="날짜를 선택하세요"
           readonly
           prepend-icon="event"
-          class ="mt-3"
+          class ="medium"
         ></v-text-field>
         <v-date-picker v-model="date" scrollable color="orange">
           <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
@@ -114,7 +113,7 @@
        <v-list-tile slot="activator">
          <v-list-tile-content>
            <!--주문자와 가격-->
-           <v-list-tile-title>{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}원</v-list-tile-title>
+           <v-list-tile-title class="xlarge">{{ item.title }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{item.cost}}원</v-list-tile-title>
          </v-list-tile-content>
        </v-list-tile>
        <v-list-tile
@@ -123,9 +122,9 @@
        >
          <v-list-tile-content>
            <!--주문메뉴-->
-           <v-list-tile-title>{{ subItem.menu }}</v-list-tile-title>
+           <v-list-tile-title class="medium">{{ subItem.menu }}</v-list-tile-title>
            <!--주문시간-->
-           <v-list-tile-subtitle>{{subItem.time}}</v-list-tile-subtitle>
+           <v-list-tile-subtitle class="medium">{{subItem.time}}</v-list-tile-subtitle>
          </v-list-tile-content>
 
        </v-list-tile>
@@ -137,6 +136,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'ownerSaleManage',
   data () {
@@ -148,6 +148,7 @@ export default {
       modal: false,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      userCode: localStorage.getItem('code'),
       info:{
         role: 'owner',
         ownerName: '차민형',
@@ -161,41 +162,8 @@ export default {
         restaurantLocation: '동대입구 앞'
       },
       items:[
-          {
-            title: '주문자1',
-            cost: '10000',
-            items: [
 
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },
-          {
-            title: '주문자2',
-            cost: '10000',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자3',
-            cost: '10000',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          },{
-            title: '주문자4',
-            cost: '10000',
-            items: [
-
-              { menu: '음식1, 음식2, 음식3' },
-              { time: '오전 1시 10분' }
-            ]
-          }
-        ],
+      ],
         menuItems: [
           {
             title: '주문관리',
@@ -229,7 +197,20 @@ export default {
       for(item in this.items) {
         this.totalcost += item.cost;
       }
+    },
+    getSaleList(){
+      axios.get('http://localhost:3000/api/owner/salemanage/${this.userCode}`')
+      .then((r) => {
+        this.items = r.data.sale_list
+        console.log(r)
+      })
+      .catch((e) => {
+        console.error(e.message)
+      })
     }
+  },
+  mounted() {
+    this.getSaleList()
   }
 }
 </script>

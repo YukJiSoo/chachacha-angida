@@ -15,8 +15,8 @@
           </v-list-tile-avatar>
 
           <v-list-tile-content>
-            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
+            <v-list-tile-title class="font-use">{{info.ownerName}}</v-list-tile-title>
+            <v-list-tile-title class="xlarge">{{info.restaurantName}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -27,7 +27,7 @@
         <div v-for="menuItem in menuItems">
           <v-list-tile :to="menuItem.path">
             <v-list-tile-content>
-              <v-list-tile-title>{{menuItem.title}}</v-list-tile-title>
+              <v-list-tile-title class="medium">{{menuItem.title}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -69,9 +69,8 @@
       </v-layout>
         <v-flex xs12 sm12 class="mb-3">
           <!-- 음식점 이름-->
-          <h1>
-          {{info.restaurantName}}</h1>
-          <h3>리뷰관리</h3>
+          <h1 class="large">{{info.restaurantName}}</h1>
+          <h3 class="xlarge">리뷰관리</h3>
         </v-flex>
         <!--menu list-->
         <v-layout row>
@@ -85,13 +84,14 @@
        v-for="item in items"
        :key="item"
      >
-       <div slot="header"><h2>{{item.title}}</h2></div>
+       <div slot="header"><h2 class="xlarge">{{item.title}}</h2></div>
        <v-card>
-         <h3>&nbsp;&nbsp;&nbsp;&nbsp;ID: {{item.ID}} &nbsp;&nbsp;&nbsp;&nbsp;
+         <h3 class="medium">&nbsp;&nbsp;&nbsp;&nbsp;ID: {{item.ID}} &nbsp;&nbsp;&nbsp;&nbsp;
            <v-icon
             color="red"
-            @click="report">block</v-icon></h3>
-         <v-card-text class="grey lighten-3">{{item.subtitle}}</v-card-text>
+            @click="report">block</v-icon>
+        </h3>
+         <v-card-text class="medium">{{item.subtitle}}</v-card-text>
        </v-card>
      </v-expansion-panel-content>
    </v-expansion-panel>
@@ -101,13 +101,15 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'ownerMenuManage',
+  name: 'ownerReviewManage',
   data () {
     return {
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      userCode: localStorage.getItem('code'),
       info:{
         role: 'owner',
         ownerName: '차민형',
@@ -120,23 +122,6 @@ export default {
         restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
         restaurantLocation: '동대입구 앞'
       },
-      items: [
-          {
-            ID: '차민형',
-            title: '맛있다',
-            subtitle: "맛있다"
-          },
-          {
-            ID: '박준서',
-            title: '맛없다',
-            subtitle: "맛없다"
-          },
-          {
-            ID: '육지수',
-            title: '걍그럼',
-            subtitle: "걍그럼"
-          }
-        ],
         menuItems: [
           {
             title: '주문관리',
@@ -158,6 +143,9 @@ export default {
             title: '환경설정',
             path: '/ownerSetting',
           }
+        ],
+        items: [
+
         ]
     }
   },
@@ -168,7 +156,20 @@ export default {
     },
     report(){
       alert("신고되었습니다.")
+    },
+    getReviewList(){
+      axios.get('http://localhost:3000/api/owner/reviewmanage/${this.userCode}`')
+      .then((r) => {
+        this.items = r.data.review_list
+        console.log(r)
+      })
+      .catch((e) => {
+        console.error(e.message)
+      })
     }
+  },
+  mounted() {
+    this.getReviewList()
   }
 }
 </script>
