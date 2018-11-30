@@ -3,7 +3,7 @@ var createError = require('http-errors');
 var router = express.Router();
 
 router.use('/user', require('./user'));
-//router.use('/dbtest', require('./dbtest'));
+router.use('/dbtest', require('./dbtest'));
 router.use('/store', require('./store'));
 router.use('/point', require('./point'));
 router.use('/review', require('./review'));

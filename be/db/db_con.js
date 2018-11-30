@@ -1,5 +1,5 @@
 module.exports = {
-  user          : "ST2013112027",
-  password      : "ST2013112027",
-  connectString : "210.94.199.20/DBLAB"
+  user          : "area1211",
+  password      : "angida0000",
+  connectString : "angida.ciczvq11psab.us-east-2.rds.amazonaws.com/ANGIDA"
 };
