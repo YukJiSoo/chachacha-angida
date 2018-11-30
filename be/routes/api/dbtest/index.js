@@ -29,7 +29,6 @@ router.get('/', function(req, res, next) {
         return;
       } else {
         console.log("result:", result);
-
       }
       doRelease(connection, result);
     });

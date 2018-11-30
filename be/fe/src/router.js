@@ -5,6 +5,7 @@ import axios from 'axios'
 Vue.use(Router)
 
 Vue.prototype.$axios = axios
+Vue.prototype.$apiRoot = 'http://localhost:3000/api/'
 
 export default new Router({
   mode: 'history',

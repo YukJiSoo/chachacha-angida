@@ -12,16 +12,12 @@
           >keyboard_backspace</v-icon>
           <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
-                </router-link>
+              <v-flex xs12 sm12 class="py-0">
+                <span class="small white--text">음식이 나에게</span>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
-                </router-link>
+              <v-flex xs8 sm12 class="pl-5 py-0">
+                <span class="xlarge white--text">안기다</span>
+                <span class="small white--text">린다</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -40,7 +36,7 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="name"
+      v-model="info.name"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
@@ -49,7 +45,7 @@
     ></v-text-field>
     <!--이메일아이디-->
     <v-text-field
-      v-model="email"
+      v-model="info.email"
       :rules="[rules.email]"
       box
       color="deep-purple"
@@ -58,7 +54,7 @@
     ></v-text-field>
     <!--비밀번호-->
       <v-text-field
-        v-model="password"
+        v-model="info.password"
         :rules="[rules.password, rules.length(6)]"
         box
         color="deep-purple"
@@ -69,18 +65,13 @@
       ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="phone"
+        v-model="info.phone"
         box
         color="deep-purple"
         label="전화번호"
         :mask="phoneMask"
         :rules="[rules.required]"
       ></v-text-field>
-      <!--성별-->
-      <h4 align="left" color="">성별</h4>
-      <v-radio-group v-model="sex" row>
-      <v-radio label="남자" value="man"></v-radio>
-      <v-radio label="여자" value="woman"></v-radio>
     </v-radio-group>
       <!--사진등록-->
     <v-flex xs12 sm12>
@@ -164,18 +155,19 @@ export default {
       mainPath: '/',
       agreement: false,
       dialog: false,
-      name: undefined,
-      email: undefined,
+      info:{
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        image: '',
+        address: '',
+        birth: ''
+      },
       form: false,
       isLoading: false,
-      password: undefined,
-      phone: undefined,
-      sex: 'man',
       phoneMask: '(###)-####-####',
-      image: '',
-      info:{
-        role:'user'
-      },
+      
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -189,9 +181,22 @@ export default {
     goBack(){
       window.history.back();
     },
-      submit(){
-        alert('회원가입되었습니다'),
+    submit(){
+      this.postUser()
+    },
+    postUser(){
+      this.$axios.post(`${this.$apiRoot}user/`, this.info)
+      .then((r) => {
+        if(r.data.success) {
+          alert('회원가입되었습니다. 로그인해주세요')
+        }
+        else alert('회원가입에 실패했어요')
         this.$router.push('/')
+      })
+      .catch((e) => {
+        alert('회원가입에 실패했어요')
+        this.pop(e.message)
+      })
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;

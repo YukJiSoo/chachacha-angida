@@ -64,10 +64,8 @@ export default {
   },
   methods: {
     signIn() {
-      var success= true;
-      
       // 디비에서 비교하는 부분 추가
-      axios.post('http://localhost:3000/api/user/signIn', {
+      axios.post(`${this.$apiRoot}user/signin`, {
         id: this.id, password: this.password
       })
       .then((r) => {
@@ -75,7 +73,8 @@ export default {
           localStorage.setItem('id', this.id);
           localStorage.setItem('code', r.data.code);
           
-          this.$router.push('/home');
+          if(r.data.mode == 'user') this.$router.push('/home');
+          else this.$router.push('/ownerHome');
         }
         else{
           alert('로그인에 실패했습니다')
@@ -85,14 +84,7 @@ export default {
         this.pop(e.message)
         alert('로그인에 실패했습니다')
       })
-      
-      // if(success){
-      //   localStorage.setItem('id', this.id);
-      //   this.$router.push('/home');
-      // }
-      // else{
-      //   alert('로그인에 실패했습니다')
-      // }
+    
     }
   }
 }

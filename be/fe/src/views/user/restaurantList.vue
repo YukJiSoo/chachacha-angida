@@ -116,38 +116,7 @@ export default {
       keyword:'',
       locationLimit:'',
       mainPath:'/home',
-      storeItems: [
-        {
-          onOff: true,
-          name: '토끼정 강남점',
-          star: 5,
-          nowSeat: 10,
-          limitSeat: 30,
-          tags: ['tag1','tag2','tag3'],
-          img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-          detailPath:{
-            path: '/restaurantDetail',
-            query: {
-              storeId: 123
-            }
-          }
-        },
-        {
-          onOff: false,
-          name: '도스마스 충무로점',
-          star: 5,
-          nowSeat: 10,
-          limitSeat: 30,
-          tags: ['tag1','tag2','tag3'],
-          img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-          detailPath:{
-            path: '/restaurantDetail',
-            query: {
-              storeId: 123
-            }
-          }
-        }
-      ],
+      storeItems: [],
 
     }
   },
@@ -157,13 +126,13 @@ export default {
       this.lng = this.$route.query.lng
       this.keyword = this.$route.query.keyword
       this.locationLimit = this.$route.query.locationLimit
-
-      // getStores()
+      
+      this.getStores()
       
     },
   methods: {
     getStores () {
-      axios.get('http://localhost:3000/api/store/list',{
+      this.$axios.get('http://localhost:3000/api/store/list',{
         category: this.category,
         lat: this.lat,
         lng: this.lng,
@@ -172,8 +141,7 @@ export default {
       })
       .then((r) => {
         console.log(r.data)
-        for(var i=0; i<r.data.length; i++)
-          this.storeItems.push(r.data[i])
+        this.storeItems = r.data
       })
       .catch((e) => {
       this.pop(e.message)

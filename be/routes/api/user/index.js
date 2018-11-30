@@ -6,7 +6,7 @@ const User = require('../../../models/users');
 router.use('/owner', require('./owner'));
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   User.find()
     .then(r => {
       res.send({ success: true, users: r })
@@ -16,64 +16,60 @@ router.get('/', function(req, res, next) {
     })
 });
 
-/* POST home page. */
+/* POST 회원가입 */
 router.post('/', (req, res, next) => {
-  const { name, age } = req.body
-  const u = new User({ name, age })
-  u.save()
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
+  const info = req.body
+  console.log(info)
+  // 넘어오는 회원정보 형식
+  // info = {
+  //   name: '',
+  //   email: '',
+  //   password: '',
+  //   phone: '',
+  //   image: '',
+  //   address: '',
+  //   birth: ''
+  // }
+  var success = true; // 성공인지 아닌지
+  
+  /*
+  디비쪽 구현 필요 - insert
+  */
+
+  if(success) res.json({ success: true})
+  else res.json({ success: false }) 
 })
 
-/* POST signIn */
-router.post('/signIn', (req, res, next) => {
+/* POST 로그인 */
+router.post('/signin', (req, res, next) => {
   const { id, password } = req.body
   console.log(id)
   console.log(password)
   
-  var success = true;
-  if(success) res.json({ success: true, code: 66 })
-  else res.json({ success: false}) 
+  var success = true; // 성공인지 아닌지
+  var mode = 'user'; // user인지owner인지 모드 구별 
 
-  //const u = new User{ name, age })
-  // u.save()
-  //   .then(r => {
-  //     res.send({ success: true, msg: r })
-  //   })
-  //   .catch(e => {
-  //     res.send({ success: false, msg: e.message })
-  //   })
+  /*
+  디비쪽 구현 필요 - 
+  */
+
+  if(success) res.json({ success: true, code: 66, mode: mode})
+  else res.json({ success: false }) 
 })
 
-/* PUT home page. */
+
+/* PUT 내정보변경 */
 router.put('/:id', (req, res, next) => {
   const id = req.params.id
   const { name, age } = req.body
-  User.updateOne({ _id: id }, { $set: { name, age }})
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  // res.send({ success: true, msg: 'put ok' })
+  
+  res.send({ success: true, msg: 'put ok' })
 })
 
-/* DELETE home page. */
+/* DELETE 회원탈퇴 */
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id
-  User.deleteOne({ _id: id })
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  res.send({ success: true, msg: 'del ok' })
+  
 })
 
 router.all('*', function(req, res, next) {
