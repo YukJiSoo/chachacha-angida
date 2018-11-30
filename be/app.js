@@ -6,7 +6,6 @@ var logger = require('morgan');
 
 const history = require('connect-history-api-fallback');
 const cors = require('cors');
-const mongoose = require('mongoose')
 
 var app = express();
 
@@ -39,8 +38,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-// mongoose.connect('mongodb://localhost:27017/nemv', { useNewUrlParser: true }, (err) => {
-//    if (err) return console.error(err)
-//    console.log('mongoose connected!')
-// })
