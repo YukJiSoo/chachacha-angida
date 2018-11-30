@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "@vue/cli-service": "^3.1.4",
@@ -16,7 +16,6 @@
     "mongoose": "^5.3.11",
     "morgan": "~1.9.0",
     "mysql": "2.16.0",
-    "oracledb": "^3.0.1",
     "pug": "2.0.0-beta11"
   }
 }

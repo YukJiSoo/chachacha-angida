@@ -52,6 +52,8 @@ export default {
   },
   methods: {
     deleteMenu(menuId){
+      this.$delete(this.items, index)
+      alert("삭제되었습니다.")
       this.deleteMenuItem(menuId)
     },
     editMenu(type){

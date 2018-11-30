@@ -7,15 +7,21 @@
           app
           dark
           class="angida-gradiation">
-          <v-icon @click="$goBack()">keyboard_arrow_left</v-icon>
-          <v-container class="pa-0 py-0">
+          <v-icon
+          @click="goBack"
+          >keyboard_backspace</v-icon>
+          <v-container class="pa-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12 class="py-0">
-                <span class="small">음식이 나에게</span>
+              <v-flex xs12 sm12>
+                <router-link :to="mainPath" class="text-decoration-none">
+                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
+                </router-link>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5 py-0">
-                <span class="xlarge">안기다</span>
-                <span class="small">린다</span>
+              <v-flex xs8 sm12 class="pl-5">
+                <router-link :to="mainPath" class="text-decoration-none">
+                  <span class="font-weight-bold title white--text">안기다</span>
+                  <span class="font-weight-bold caption white--text">린다</span>
+                </router-link>
               </v-flex>
             </v-layout>
           </v-container>
@@ -58,6 +64,45 @@
         label="매장 주소"
         :rules="[rules.required]"
       ></v-text-field>
+    </v-form>
+      <!--tag 등록-->
+      <div
+      class="pa-3">
+
+      <h4 align="left" class="mb-2">태그등록</h4>
+      <div id="tagsInput">
+        <div
+        v-if="tags.length < 3">
+          <v-text-field
+            v-model="tagText"
+            box
+            color="deep-purple"
+            label="최대 3개까지 가능합니다(6글자 이내)"
+            :rules="[rules.limit(6)]"
+            maxlength="6"
+            @keydown.enter="enterTag()"
+          ></v-text-field>
+        </div>
+      </div>
+    </div>
+      <v-form
+        ref="form"
+        v-model="form"
+        class="pa-3"
+      >
+      <div class="mb-5  ">
+        <v-chip
+        v-for="(item,index) in tags"
+        v-model="item.status"
+        color="orange lighten-2"
+        class="white--text"
+        >#{{item.tag}}&nbsp
+          <v-icon
+          small
+          @click="deleteTag(index)">clear
+          </v-icon>
+      </v-chip>
+      </div>
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">매장 사진</h4>
@@ -72,8 +117,8 @@
         </div>
       </div>
     </v-flex>
-      </v-checkbox>
     </v-form>
+
     <v-divider></v-divider>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -104,19 +149,25 @@ export default {
       isLoading: false,
       phoneMask: '(###)-####-####',
       image: '',
+      tagText: null,
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
+        limit: lim => v => (v || '').length <= lim || `${lim}자 이내로 적어주세요`,
         password: v => (v || '').match(/^(?=.*[a-z])(?=.*\d)(?=.*(_|[^\w])).+$/) ||
           '숫자와 특수문자가 포함된 비밀번호를 작성해주세요',
         required: v => !!v || '필수입니다'
-      }
+      },
+      tags:
+      []
     }
   },
   methods: {
-    submit(){
-      alert('회원가입이 완료되었고 매장이 등록되었습니다. ')
-      this.$router.push('/')
+    goBack(){
+      window.history.back();
+    },
+      submit(){
+        alert('매장 등록되었습니다')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -136,6 +187,16 @@ export default {
     },
     removeImage(){
       this.image=''
+    },
+    enterTag(){
+      this.tags.push({
+        tag: this.tagText,
+        status: true
+      })
+      this.tagText = null
+    },
+    deleteTag(index){
+      this.$delete(this.tags, index)
     }
   }
 }
