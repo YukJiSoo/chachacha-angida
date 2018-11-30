@@ -7,11 +7,30 @@ const cal = require('../../../models/distance')
 router.use('/menu', require('./menu'));
 router.use('/onOff', require('./onOff'));
 
-router.get('/list', function(req, res, next) {
+/* POST home page. */
+router.get('/:id', (req, res, next) => {
+  const storeId = req.params
+
+  var storeInfo = {
+    img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+    name: '토끼정',
+    explain: '토끼토끼',
+    rating: 4,
+    reviewNum: 10,
+    address: '어디어디',
+    phone: '전화번호',
+  }
+  
+  // 디비에서 id에 해당하는 가게정보 불러오기
+
+  res.send(storeInfo)
+})
+
+router.post('/list', function(req, res, next) {
   console.log("list test");
   console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
+  
   const { category, lat, lng, keyword, locationLimit} = req.body
-  console.log(category, lat, lng, keyword, locationLimit)
 
   // 필요한 데이터
   var storeList = [
@@ -23,14 +42,10 @@ router.get('/list', function(req, res, next) {
       limitSeat: 30,
       tags: ['tag1','tag2','tag3'],
       img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-      detailPath:{
-        path: '/restaurantDetail',
-        query: {
-          storeId: 123
-        }
-      }
+      storeId: 123
     }
   ]
+
 
   if(keyword) { }// 키워드 기반 검색
   else if(category) { }// 카테고리 기반 검색
@@ -48,7 +63,7 @@ router.get('/list', function(req, res, next) {
   // 계산한 거리를 오름차순으로 정렬한다.
   // 정렬 후 응답메시지로 정렬된 데이터를 보낸다.
 
-  res.send(storeList)
+  res.json(storeList)
 });
 
 /* POST home page. */

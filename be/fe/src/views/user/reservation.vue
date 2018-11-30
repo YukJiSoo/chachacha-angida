@@ -92,13 +92,12 @@
                       <v-layout row wrap>
                         <v-flex
                           v-for="menu in menuItems"
-                          :key="n"
                           xs6 sm4 md2
                         >
                           <v-card>
                             <v-img
                               :menuSelected="`${menu.selected}`"
-                              :src="`${menu.img}`"
+                              :src="`${menu.image}`"
                               aspect-ratio="1"
                               @click="choiceMenu(menu)"
                               :class="{'v-card--reveal': menu.selected}"
@@ -123,7 +122,7 @@
                             <v-card>
                               <v-card-title class="large">{{menu.name}}</v-card-title>
                               <v-img
-                                :src="`${menu.img}`"
+                                :src="`${menu.image}`"
                                 aspect-ratio="1"
                                 width="100%"
                                 height="100%"
@@ -332,24 +331,10 @@
         name: '토끼정',
 
         menuNum: 9,
-        menuItems: [
-          {
-            img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-            price:10000,
-            name:'토끼고기',
-            explain:'토끼토끼',
-            selected: false
-          },
-          {
-            img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-            price:10000,
-            name:'토끼고기',
-            explain:'토끼토끼',
-            selected: false
-          }
-        ],
+        menuItems: [],
         cart: [
           // {
+          //   code: 1
           //   name: '날치알 파스타',
           //   price: 10000,
           //   num: 2
@@ -399,7 +384,7 @@
     mounted() {
       this.storeId = this.$route.query.storeId
       this.name = this.$route.query.name
-      // getMenu()
+      this.getMenu()
     },
     methods : {
       next () {
@@ -413,28 +398,15 @@
           : this.onboarding - 1
       },
       getMenu () {
-        axios.get('http://localhost:3000/api/store/menu',{
-          storeId: this.storeId
-        })
+        this.$axios.get(`http://localhost:3000/api/store/menu/${this.storeId}`)
         .then((r) => {
           console.log(r.data)
-          setMenuInfo(r.data)
+          this.menuItems = r.data
+          this.menuItems.forEach((v,i) => { v.selected = false })
         })
         .catch((e) => {
         this.pop(e.message)
         })
-      },
-      // 가게 정보등록
-      setMenuInfo(data){
-        var menuNum = r.data.menu
-        // 객체 추가로 수정
-        for(var i=0; i<menuNum; i++)
-            this.menuItems.push(r.data.menu[i])
-
-        // this.menuItems.img = data.menuImg
-        // this.menuItems.price = data.price
-        // this.menuItems.name = data.menuName
-        // this.menuItems.explain = data.menuExplain
       },
       choiceMenu(menu){
         if(menu.selected) {
@@ -451,6 +423,7 @@
         else {
           menu.selected = true
           var newMenu = {
+            code: menu.code,
             name: menu.name,
             price: menu.price,
             num: 1
@@ -481,7 +454,8 @@
         this.allPrice -= menu.price
       },
       pay(){
-        this.$router.push({path:'/payment', query: {
+        this.$router.push({name:'payment', params: {
+          cart: this.cart,
           storeId: this.storeId,
           hour: this.hour,
           minute: this.minute,

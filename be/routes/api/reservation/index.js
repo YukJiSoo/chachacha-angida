@@ -22,7 +22,7 @@ router.get('/:id', function(req, res, next) {
         { id: 1, time: 1 },
       ],
       timeinterval: undefined,
-      endTime: '2018-11-30T07:30:48.000Z'
+      endTime: '2018-11-30T17:20:33.000Z' // 9시간 더해서 보내야함.
     },
     {
       store_name: '알촌',
@@ -59,27 +59,26 @@ router.get('/:id', function(req, res, next) {
   timettt.setTime(timettt.getTime() + 2*540 * 60 * 1000)
   console.log(timettt);
 
-  let t = Date.parse(new Date("2018-11-30T07:30:48.000Z")) - Date.parse(new Date());
+  let t = Date.parse(new Date("2018-11-30T17:30:48.000Z")) - Date.parse(new Date());
   console.log("t:"+t)
-  console.log(Date.parse(new Date()))
-  console.log(new Date("2018-11-30T07:30:48.000Z"))
+  console.log(new Date("2018-11-30T08:20:33.000Z"))
   console.log(new Date())
   res.send({reserv_list: reserv_lists});
 });
 
+/* post 예약 추가 */
+router.post('/:id', (req, res, next) => {
+  const id = req.params.id
+  const reservationInfo = req.body
+  var success = true
+
+  res.send(success)
+})
+
 
 /* PUT 예약상태 수정 */
 router.put('/:id', (req, res, next) => {
-  const id = req.params.id
-  const { name, age } = req.body
-  User.updateOne({ _id: id }, { $set: { name, age }})
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  // res.send({ success: true, msg: 'put ok' })
+  
 })
 
 router.all('*', function(req, res, next) {

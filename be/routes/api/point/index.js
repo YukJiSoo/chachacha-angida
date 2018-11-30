@@ -6,9 +6,9 @@ var router = express.Router();
 router.get('/:id', function(req, res, next) {
   console.log('유저 포인트 받아오기 - 100으로 가정 - 디비 연결 추가해야함')
   const id = req.params.id
-  console.log(id)
+  var point = 100
 
-  res.json({ point: 100 })
+  res.send({point})
 });
 
 /* GET point detail . */

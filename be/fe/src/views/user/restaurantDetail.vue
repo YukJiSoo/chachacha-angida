@@ -14,7 +14,7 @@
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">{{name}}</span>
+                <span class="font-weight-bold subheading">{{storeInfo.name}}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -27,20 +27,20 @@
             <!-- 사진 -->
             <v-flex xs12 sm12 class="pa-0 black">
               <v-img
-                :src="`${img}`"
+                :src="`${storeInfo.img}`"
               >
               </v-img>
             </v-flex>
             <!-- 이름 -->
             <v-flex xs12 sm12 class="pt-4 pl-2 pb-0">
               <div class="font-use font-weight-bold" style="font-size:50px">
-                <span>{{name}}</span>
+                <span>{{storeInfo.name}}</span>
               </div>
             </v-flex>
             <!-- 간단한 설명 -->
             <v-flex xs12 sm12 class="pl-4 pt-3 pr-4">
               <div class="medium grey--text text--darken-2">
-                <span>{{explain}} </span>
+                <span>{{storeInfo.explain}} </span>
               </div>
             </v-flex>
           </v-layout>
@@ -54,13 +54,13 @@
                 <!-- 별 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:40px">
-                    <span>{{rating}}</span>
+                    <span>{{storeInfo.rating}}</span>
                   </div>
                 </v-flex>
                 <!-- 점수 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <v-rating
-                    v-model="rating"
+                    v-model="storeInfo.rating"
                     background-color="yellow darken-3"
                     color="yellow darken-3"
                     small
@@ -83,7 +83,7 @@
                 <!-- 리뷰개수 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:50px">
-                    <span>{{reviewNum}}</span>
+                    <span>{{storeInfo.reviewNum}}</span>
                   </div>
                 </v-flex>
               </v-layout>
@@ -95,10 +95,10 @@
           <!-- 4행 주소, 전화번호 -->
           <v-flex xs12 sm12 class="pl-4 pt-3 pr-4 pb-2">
             <div class="small grey--text text--darken-2">
-              <span>주소 : </span><span>{{address}}</span>
+              <span>주소 : </span><span>{{storeInfo.address}}</span>
             </div>
             <div class="small grey--text text--darken-2">
-              <span>전화번호 : </span><span>{{phone}}</span>
+              <span>전화번호 : </span><span>{{storeInfo.phone}}</span>
             </div>
           </v-flex>
           <v-divider class="mt-2"></v-divider>
@@ -108,7 +108,7 @@
             <v-flex v-for="menu in menuItems" xs6 class="pa-1">
               <v-card @click="menuDialog = true">
                 <v-img
-                  :src="`${menu.img}`"
+                  :src="`${menu.image}`"
                   aspect-ratio="1"
                 >
                 <!-- 메뉴이름 -->
@@ -131,7 +131,7 @@
                 <v-card>
                   <v-card-title class="large">{{menu.name}}</v-card-title>
                   <v-img
-                    :src="`${menu.img}`"
+                    :src="`${menu.image}`"
                     aspect-ratio="1"
                     width="100%"
                     height="100%"
@@ -170,7 +170,8 @@
             <v-btn
               color="deep-orange lighten-1"
               class="large white--text px-5"
-              :to="reservationPath"
+              large
+              @click="toReservation"
             >
               안아주기
             </v-btn>
@@ -188,21 +189,8 @@ export default {
   data () {
     return {
       storeId: '',
-      img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-      name: '토끼정',
-      explain: '토끼토끼',
-      rating: 4,
-      reviewNum: 10,
-      address: '어디어디',
-      phone: '전화번호',
-      menuItems: [
-        {
-          img:'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-          price:100,
-          name:'토끼고기',
-          explain:'토끼토끼'
-        }
-      ],
+      storeInfo:{},
+      menuItems: [],
 
       reservationPath: {
         path: '/reservation',
@@ -224,59 +212,41 @@ export default {
   mounted() {
     this.storeId = this.$route.query.storeId
     this.reservationPath.query.storeId = this.storeId
-    this.reservationPath.query.name = this.name
+    this.reviewPath.query.storeId = this.storeId
 
-    // getStore()
-    // getMenu()
+    this.getStore()
+    this.getMenu()
   },
   methods: {
     // 서버에서 가게정보 받아옴
     getStore () {
-      axios.get('http://localhost:3000/api/store/',{
-        storeId: this.storeId
-      })
+      this.$axios.get(`http://localhost:3000/api/store/${this.storeId}`)
       .then((r) => {
         console.log(r.data)
-        setStoreInfo(r.data)
+        this.storeInfo = r.data
       })
       .catch((e) => {
       this.pop(e.message)
       })
-    },
-    // 가게 정보등록
-    setStoreInfo(data){
-      this.storeId = data.storeId
-      this.img = data.img
-      this.name = data.name
-      this.explain = data.explain
-      this.rating = data.rating
-      this.reviewNum = data.reviewNum
-      this.address = data.address
-      this.phone = data.phone
     },
     getMenu () {
-      axios.get('http://localhost:3000/api/store/menu',{
-        storeId: this.storeId
-      })
+      this.$axios.get(`http://localhost:3000/api/store/menu/${this.storeId}`)
       .then((r) => {
         console.log(r.data)
-        setMenuInfo(r.data)
+        this.menuItems = r.data
       })
       .catch((e) => {
       this.pop(e.message)
       })
     },
-    // 가게 정보등록
-    setMenuInfo(data){
-      var menuNum = r.data.menu
-      // 객체 추가로 수정
-      for(var i=0; i<menuNum; i++)
-          this.menuItems.push(r.data.menu[i])
-
-      // this.menuItems.img = data.menuImg
-      // this.menuItems.price = data.price
-      // this.menuItems.name = data.menuName
-      // this.menuItems.explain = data.menuExplain
+    toReservation(){
+      this.$router.push({
+        path: '/reservation',
+        query: {
+          storeId:this.storeId,
+          name:this.storeInfo.name
+        }
+      })
     }
   }
 }
