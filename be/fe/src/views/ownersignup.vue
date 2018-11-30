@@ -185,7 +185,8 @@ export default {
       window.history.back();
     },
       submit(){
-        alert('회원가입되었습니다')
+        alert('회원가입되었습니다'),
+        this.$router.push('/')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;

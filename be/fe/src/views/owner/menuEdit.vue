@@ -51,6 +51,7 @@
   <v-card-text>
     <h3 align="left">메뉴이름</h3>
     <v-text-field
+    v-model="menuInfo.name"
     label="메뉴 이름을 적어주세요"
     solo>
   </v-text-field>
@@ -59,6 +60,7 @@
   <v-card-text>
     <h3 align="left">메뉴가격</h3>
     <v-text-field
+    v-model="menuInfo.cost"
     label="메뉴 가격을 적어주세요"
     solo>
   </v-text-field>
@@ -67,6 +69,7 @@
 <v-card-text>
   <h3 align="left">메뉴설명</h3>
   <v-textarea
+  v-model="menuInfo.description"
   label="메뉴 설명을 적어주세요"
   solo>
 </v-textarea>
@@ -98,6 +101,11 @@ export default {
         restaurantNumber: '01012345678',
         restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
         restaurantLocation: '동대입구 앞'
+      },
+      menuInfo:{
+        name: "1번 세트",
+        cost: "5000",
+        description: "햄버거 + 콜라"
       }
     }
   },

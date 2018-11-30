@@ -80,7 +80,7 @@
         <v-list two-line>
           <!--메뉴등록 버튼-->
           <v-btn color="orange" class="font-weight-bold title mb-3" @click="editMenu">메뉴 등록</v-btn>
-          <template v-for="item in items">
+          <template v-for="(item, index) in items">
             <v-divider></v-divider>
               <img :src="item.avatar"
               class="mt-3">
@@ -102,7 +102,7 @@
             <!--메뉴 수정 버튼-->
             <v-btn color="blue" class="font-weight-bold" @click="editMenu">수정</v-btn>
             <!--메뉴 삭제 버튼-->
-            <v-btn color="red" class="font-weight-bold" @click="deleteMenu">삭제</v-btn>
+            <v-btn color="red" class="font-weight-bold" @click="deleteMenu(index)">삭제</v-btn>
 
           </template>
         </v-list>
@@ -177,9 +177,10 @@ export default {
     }
   },
   methods: {
-    deleteMenu(){
+    deleteMenu(index){
+      this.$delete(this.items, index)
       alert("삭제되었습니다.")
-    },
+    },    
     editMenu(){
       this.$router.push('/menuEdit')
     },

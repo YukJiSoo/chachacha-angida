@@ -66,11 +66,6 @@ export default new Router({
       component: () => import('./views/ownerRestaurantRegister')
     },
     {
-      path: '/ownerNoRestaurant',
-      name: 'ownerNoRestaurant',
-      component: () => import('./views/owner/ownerNoRestaurant.vue')
-    },
-    {
       path: '/ownerHome',
       name: 'ownerHome',
       component: () => import('./views/owner/ownerHome.vue')
