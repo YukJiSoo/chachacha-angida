@@ -86,19 +86,18 @@
         <v-list-group
           v-for="(item,index) in orderItems"
           v-model="item.active"
-          :key="item.title"
           no-action
         >
-          <v-list-tile slot="activator" v-model="item.tile">
+          <v-list-tile slot="activator">
             <v-list-tile-content>
               <!--주문자와 가격-->
               <div id="status">
                 <div v-if="item.status===false">
-                  <v-list-tile-title class="medium">{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+                  <v-list-tile-title class="medium">{{ item.customerId }}&nbsp&nbsp&nbsp&nbsp{{item.price}}&nbsp&nbsp&nbsp&nbsp
                     수락 대기중</v-list-tile-title>
                 </div>
                 <div v-else>
-                  <v-list-tile-title class="medium">{{ item.title }}&nbsp&nbsp&nbsp&nbsp{{item.cost}}&nbsp&nbsp&nbsp&nbsp
+                  <v-list-tile-title class="medium">{{ item.customerId }}&nbsp&nbsp&nbsp&nbsp{{item.price}}&nbsp&nbsp&nbsp&nbsp
                     수락 완료</v-list-tile-title>
                 </div>
               </div>
@@ -106,19 +105,19 @@
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile
-            v-for="subItem in item.items"
+            v-for="subItem in item.menu_list"
           >
             <v-list-tile-content>
               <!--주문메뉴-->
-              <v-list-tile-title class="medium">{{subItem.menu}}</v-list-tile-title>
+              <v-list-tile-title class="medium">{{subItem}}</v-list-tile-title>
               <!--주문시간-->
-              <v-list-tile-title class="medium">{{subItem.time}}</v-list-tile-title>
             </v-list-tile-content>
 
           </v-list-tile>
+          <div class="medium">{{item.reservation_time}}</div>
           <!--주문 수락 거절 버튼-->
           <div>
-            <v-btn v-if="item.status===false" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
+            <v-btn v-if="item.status=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
             <v-btn @click="refuse(index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
           </div>
           
@@ -177,9 +176,7 @@ export default {
     getUserInfo(){
       this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
       .then((r) => {
-        console.log(r.data)
         this.info = r.data
-        console.log(this.info)
       })
       .catch((e) => {
       this.pop(e.message)
@@ -188,11 +185,10 @@ export default {
     getOrders(){
       this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`)
       .then((r) => {
-        console.log(r.data)
         
         // for(var i=0; i<r.data.length; i++)
         // this.orderItems.push(r.data[i])
-        this.orderItems = r.data.orderItems
+        this.orderItems = r.data
         console.log(this.orderItems)
       })
       .catch((e) => {
