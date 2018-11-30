@@ -1,187 +1,89 @@
 <template>
   <v-container grid-list-md text-xs-center align-center>
-    <v-layout>
-      <!--네비게이션-->
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      temporary
-    >
-    <!--사용자 정보-->
-      <v-list class="pa-1">
-        <v-list-tile avatar :to="ownerInfoPath">
-          <v-list-tile-avatar>
-            <img :src='info.avatar'>
-          </v-list-tile-avatar>
-
-          <v-list-tile-content>
-            <v-list-tile-title>{{info.ownerName}}</v-list-tile-title>
-            <v-list-tile-title>{{info.restaurantName}}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-btn color="orange" class="font-weight-bold white--text" @click="logout">로그아웃</v-btn>
-      </v-list>
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-        <!--한칸-->
-        <div v-for="menuItem in menuItems">
-          <v-list-tile :to="menuItem.path">
-            <v-list-tile-content>
-              <v-list-tile-title>{{menuItem.title}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-        </div>
-        <!--끝-->
-      </v-list>
-    </v-navigation-drawer>
-    <!--네비게이션 끝-->
-  </v-layout>
-
-    <v-layout row wrap class="mb-0">
-      <v-flex xs12 sm12>
-        <!-- toolbar -->
-        <v-toolbar
-          app
-          dark
-          class="angida-gradiation">
-          <v-icon
-          @click.stop="drawer = !drawer"
-          >list</v-icon>
-          <v-container class="pa-0">
-            <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
-                </router-link>
-              </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
-                </router-link>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-toolbar>
-        <!-- toolbar end-->
-        </v-flex>
-      </v-layout>
-        <v-flex xs12 sm12 class="mb-3">
-          <!-- 음식점 이름-->
-          <h1>
-          {{info.restaurantName}}</h1>
-          <h3>메뉴관리</h3>
-        </v-flex>
-        <!--menu list-->
-        <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card>
-        <v-list two-line>
-          <!--메뉴등록 버튼-->
-          <v-btn color="orange" class="font-weight-bold title mb-3" @click="editMenu">메뉴 등록</v-btn>
-          <template v-for="item in items">
-            <v-divider></v-divider>
-              <img :src="item.avatar"
-              class="mt-3">
-            <v-list-tile
-              @click=""
-            >
-            <!--메뉴 이미지-->
+    <basicSet></basicSet>
+    <!--menu list-->
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3>
+        <v-card>
+          <v-list two-line>
+            <!--메뉴등록 버튼-->
+            <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
+            <template v-for="item in items">
+              <v-divider></v-divider>
+                <img :src="item.image" class="mt-3">
+              <v-list-tile>
+              <!--메뉴 이미지-->
 
 
-              <v-list-tile-content>
-                <!--메뉴이름-->
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <!--메뉴설명-->
-                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-                <!--메뉴가격-->
-                <h4>{{item.cost}}원</h4>
-              </v-list-tile-content>
-            </v-list-tile>
-            <!--메뉴 수정 버튼-->
-            <v-btn color="blue" class="font-weight-bold" @click="editMenu">수정</v-btn>
-            <!--메뉴 삭제 버튼-->
-            <v-btn color="red" class="font-weight-bold" @click="deleteMenu">삭제</v-btn>
+                <v-list-tile-content text-xs-center class="medium">
+                  <!--메뉴이름-->
+                  <v-list-tile-title v-html="item.name"></v-list-tile-title>
+                  <!--메뉴설명-->
+                  <v-list-tile-sub-title v-html="item.explain"></v-list-tile-sub-title>
+                  <!--메뉴가격-->
+                  <h4>{{item.price}}원</h4>
+                </v-list-tile-content>
+              </v-list-tile>
+              <!--메뉴 수정 버튼-->
+              <v-btn dark color="blue" class="medium" @click="editMenu(item.menuId)">수정</v-btn>
+              <!--메뉴 삭제 버튼-->
+              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menuId)">삭제</v-btn>
 
-          </template>
-        </v-list>
-      </v-card>
-    </v-flex>
-  </v-layout>
+            </template>
+          </v-list>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 import axios from 'axios'
+import basicSet from '@/components/ownerBasic'
+
 export default {
+  components: { basicSet },
   name: 'ownerMenuManage',
   data () {
     return {
-      drawer: null,
-      ownerInfoPath: '/ownerInfo',
-      mainPath: '/ownerHome',
-      userCode: localStorage.getItem('code'),
-      info:{
-        role: 'owner',
-        ownerName: '차민형',
-        ID: 'mpsmhck95@naver.com',
-        phone: '01087215502',
-        sex: 'man',
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        restaurantName: '도스마스 동대점',
-        restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
-        restaurantLocation: '동대입구 앞'
-      },
-      menuItems: [
-        {
-          title: '주문관리',
-          path: '/ownerHome',
-        },
-        {
-          title: '매출관리',
-          path: '/ownerSalemanage',
-        },
-        {
-          title: '메뉴관리',
-          path: '/ownerMenuManage',
-        },
-        {
-          title: '리뷰관리',
-          path: '/ownerReviewManage',
-        },
-        {
-          title: '환경설정',
-          path: '/ownerSetting',
-        },
-      ],
-      items: [
-
-      ]
+      ownerCode: localStorage.getItem('code'),
+      items: []
     }
   },
   methods: {
-    deleteMenu(){
-      alert("삭제되었습니다.")
+    deleteMenu(menuId){
+      this.deleteMenuItem(menuId)
     },
-    editMenu(){
-      this.$router.push('/menuEdit')
+    editMenu(type){
+      this.$router.push({path:'/menuEdit', query: {type: type}})
     },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
     },
     getMenuList(){
-      axios.get('http://localhost:3000/api/owner/${this.userCode}`')
+      axios.get(`http://localhost:3000/api/store/menu/${this.ownerCode}`)
       .then((r) => {
-        this.items = r.data.menu_list
-        console.log(r)
+        this.items = r.data
+        console.log(this.items)
       })
       .catch((e) => {
         console.error(e.message)
       })
-    }
+    },
+    deleteMenuItem(menuId){
+      this.$axios.delete(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`)
+      .then((r) => {
+        var success = r.data
+        if(success) alert("삭제되었습니다.")
+
+        this.getMenuList()
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+
+    },
   },
   mounted() {
     this.getMenuList()

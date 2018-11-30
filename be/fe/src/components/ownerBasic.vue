@@ -78,8 +78,8 @@ export default {
       info:{},
 
       drawer: null,
-      ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      ownerInfoPath: '/ownerInfo',
       
       menuItems: [
         {
@@ -112,9 +112,7 @@ export default {
     getUserInfo(){
       this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
       .then((r) => {
-        console.log(r.data)
         this.info = r.data
-        console.log(this.info)
       })
       .catch((e) => {
       this.pop(e.message)

@@ -4,6 +4,7 @@ var router = express.Router();
 const cal = require('../../../models/distance')
 /* GET home page. */
 
+router.use('/menu', require('./menu'));
 router.use('/onOff', require('./onOff'));
 
 router.get('/list', function(req, res, next) {

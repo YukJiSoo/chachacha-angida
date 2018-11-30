@@ -74,6 +74,7 @@ export default {
         if(r.data.success){
           localStorage.setItem('id', this.id);
           localStorage.setItem('code', r.data.code);
+          
           this.$router.push('/home');
         }
         else{

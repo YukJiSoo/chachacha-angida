@@ -68,36 +68,9 @@ export default {
   name: 'ownerInfo',  
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
       info:{},
-
-      drawer: null,
-      ownerInfoPath: '/ownerInfo',
-      mainPath: '/ownerHome',
       phoneMask: '(###)-####-####',
 
-      menuItems: [
-        {
-          title: '주문관리',
-          path: '/ownerHome',
-        },
-        {
-          title: '매출관리',
-          path: '/ownerSalemanage',
-        },
-        {
-          title: '메뉴관리',
-          path: '/ownerMenuManage',
-        },
-        {
-          title: '리뷰관리',
-          path: '/ownerReviewManage',
-        },
-        {
-          title: '환경설정',
-          path: '/ownerSetting',
-        }
-      ]
     }
   },
   mounted() {
@@ -107,9 +80,7 @@ export default {
     getUserInfo(){
       this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
       .then((r) => {
-        console.log(r.data)
         this.info = r.data
-        console.log(this.info)
       })
       .catch((e) => {
       this.pop(e.message)

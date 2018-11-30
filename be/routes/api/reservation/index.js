@@ -10,7 +10,7 @@ router.get('/:id', function(req, res, next) {
   const reserv_lists = [
     {
       store_name: '강서 동국대점',
-      menu_list: '간짜장 볶음밥 외 2개',
+      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
       total_price: '20000원',
       reservation_time: '9/5 18:30',
       arrival_time: '9/5 19:00',
@@ -18,7 +18,7 @@ router.get('/:id', function(req, res, next) {
     },
     {
       store_name: '강서 동국대점',
-      menu_list: '간짜장 볶음밥 외 2개',
+      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
       total_price: '20000원',
       reservation_time: '9/4 18:30',
       arrival_time: '9/4 19:00',
@@ -26,7 +26,7 @@ router.get('/:id', function(req, res, next) {
     },
     {
       store_name: '강서 동국대점',
-      menu_list: '간짜장 볶음밥 외 2개',
+      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
       total_price: '20000원',
       reservation_time: '9/3 18:30',
       arrival_time: '9/3 19:00',
@@ -34,7 +34,7 @@ router.get('/:id', function(req, res, next) {
     },
     {
       store_name: '강서 동국대점',
-      menu_list: '간짜장 볶음밥 외 2개',
+      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
       total_price: '20000원',
       reservation_time: '9/2 18:30',
       arrival_time: '9/2 19:00',
@@ -42,7 +42,7 @@ router.get('/:id', function(req, res, next) {
     },
     {
       store_name: '강서 동국대점',
-      menu_list: '간짜장 볶음밥 외 2개',
+      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
       total_price: '20000원',
       reservation_time: '9/2 18:30',
       arrival_time: '9/2 19:00',

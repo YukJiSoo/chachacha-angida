@@ -31,13 +31,12 @@
 
         <v-flex xs12 sm12>
           <!-- 음식점 이름-->
-          <h1 class="large">
-          {{info.restaurantName}}</h1>
+          <h1 class="large"></h1>
           <v-card class="medium">
             <!--메뉴사진 칸-->
             <v-flex xs12 sm12 class="medium">
               <h4 class="mt-3 mb-1" align="center">메뉴 사진</h4>
-              <img :src='image' class="mb-3">
+              <img :src='menu.image' class="mb-3">
               <div id="fileApp">
                 <div class="filebox" v-if="!image">
                   <label for="userImg">사진등록</label>
@@ -49,32 +48,38 @@
               </div>
             </v-flex>
             <!--메뉴이름 칸-->
-  <v-card-text>
-    <h3 align="left">메뉴이름</h3>
-    <v-text-field
-    label="메뉴 이름을 적어주세요"
-    solo>
-  </v-text-field>
-  </v-card-text>
-  <!--메뉴가격 칸-->
-  <v-card-text>
-    <h3 align="left">메뉴가격</h3>
-    <v-text-field
-    label="메뉴 가격을 적어주세요"
-    solo>
-  </v-text-field>
-</v-card-text>
-<!--메뉴설명 칸-->
-<v-card-text>
-  <h3 align="left">메뉴설명</h3>
-  <v-textarea
-  label="메뉴 설명을 적어주세요"
-  solo>
-</v-textarea>
-</v-card-text>
-<!--작성완료 버튼-->
-<v-btn color="orange" dark class="font-weight-bold" @click="goToOwnerMenuManage">작성 완료</v-btn>
-</v-card>
+            <v-card-text>
+              <h3 align="left">메뉴이름</h3>
+              <v-text-field
+                label="메뉴 이름을 적어주세요"
+                solo
+                v-model='menu.name'
+              >
+              </v-text-field>
+            </v-card-text>
+            <!--메뉴가격 칸-->
+            <v-card-text>
+              <h3 align="left">메뉴가격</h3>
+              <v-text-field
+                label="메뉴 가격을 적어주세요"
+                solo
+                v-model='menu.price'
+              >
+              </v-text-field>
+          </v-card-text>
+          <!--메뉴설명 칸-->
+          <v-card-text>
+            <h3 align="left">메뉴설명</h3>
+            <v-textarea
+              label="메뉴 설명을 적어주세요"
+              solo
+              v-model='menu.explain'
+            >
+            </v-textarea>
+          </v-card-text>
+          <!--작성완료 버튼-->
+          <v-btn color="orange" dark class="font-weight-bold" @click="enrollOrUpdate(menuId)">작성 완료</v-btn>
+          </v-card>
         </v-flex>
     </v-layout>
   </v-container>
@@ -85,31 +90,77 @@ export default {
   name: 'menuEdit',
   data () {
     return {
-      drawer: null,ownerInfoPath: '/ownerInfo',
-      image: 'https://randomuser.me/api/portraits/men/85.jpg',
+      ownerCode: localStorage.getItem('code'),
+
+      drawer: null,
+      ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
-      info:{
-        role: 'owner',
-        ownerName: '차민형',
-        ID: 'mpsmhck95@naver.com',
-        phone: '01087215502',
-        sex: 'man',
-        avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-        restaurantName: '도스마스 동대점',
-        restaurantNumber: '01012345678',
-        restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
-        restaurantLocation: '동대입구 앞'
+
+      menu: {},
+      menuId: 'enroll',
+      
+    }
+  },
+  mounted() {
+    if(this.$route.query.type == "enroll"){
+      this.menu =  {
+        image: 'https://randomuser.me/api/portraits/men/85.jpg',
+        name: '',
+        explain: '',
+        price: ''
       }
+      
+    } else {
+      this.menuId = this.$route.query.type
+      this.getMenuItem(this.menuId)
     }
   },
   methods: {
-    logout(){
-      alert("로그아웃 되었습니다."),
-      this.$router.push('/')
+    getMenuItem(menuId){
+      this.$axios.get(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`)
+      .then((r) => {
+        console.log(r.data)
+
+        this.menu = r.data
+
+        console.log(this.menu)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+
     },
-    goToOwnerMenuManage(){
-      alert("완료되었습니다."),
+    postMenuItem(){
+      this.$axios.post(`http://localhost:3000/api/store/menu/${this.ownerCode}`,this.menu)
+      .then((r) => {
+        console.log(r.data)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+
+    },
+    putMenuItem(menuId){
+      this.$axios.put(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`, this.menu)
+      .then((r) => {
+        console.log(r.data)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    enrollOrUpdate(menuId){
+      alert("완료되었습니다.")
+
+      if(menuId == "enroll") this.postMenuItem()
+      else this.putMenuItem(menuId)
+      
       this.$router.push('/ownerMenuManage')
+    },
+
+    logout(){
+      alert("로그아웃 되었습니다.")
+      this.$router.push('/')
     },
     goBack(){
       window.history.back();
