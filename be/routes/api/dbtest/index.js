@@ -5,6 +5,8 @@ var router = express.Router();
 var oracledb = require('oracledb');
 var dbConfig = require('../../../db/db_con.js');
 
+oracledb.autoCommit = true;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   oracledb.getConnection({
@@ -17,31 +19,36 @@ router.get('/', function(req, res, next) {
       return;
     }
     console.log('==> search query');
-    var query = 'select * from emp';
+    var query = 'select * from TIME_TEST';
+    // var query = 'insert into TIME_TEST values (SYSDATE)'
 
     connection.execute(query, function(err, result){
       if (err) {
         console.error(err.message);
         doRelease(connection);
         return;
-      }
+      } else {
+        console.log("result:", result);
 
-      console.log(result.rows);
-      doRelease(connection, result.rows);
+      }
+      doRelease(connection, result);
     });
   });
 
-  function doRelease(connection, userlist){
+  function doRelease(connection, result){
     connection.close(function(err){
       if (err) {
         console.error(err.message);
       }
+      /*
       console.log('list size: ' + userlist.length);
 
       for(var i=0; i<userlist.length; i++){
         console.log('name: ' + userlist[i][1]);
       }
-      res.send(userlist);
+      */
+      res.send(result);
+
     })
   };
 });
