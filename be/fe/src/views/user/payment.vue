@@ -58,8 +58,9 @@
                 class="mb-4"
                 :value="method"
                  color="orange"
+                  @click="dialogPayRule = false"
               >
-                <div slot="label" class="xlarge black-text">{{method.name}}</div>
+                <div slot="label" class="xlarge black-text" @click="dialogPayRule = false">{{method.name}}</div>
               </v-radio>
             </v-radio-group>
           </v-card>
@@ -94,7 +95,7 @@
           <v-dialog v-model="dialogCoupone" fullscreen hide-overlay transition="dialog-bottom-transition">
             <!-- 선택 -->
             <v-card slot="activator" class="px-4 py-2">
-              <div class="medium grey--text text--darken-2">
+              <div class="medium grey--text text--darken-2" @click="dialogCoupone = false">
                 {{couponChoice.name}}
               </div>
             </v-card>
@@ -103,7 +104,7 @@
             <v-list >
               <v-list-tile avatar>
                 <v-list-tile-action>
-                  <v-btn icon class="ma-1" @click="dialogCoupone = false">
+                  <v-btn icon class="ma-1">
                     <v-icon>close</v-icon>
                   </v-btn>
                 </v-list-tile-action>
@@ -112,7 +113,7 @@
                 </div>
               </v-list-tile>
             </v-list>
-            
+
             <!-- 쿠폰-체크박스 -->
             <v-radio-group v-model="couponChoice" class="ml-4 mt-2">
               <v-radio
@@ -121,8 +122,9 @@
                 :value="coupon"
                 color="orange"
                 class="mb-4"
+                @click="dialogCoupone = false"
               >
-                <div slot="label" class="xlarge black-text">{{coupon.name}}</div>
+                <div slot="label" class="xlarge black-text"@click="dialogCoupone = false">{{coupon.name}}</div>
               </v-radio>
             </v-radio-group>
 
@@ -178,6 +180,7 @@
               v-model="pointUsing"
               persistent-hint
               class="medium"
+              mask="#############"
             ></v-text-field>
           </v-flex>
         </v-layout>
@@ -228,15 +231,15 @@ export default {
         {
           name: '네이버페이',
           color: 'green'
-        }, 
+        },
         {
           name: '카카오페이',
           color: 'yellow'
-        }, 
+        },
         {
           name: '신용카드',
           color: 'blue'
-        }, 
+        },
         {
           name: '무통장입금',
           color: 'black'
@@ -246,15 +249,15 @@ export default {
         {
           name: '1000원 할인',
           discount: 1000
-        }, 
+        },
         {
           name: '5000원 할인',
           discount: 5000
-        }, 
+        },
         {
           name: '3000원 할인',
           discount: 3000
-        }, 
+        },
       ],
       paySuccessPath: '/home',
       dialogPayRule: false,
@@ -267,7 +270,7 @@ export default {
     this.minute = this.$route.query.minute
     this.peopleNum = this.$route.query.peopleNum
     this.allPrice = this.$route.query.allPrice
-    
+
     this.userId = localStorage.getItem('id')
 
     // getCoupons()
@@ -283,7 +286,7 @@ export default {
         var couponNum = r.data.length
 
         for(var i=0; i<couponNum; i++)
-          this.couponItems.push(r.data[i]) 
+          this.couponItems.push(r.data[i])
       })
       .catch((e) => {
       this.pop(e.message)
@@ -298,7 +301,7 @@ export default {
       })
       .catch((e) => {
       this.pop(e.message)
-      })  
+      })
     },
     paySuccess(){
       alert("결제가 완료되었습니다. 예약 수락응답 기다려주세요.")

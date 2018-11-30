@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon @click="$goBack()">
+          <v-btn icon :to="mainPath">
             <v-icon >keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -61,12 +61,12 @@
           </v-layout>
         </v-container>
       </v-flex>
-      
+
       <!-- 그 외 버튼 -->
       <v-flex xs12 sm12>
         <v-container grid-list-md text-xs-center align-center class="pa-0">
           <v-layout column wrap>
-            <v-flex 
+            <v-flex
               v-for="anotherMenu in anotherMenuList"
               xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" >
               <router-link :to="anotherMenu.to" class="text--decoration-none">
@@ -75,7 +75,7 @@
                 </div>
               </router-link>
             </v-flex>
-            
+
           </v-layout>
         </v-container>
       </v-flex>
@@ -94,7 +94,6 @@ export default {
       myId: localStorage.getItem('id'),
       userCode: localStorage.getItem('code'),
       point: 0,
-
       mainPath: '/home',
       message: [
         {
@@ -184,8 +183,8 @@ export default {
       })
       .catch((e) => {
       this.pop(e.message)
-      })  
-      
+      })
+
     }
   }
 }

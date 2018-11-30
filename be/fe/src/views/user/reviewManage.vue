@@ -26,20 +26,23 @@
         <v-card flat>
           <v-layout column wrap class="px-3">
             <!-- 이용내역 아이템 -->
-            <v-layout v-for="i in 3" row wrap class="pb-3">
+            <v-layout
+            v-for="(item,index) in reviewItems"
+            v-model="item.index"
+            row wrap class="pb-3">
               <!-- 가게이름, 수정, 삭제 -->
               <v-flex xs12>
                 <v-layout align-center justify-center row wrap>
                   <v-flex xs8>
                     <div class="xlarge pl-3 py-0 orange--text">
-                      <span>강서 동국대점</span>
+                      <span>{{item.restaurantName}}</span>
                     </div>
                   </v-flex>
                   <v-flex xs2>
-                    <v-btn flat small fab color="success"><v-icon>edit</v-icon></v-btn>
+                    <v-btn flat small fab color="success" :to="writingReview"><v-icon>edit</v-icon></v-btn>
                   </v-flex>
                   <v-flex xs2>
-                    <v-btn flat small fab color="error" ><v-icon>clear</v-icon></v-btn>
+                    <v-btn flat small fab color="error" @click="deleteReview(index)"><v-icon>clear</v-icon></v-btn>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -65,13 +68,13 @@
                   <!-- 날짜 -->
                   <v-flex xs12 class="pl-1">
                     <div class="small grey--text pt-1">
-                      <span>2018.10.03</span>
+                      <span>{{item.date}}</span>
                     </div>
                   </v-flex>
                   <!-- 별점 -->
                   <v-flex xs12>
                     <v-rating
-                      v-model="rating"
+                      v-model="item.rating"
                       background-color="yellow darken-3"
                       color="yellow darken-3"
                       small
@@ -82,7 +85,7 @@
                   <!-- 내용 -->
                   <v-flex xs12>
                     <div class="small grey--text text--darken-1 pt-1">
-                      <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
+                      <span>{{item.review}}</span>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -104,10 +107,29 @@ export default {
   data () {
     return {
       mypagePath: '/mypage',
-      rating: 4,
+      writingReview: '/writingReview',
+      reviewItems:[
+        {
+          restaurantName:'강서',
+          rating: 4,
+          date:'2018.12.01.',
+          review:'맛있게 잘 먹었습니다'
+        },
+        {
+          restaurantName:'버거킹',
+          rating: 2,
+          date:'2018.11.01.',
+          review:'맛없네요'
+        }
+      ]
     }
   },
-  methods: {}
+  methods: {
+    deleteReview(index){
+      this.$delete(this.reviewItems, index),
+      alert("삭제되었습니다.")
+    }
+  }
 }
 </script>
 

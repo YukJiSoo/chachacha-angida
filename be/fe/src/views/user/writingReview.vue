@@ -114,7 +114,7 @@ export default {
       console.log(this.reviewContent);
       console.log(downloadURL)
       console.log("리뷰등록완료");
-      this.$router.push({path: '/reservationHistory', query: {
+      this.$router.push({path: '/reviewManage', query: {
 
       }});
     },

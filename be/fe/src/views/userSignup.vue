@@ -40,7 +40,7 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="name"
+      v-model="info.name"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
@@ -49,7 +49,7 @@
     ></v-text-field>
     <!--이메일아이디-->
     <v-text-field
-      v-model="email"
+      v-model="info.email"
       :rules="[rules.email]"
       box
       color="deep-purple"
@@ -58,7 +58,7 @@
     ></v-text-field>
     <!--비밀번호-->
       <v-text-field
-        v-model="password"
+        v-model="info.password"
         :rules="[rules.password, rules.length(6)]"
         box
         color="deep-purple"
@@ -69,25 +69,29 @@
       ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="phone"
+        v-model="info.phone"
         box
         color="deep-purple"
         label="전화번호"
         :mask="phoneMask"
         :rules="[rules.required]"
       ></v-text-field>
-      <!--성별-->
-      <h4 align="left" color="">성별</h4>
-      <v-radio-group v-model="sex" row>
-      <v-radio label="남자" value="man"></v-radio>
-      <v-radio label="여자" value="woman"></v-radio>
-    </v-radio-group>
+      <!--주소-->
+      <v-text-field
+        v-model="info.address"
+        box
+        color="deep-purple"
+        label="주소"
+        :rules="[rules.required]"
+      ></v-text-field>
+      <!--생년월일-->
+      <h4 class="mb-3" align="left">생년월일</h4>
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">회원 사진</h4>
-      <img :src='image' class="mb-3">
+      <img :src='info.image' class="mb-3">
       <div id="fileApp">
-        <div class="filebox" v-if="!image">
+        <div class="filebox" v-if="!info.image">
           <label for="userImg">사진등록</label>
           <input type="file" id="userImg" @change="onFileChange" class="mb-3">
         </div>
@@ -170,11 +174,15 @@ export default {
       isLoading: false,
       password: undefined,
       phone: undefined,
-      sex: 'man',
       phoneMask: '(###)-####-####',
-      image: '',
       info:{
-        role:'user'
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        image: '',
+        address: '',
+        birth: ''
       },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
@@ -205,12 +213,12 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.image = e.target.result;
+        vm.info.image = e.target.result;
       };
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.image=''
+      this.info.image=''
     }
   }
 }

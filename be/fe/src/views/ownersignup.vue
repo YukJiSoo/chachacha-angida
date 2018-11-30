@@ -70,12 +70,6 @@
         :mask="phoneMask"
         :rules="[rules.required]"
       ></v-text-field>
-      <!--성별-->
-      <h4 align="left" color="">성별</h4>
-      <v-radio-group v-model="sex" row>
-      <v-radio label="남자" value="man"></v-radio>
-      <v-radio label="여자" value="woman"></v-radio>
-    </v-radio-group>
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">회원 사진</h4>
@@ -165,7 +159,6 @@ export default {
       isLoading: false,
       password: undefined,
       phone: undefined,
-      sex: 'man',
       phoneMask: '(###)-####-####',
       image: '',
       info:{

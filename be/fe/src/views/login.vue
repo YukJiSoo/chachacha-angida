@@ -23,6 +23,7 @@
                         required
                         label="Password"
                         color="white"
+                        type="password"
                       ></v-text-field>
                       <v-btn flat color="white" @click="signIn">
                         Login
@@ -65,7 +66,7 @@ export default {
   methods: {
     signIn() {
       var success= true;
-      
+
       // 디비에서 비교하는 부분 추가
       axios.post('http://localhost:3000/api/user/signIn', {
         id: this.id, password: this.password
@@ -74,7 +75,7 @@ export default {
         if(r.data.success){
           localStorage.setItem('id', this.id);
           localStorage.setItem('code', r.data.code);
-          
+
           this.$router.push('/home');
         }
         else{
@@ -85,7 +86,7 @@ export default {
         this.pop(e.message)
         alert('로그인에 실패했습니다')
       })
-      
+
       // if(success){
       //   localStorage.setItem('id', this.id);
       //   this.$router.push('/home');
