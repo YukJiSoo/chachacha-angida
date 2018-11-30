@@ -40,7 +40,16 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-mongoose.connect('mongodb://localhost:27017/nemv', { useNewUrlParser: true }, (err) => {
-   if (err) return console.error(err)
-   console.log('mongoose connected!')
-})
+// 몽고디비
+// mongoose.connect('mongodb://localhost:27017/nemv', { useNewUrlParser: true }, (err) => {
+//    if (err) return console.error(err)
+//    console.log('mongoose connected!')
+// })
+
+
+// var mysql_dbc = require('./db_con')();
+// var connection = mysql_dbc.init();
+// mysql_dbc.test_open(connection);
+
+// var oracledb = require('oracledb');
+// var dbConfig = require('./db_con.js');

@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import axios from 'axios'
 
 Vue.use(Router)
+
+Vue.prototype.$axios = axios
 
 export default new Router({
   mode: 'history',
@@ -11,6 +14,31 @@ export default new Router({
       path: '/',
       name: 'login',
       component: () => import('./views/login.vue')
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('./views/user/payment.vue')
+    },
+    {
+      path: '/restaurantList',
+      name: 'restaurantList',
+      component: () => import('./views/user/restaurantList.vue')
+    },
+    {
+      path: '/restaurantDetail',
+      name: 'restaurantDetail',
+      component: () => import('./views/user/restaurantDetail.vue')
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import('./views/user/mypage.vue')
+    },
+    {
+      path: '/myInfoChange',
+      name: 'myInfoChange',
+      component: () => import('./views/user/myInfoChange.vue')
     },
     {
       path: '/choosesignup',
@@ -25,7 +53,7 @@ export default new Router({
     {
       path: '/ownerSignup',
       name: 'ownerSignup',
-      component: () => import('./views/ownerSignup.vue')
+      component: () => import('./views/ownersignup.vue')
     },
     {
       path: '/ownerReviewManage',
@@ -36,11 +64,6 @@ export default new Router({
       path: '/ownerRestaurantRegister',
       name: 'ownerRestaurantRegister',
       component: () => import('./views/ownerRestaurantRegister')
-    },
-    {
-      path: '/ownerNoRestaurant',
-      name: 'ownerNoRestaurant',
-      component: () => import('./views/owner/ownerNoRestaurant.vue')
     },
     {
       path: '/ownerHome',
@@ -98,9 +121,14 @@ export default new Router({
       component: () => import('./views/user/Q&A.vue')
     },
     {
-      path: '/writing',
-      name: 'writing',
-      component: () => import('./views/user/writing.vue')
+      path: '/writingQnA',
+      name: 'writingQnA',
+      component: () => import('./views/user/writingQnA.vue')
+    },
+    {
+      path: '/writingReview',
+      name: 'writingReview',
+      component: () => import('./views/user/writingReview.vue')
     },
     {
       path: '/coupon',
@@ -113,11 +141,20 @@ export default new Router({
       component: () => import('./views/user/setting.vue')
     },
     {
-      path: '/restaurantInfo',
-      name: 'restaurnantInfo',
-      component: () => import('./views/restaurantInfo.vue')
+      path: '/point',
+      name: 'point',
+      component: () => import('./views/user/point.vue')
     },
-
+    {
+      path: '/review',
+      name: 'review',
+      component: () => import('./views/user/review.vue')
+    },
+    {
+      path: '/reviewManage',
+      name: 'reviewManage',
+      component: () => import('./views/user/reviewManage.vue')
+    },
     // {
     //   path: '/about',
     //   name: 'about',
@@ -135,6 +172,11 @@ export default new Router({
       path: '/reservation',
       name: 'reservation',
       component: () => import('./views/user/reservation.vue')
+    },
+    {
+      path: '/reservationHistory',
+      name: 'reservationHistory',
+      component: () => import('./views/user/reservationHistory.vue')
     },
     {
       path: '*',

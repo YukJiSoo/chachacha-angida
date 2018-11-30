@@ -27,6 +27,26 @@ router.post('/', (req, res, next) => {
     })
 })
 
+/* POST signIn */
+router.post('/signIn', (req, res, next) => {
+  const { id, password } = req.body
+  console.log(id)
+  console.log(password)
+  
+  var success = true;
+  if(success) res.json({ success: true, code: 66 })
+  else res.json({ success: false}) 
+
+  //const u = new User{ name, age })
+  // u.save()
+  //   .then(r => {
+  //     res.send({ success: true, msg: r })
+  //   })
+  //   .catch(e => {
+  //     res.send({ success: false, msg: e.message })
+  //   })
+})
+
 /* PUT home page. */
 router.put('/:id', (req, res, next) => {
   const id = req.params.id

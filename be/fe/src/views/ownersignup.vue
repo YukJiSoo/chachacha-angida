@@ -7,21 +7,15 @@
           app
           dark
           class="angida-gradiation">
-          <v-icon
-          @click="goBack"
-          >keyboard_backspace</v-icon>
-          <v-container class="pa-0">
+          <v-icon @click="$goBack()">keyboard_arrow_left</v-icon>
+          <v-container class="pa-0 py-0">
             <v-layout align-center column>
-              <v-flex xs12 sm12>
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold caption white--text">음식이 나에게</span>
-                </router-link>
+              <v-flex xs12 sm12 class="py-0">
+                <span class="small">음식이 나에게</span>
               </v-flex>
-              <v-flex xs8 sm12 class="pl-5">
-                <router-link :to="mainPath" class="text-decoration-none">
-                  <span class="font-weight-bold title white--text">안기다</span>
-                  <span class="font-weight-bold caption white--text">린다</span>
-                </router-link>
+              <v-flex xs8 sm12 class="pl-5 py-0">
+                <span class="xlarge">안기다</span>
+                <span class="small">린다</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -191,7 +185,8 @@ export default {
       window.history.back();
     },
       submit(){
-        alert('회원가입되었습니다')
+        alert('회원가입되었습니다'),
+        this.$router.push('/')
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
