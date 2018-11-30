@@ -43,7 +43,7 @@
                             v-model="minute"
                             :items="items2"
                             suffix="분"
-                          ></v-combobox>  
+                          ></v-combobox>
                         </v-flex>
                         <v-flex xs6>
                           에 도착합니다.
@@ -122,7 +122,7 @@
                           >
                             <v-card>
                               <v-card-title class="large">{{menu.name}}</v-card-title>
-                              <v-img 
+                              <v-img
                                 :src="`${menu.img}`"
                                 aspect-ratio="1"
                                 width="100%"
@@ -446,7 +446,7 @@
               this.allPrice -= (v.num * v.price)
               this.cart.splice(i,1)
             }
-          });     
+          });
         }
         else {
           menu.selected = true

@@ -113,6 +113,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'ownerMenuManage',
   data () {
@@ -120,6 +121,7 @@ export default {
       drawer: null,
       ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
+      userCode: localStorage.getItem('code'),
       info:{
         role: 'owner',
         ownerName: '차민형',
@@ -132,48 +134,31 @@ export default {
         restaurantImage: 'http://ldb.phinf.naver.net/20170710_37/1499665631160zFj1G_JPEG/8.jpg',
         restaurantLocation: '동대입구 앞'
       },
+      menuItems: [
+        {
+          title: '주문관리',
+          path: '/ownerHome',
+        },
+        {
+          title: '매출관리',
+          path: '/ownerSalemanage',
+        },
+        {
+          title: '메뉴관리',
+          path: '/ownerMenuManage',
+        },
+        {
+          title: '리뷰관리',
+          path: '/ownerReviewManage',
+        },
+        {
+          title: '환경설정',
+          path: '/ownerSetting',
+        },
+      ],
       items: [
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'Brunch this weekend?',
-            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-            cost: '10000'
-          },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1"></span>',
-            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-            cost: '11000'
-          },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'Oui oui',
-            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
-            cost: '12000'
-          }
-        ],
-        menuItems: [
-          {
-            title: '주문관리',
-            path: '/ownerHome',
-          },
-          {
-            title: '매출관리',
-            path: '/ownerSalemanage',
-          },
-          {
-            title: '메뉴관리',
-            path: '/ownerMenuManage',
-          },
-          {
-            title: '리뷰관리',
-            path: '/ownerReviewManage',
-          },
-          {
-            title: '환경설정',
-            path: '/ownerSetting',
-          }
-        ]
+
+      ]
     }
   },
   methods: {
@@ -186,7 +171,20 @@ export default {
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
+    },
+    getMenuList(){
+      axios.get('http://localhost:3000/api/owner/${this.userCode}`')
+      .then((r) => {
+        this.items = r.data.menu_list
+        console.log(r)
+      })
+      .catch((e) => {
+        console.error(e.message)
+      })
     }
+  },
+  mounted() {
+    this.getMenuList()
   }
 }
 </script>
