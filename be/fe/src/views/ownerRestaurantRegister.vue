@@ -70,14 +70,20 @@
       class="pa-3">
 
       <h4 align="left" class="mb-2">태그등록</h4>
-      <v-text-field
-        v-model="tag"
-        box
-        color="deep-purple"
-        label="최대 3개까지 가능합니다"
-        :rules="[rules.limit(6)]"
-        @keyup.enter="enterTag"
-      ></v-text-field>
+      <div id="tagsInput">
+        <div
+        v-if="tags.length < 3">
+          <v-text-field
+            v-model="tagText"
+            box
+            color="deep-purple"
+            label="최대 3개까지 가능합니다(6글자 이내)"
+            :rules="[rules.limit(6)]"
+            maxlength="6"
+            @keydown.enter="enterTag()"
+          ></v-text-field>
+        </div>
+      </div>
     </div>
       <v-form
         ref="form"
@@ -88,10 +94,13 @@
         <v-chip
         v-for="(item,index) in tags"
         v-model="item.status"
-        close
         color="orange lighten-2"
         class="white--text"
-        >#{{item.tag}}
+        >#{{item.tag}}&nbsp
+          <v-icon
+          small
+          @click="deleteTag(index)">clear
+          </v-icon>
       </v-chip>
       </div>
       <!--사진등록-->
@@ -140,6 +149,7 @@ export default {
       isLoading: false,
       phoneMask: '(###)-####-####',
       image: '',
+      tagText: null,
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -149,19 +159,7 @@ export default {
         required: v => !!v || '필수입니다'
       },
       tags:
-      [{
-        tag:'치킨',
-        status: true
-      },
-      {
-        tag:'존맛',
-        status: true
-      },
-      {
-        tag:'서비스',
-        stastus: true
-      }
-     ]
+      []
     }
   },
   methods: {
@@ -191,8 +189,14 @@ export default {
       this.image=''
     },
     enterTag(){
-      var tag = new
-      alert("엔터눌림")
+      this.tags.push({
+        tag: this.tagText,
+        status: true
+      })
+      this.tagText = null
+    },
+    deleteTag(index){
+      this.$delete(this.tags, index)
     }
   }
 }
