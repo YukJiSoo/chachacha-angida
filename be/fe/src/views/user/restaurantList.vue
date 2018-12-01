@@ -26,7 +26,7 @@
             <!-- 왼쪽-사진 -->
             <v-flex xs5 sm12 class="pa-0 black">
               <v-img
-                :src="`${store.PROFILE_IMG_URL}`"
+                :src="`${store.profile_img_url}`"
               >
               </v-img>
             </v-flex>
@@ -36,7 +36,7 @@
                 <!-- 이름 -->
                 <v-flex xs12 sm12 class="pt-0 pb-0">
                   <div class="xlarge font-weight-bold black--text">
-                    <span>{{store.STORE_NAME}}</span>
+                    <span>{{store.store_name}}</span>
                   </div>
                 </v-flex>
                 <!-- 1행 -->
@@ -49,7 +49,7 @@
                     <!-- 별점-숫자 -->
                     <v-flex xs4 sm12 class="pa-0">
                       <div class="body-1 grey--text text--darken-2 font-weight-bold">
-                        <span>{{store.TOTAL_RATE}}</span>
+                        <span>{{store.total_rate}}</span>
                       </div>
                     </v-flex>
                     <!-- 위치 -->
@@ -71,12 +71,12 @@
                     </v-flex>
                     <!-- 자리현황-내용 -->
                     <v-flex xs6 sm12 class="pa-0">
-                      <div v-if="store.onOff" class="medium">
-                        <span class="green--text">{{store.nowSeat}}</span><span> / </span><span>{{store.limitSeat}}</span><span>석</span>
+                      <div class="medium">
+                        <span class="green--text">{{store.seat_status}}</span><span> / </span><span>{{store.total_seat}}</span><span>석</span>
                       </div>
-                      <div v-else class="medium">
+                      <!-- <div class="medium">
                         <span class="red--text">준비중</span>
-                      </div>
+                      </div> -->
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -90,7 +90,7 @@
                       </div>
                     </v-flex> -->
                     <div class="medium pink--text text--lighten-3">
-                      <span>{{store.STORE_TAG}}</span>
+                      <span>{{store.store_tag}}</span>
                     </div>
                   </v-layout>
                 </v-flex>
@@ -99,8 +99,8 @@
           </v-layout>
           <v-divider class="mt-2"></v-divider>
         </v-flex>
-        
-        
+
+
       </v-flex>
     </v-layout>
   </v-container>
@@ -127,26 +127,35 @@ export default {
       this.lng = this.$route.query.lng
       this.keyword = this.$route.query.keyword
       this.locationLimit = this.$route.query.locationLimit
-      
+
       this.getStores()
     },
   methods: {
     getStores () {
-      this.$axios.post('http://localhost:3000/api/store/list'
-      ,{
-        category: this.category,
-        lat: this.lat,
-        lng: this.lng,
-        keyword: this.keyword,
-        locationLimit: this.locationLimit,
-      }
-      )
-      .then((r) => {
+      // if(this.category === 'AL')
+      //   this.category = undefined
+      // console.log(this.category, this.lat, this.lng, this.keyword, this.locationLimit)
+      this.$axios.get('http://localhost:3000/api/store/', {
+        parmas: {
+          store_category_code: this.category,
+          lat: this.lat,
+          lng: this.lng,
+          keyword: this.keyword,
+          locationLimit: this.locationLimit
+        },
+        headers: {
+          store_category_code: this.category,
+          lat: this.lat,
+          lng: this.lng,
+          keyword: this.keyword,
+          locationLimit: this.locationLimit
+        }
+      }).then((r) => {
         this.storeItems = r.data
         console.log(this.storeItems)
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     toDetail(storeId){

@@ -227,39 +227,39 @@ import axios from 'axios'
         searchWord:'',
         menuCategoryList:{
           category1:{
-            name: 'all',
+            name: 'AL',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
           },
           category2:{
-            name: 'korea',
+            name: 'KO',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fkorea.PNG?alt=media&token=eb829e31-3c5a-46b1-a9fa-64e057b5bf06',
           },
           category3:{
-            name: 'chicken',
+            name: 'CH',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fchicken.PNG?alt=media&token=10fe4622-8eaf-45b4-843a-0407af27f585',
           },
           category4:{
-            name: 'china',
+            name: 'CN',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fchina.PNG?alt=media&token=4d02ddf2-2b52-4c0c-a8a3-a4da091f23d4',
           },
           category5:{
-            name: 'japanese',
+            name: 'JP',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fjapan.PNG?alt=media&token=2c3e231e-e2cb-47f3-b727-9c2febc8f913',
           },
           category6:{
-            name: 'western',
+            name: 'WE',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fwestern.PNG?alt=media&token=dc96e7cb-414d-4c58-86eb-129404d3121e',
           },
           category7:{
-            name: 'bossam',
+            name: 'ZB',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fbossam.PNG?alt=media&token=4661f42e-55a3-406a-85fb-6e4a43483456',
           },
           category8:{
-            name: 'bunsik',
+            name: 'BU',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fbunsik.PNG?alt=media&token=22da5759-c347-4b18-8c2c-aed5c44c6712',
           },
           category9:{
-            name: 'cafe',
+            name: 'CA',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fcafe.PNG?alt=media&token=9a34a1d8-d905-4c20-8306-96c2c708cfee',
           }
         }
