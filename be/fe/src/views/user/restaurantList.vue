@@ -132,15 +132,14 @@ export default {
     },
   methods: {
     getStores () {
-      this.$axios.post('http://localhost:3000/api/store/list'
-      ,{
-        category: this.category,
-        lat: this.lat,
-        lng: this.lng,
-        keyword: this.keyword,
-        locationLimit: this.locationLimit,
-      }
-      )
+      this.$axios.get(`http://localhost:3000/api/store/list`,
+      {params:{
+      categiry : this.category,
+      lat: this.lat,
+      lng: this.lng,
+      keyword : this.keyword,
+      locationLimit : this.locationLimit
+      }})
       .then((r) => {
         this.storeItems = r.data
         console.log(this.storeItems)

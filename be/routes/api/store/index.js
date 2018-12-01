@@ -24,12 +24,12 @@ router.get('/:id', (req, res, next) => {
   res.send(storeInfo)
 })
 
-router.post('/list', async function(req, res, next) {
+router.get('/list/', async function(req, res, next) {
   console.log("list test");
   console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
   
-  const { category, lat, lng, keyword, locationLimit} = req.body
-
+  const { category, lat, lng, keyword, locationLimit} = req.query
+  console.log(category, lat, lng, keyword, locationLimit)
   // 필요한 데이터
   var storeList = [
     {

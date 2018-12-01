@@ -33,20 +33,20 @@
             <v-flex xs7 align-self-center>
               <v-layout column>
                 <v-flex xs12>
-                  <div class="medium font-weight-bold px-2">
-                    <span>{{coupon.name}}</span>
+                  <div class="xlarge font-weight-bold px-2">
+                    <span>{{coupon.coupon_name}}</span>
                   </div>
                 </v-flex>
                 <v-flex xs12>
                   <div class="medium grey--text px-3">
-                    <span>{{coupon.firstDay}} ~ {{coupon.lastDay}}</span>
+                    <span>{{coupon.issued_date}} ~ {{coupon.end_date}}</span>
                   </div>
                 </v-flex>
               </v-layout>
             </v-flex>
             <v-flex xs5 text-xs-center class="py-4">
               <div class="large orange--text text--darken-3">
-                <span>-{{coupon.discount}}원</span>
+                <span>-{{coupon.discount_amount}}원</span>
               </div>
             </v-flex>
           </v-layout>
@@ -75,11 +75,8 @@ export default {
       this.$axios.get(`http://localhost:3000/api/coupon/list/${this.userCode}`)
       .then((r) => {
         console.log(r.data)
-        for(var i=0; i<r.data.length; i++){
-          console.log(r.data[i])
-          this.coupons.push(r.data[i])
-          this.couponNum = this.coupons.length
-        }
+        this.coupons = r.data
+        this.couponNum = this.coupons.length
       })
       .catch((e) => {
       this.pop(e.message)

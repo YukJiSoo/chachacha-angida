@@ -2,86 +2,91 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET point  . */
-router.get('/:id', function(req, res, next) {
-  console.log('유저 포인트 받아오기 - 100으로 가정 - 디비 연결 추가해야함')
-  const id = req.params.id
-  var point = 100
+const point = require('../../../db_apis/point.js');
+const database = require('../../../services/database.js');
 
-  res.send({point})
+/* GET point  . */
+router.get('/:id', async function(req, res, next) {
+  const id = req.params.id
+  // 디비 만들어지면 테스트
+  // const context = {};
+
+  // context.id = parseInt(id, 10);
+
+  // const rows = await employees.find(context);
+
+  // console.log('==========>router result');
+  // console.log(result.rows);
+
+  // if (id) {
+  //   if (rows.length === 1) {
+  //     res.status(200).json(rows[0]);
+  //   } else {
+  //     res.status(404).end();
+  //   }
+  // } else {
+  //   res.status(200).json(rows);
+  // }
+
+  // var TOTAL_POINT = rows[0].TOTAL_POINT
+  var TOTAL_POINT = 100
+
+  res.send({TOTAL_POINT})
 });
 
 /* GET point detail . */
 router.get('/list/:id', function(req, res, next) {
-  console.log('유저 포인트 상세내역 받아오기 -  - 디비 연결 추가해야함')
   const id = req.params.id
-  console.log(id)
+  // 디비 만들어지면 테스트
+  // const context = {};
 
-  res.json([{ store: '토끼정', date: '2018.11.23', point: 100 }])
+  // context.id = parseInt(id, 10);
+
+  // const rows = await employees.findList(context);
+
+  // console.log('==========>router result');
+  // console.log(result.rows);
+
+  // if (id) {
+  //   if (rows.length === 1) {
+  //     res.status(200).json(rows);
+  //   } else {
+  //     res.status(404).end();
+  //   }
+  // } else {
+  //   res.status(200).json(rows);
+  // }
+
+  var POINT_LIST = [{ OCCUR_COUNT: 1, STORE_NAME: '토끼정', OCCUR_DATE: '2018.11.23', OCCUR_POINT: 100 }]
+
+  res.json(POINT_LIST)
 });
-
-/* POST home page. */
-router.post('/', (req, res, next) => {
-  const { name, age } = req.body
-  const u = new User({ name, age })
-  u.save()
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-})
-
-/* POST signIn */
-router.post('/signIn', (req, res, next) => {
-  const { id, password } = req.body
-  console.log(id)
-  console.log(password)
-
-  var success = true;
-  if(success) res.json({ success: true})
-  else res.json({ success: false})
-
-  //const u = new User{ name, age })
-  // u.save()
-  //   .then(r => {
-  //     res.send({ success: true, msg: r })
-  //   })
-  //   .catch(e => {
-  //     res.send({ success: false, msg: e.message })
-  //   })
-})
 
 /* PUT home page. */
 router.put('/:id', (req, res, next) => {
   const id = req.params.id
-  const { name, age } = req.body
-  User.updateOne({ _id: id }, { $set: { name, age }})
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  // res.send({ success: true, msg: 'put ok' })
-})
+  const point = req.body.point
+  console.log(point)
+  // 디비 만들어지면 테스트
+  // const context = {};
 
-/* DELETE home page. */
-router.delete('/:id', (req, res, next) => {
-  const id = req.params.id
-  User.deleteOne({ _id: id })
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  res.send({ success: true, msg: 'del ok' })
-})
+  // context.customer_point = parseInt(id, 10);
+  // context.total_point = point;
 
-router.all('*', function(req, res, next) {
-  next(createError(404, '존재하지 않음'));
-});
+  // const rows = await point.update(context);
+
+  // console.log('==========>router result');
+  // console.log(rows);
+
+  // if (rows !== null) {
+  //   res.status(200).json(rows);
+  // } else {
+  //   res.status(404).end();
+  // }
+
+  var POINT_LIST = [{ OCCUR_COUNT: 1, STORE_NAME: '토끼정', OCCUR_DATE: '2018.11.23', OCCUR_POINT: 100 }]
+
+  res.json(POINT_LIST)
+})
 
 module.exports = router;
