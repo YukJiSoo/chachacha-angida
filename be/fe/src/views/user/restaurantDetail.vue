@@ -64,7 +64,7 @@
                     background-color="yellow darken-3"
                     color="yellow darken-3"
                     small
-                    readonly="true"
+                    :readonly="true"
                   ></v-rating>
                 </v-flex>
               </v-layout>
@@ -214,6 +214,7 @@ export default {
     this.store_code = this.$route.query.store_code
     console.log("passed store_code:", this.store_code);
     this.getStore()
+
     this.getMenu()
     this.reservationPath.query.store_code = this.store_code
   },
@@ -232,7 +233,7 @@ export default {
         this.reviewPath.query.store_name = this.storeInfo.store_name
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     // 메뉴 정보 받아오기
@@ -247,17 +248,40 @@ export default {
         this.menuItems = r.data
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     toReservation(){
+      // this.$router.addRoutes([{
+      //   path: '/reservation',
+      //   name: 'reservation',
+      //   component: reservation,
+      //   props: true
+      // }]);
+      // this.$router.push({
+      //   name: 'reservation',
+      //   params: {
+      //     store_code:this.store_code,
+      //     store_name:this.storeInfo.store_name,
+      //     store_info:this.storeInfo,
+      //     menuItems:this.menuItems
+      //   }
+      // });
       this.$router.push({
-        path: '/reservation',
-        query: {
-          store_code:this.store_code,
-          store_name:this.storeInfo.store_name
+        name: "reservation",
+        params: {
+          storeInfo: this.storeInfo,
+          menuItems: this.menuItems
         }
       })
+      /*this.$router.push({
+        path: '/reservation',
+        query: {
+
+          //store_info:JSON.stringify(this.storeInfo),
+          //menuItems:JSON.stringify(this.menuItems)
+        }
+      })*/
     }
   }
 }
