@@ -40,7 +40,7 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="restaurantName"
+      v-model="restaurantInfo.STORE_NAME"
       :rules="[rules.length(1)]"
       box
       color="deep-purple"
@@ -49,7 +49,7 @@
     ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="restaurantNumber"
+        v-model="restaurantInfo.PHONE_NO"
         box
         color="deep-purple"
         label="매장 전화번호"
@@ -58,21 +58,56 @@
       ></v-text-field>
       <!--매장주소-->
       <v-text-field
-        v-model="restaurantLocation"
+        v-model="restaurantInfo.ADDRESS"
         box
         color="deep-purple"
         label="매장 주소"
         :rules="[rules.required]"
       ></v-text-field>
+      <!--법인번호-->
+      <v-text-field
+        v-model="restaurantInfo.COPORATE_NO"
+        box
+        color="deep-purple"
+        label="법인 번호"
+        :mask="coperateNoMask"
+        :rules="[rules.length(13)]"
+      ></v-text-field>
+      <!--사업자번호-->
+      <v-text-field
+        v-model="restaurantInfo.BUSINESS_NO"
+        box
+        color="deep-purple"
+        label="사업자 번호"
+        :mask="businessNoMask"
+        :rules="[rules.length(10)]"
+      ></v-text-field>
+      <v-textarea
+      v-model="restaurantInfo.STORE_DESSC"
+      box
+      color="deep-purple"
+      label="매장 소개"
+      :ruels="[rules.required]"
+      >
+    </v-textarea>
+    <h4 align="left" class="mb-2">카테고리</h4>
+    <v-layout justify-center>
+        <v-flex xs5>
+          <v-combobox
+            v-model="restaurantInfo.STORE_CATEGORY_CODE"
+            :items="category"
+          ></v-combobox>
+        </v-flex>
+      </v-layout>
     </v-form>
       <!--tag 등록-->
       <div
       class="pa-3">
 
       <h4 align="left" class="mb-2">태그등록</h4>
-      <div id="tagsInput">
+      <div id="restaurantInfo.STORE_TAGInput">
         <div
-        v-if="tags.length < 3">
+        v-if="restaurantInfo.STORE_TAG.length < 3">
           <v-text-field
             v-model="tagText"
             box
@@ -92,7 +127,7 @@
       >
       <div class="mb-5  ">
         <v-chip
-        v-for="(item,index) in tags"
+        v-for="(item,index) in restaurantInfo.STORE_TAG"
         v-model="item.status"
         color="orange lighten-2"
         class="white--text"
@@ -103,12 +138,54 @@
           </v-icon>
       </v-chip>
       </div>
+      <!--영업시간-->
+      <h4 align="left" class="mb-2">영업시간</h4>
+      <v-layout align-center justify-center class="pl-2">
+        <v-flex xs4>
+          <v-combobox
+            v-model="restaurantInfo.START_TIME"
+            :items="items"
+            suffix="시"
+          ></v-combobox>
+        </v-flex>
+        <v-flex xs2>
+          ~
+        </v-flex>
+        <v-flex xs4>
+          <v-combobox
+            v-model="restaurantInfo.END_TIME"
+            :items="items"
+            suffix="시"
+          ></v-combobox>
+        </v-flex>
+      </v-layout>
+        <!--Breaktime-->
+        <h4 align="left" class="mb-2">BreakTime</h4>
+        <v-layout align-center justify-center class="pl-2">
+          <v-flex xs4>
+            <v-combobox
+              v-model="restaurantInfo.BREAK_START_TIME"
+              :items="items"
+              suffix="시"
+            ></v-combobox>
+          </v-flex>
+          <v-flex xs2>
+            ~
+          </v-flex>
+          <v-flex xs4>
+            <v-combobox
+              v-model="restaurantInfo.BREAK_END_TIME"
+              :items="items"
+              suffix="시"
+            ></v-combobox>
+          </v-flex>
+     </v-layout>
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">매장 사진</h4>
-      <img :src='image' class="mb-3">
+      <img :src='restaurantInfo.PROFILE_IMG_URL' class="mb-3">
       <div id="fileApp">
-        <div class="filebox" v-if="!image">
+        <div class="filebox" v-if="!restaurantInfo.PROFILE_IMG_URL">
           <label for="restaurnatImg">사진등록</label>
           <input type="file" id="restaurnatImg" @change="onFileChange" class="mb-3">
         </div>
@@ -143,13 +220,64 @@ export default {
   data () {
     return {
       mainPath: '/',
-      restaurantName: undefined,
-      restaurantNumber: undefined,
       form: false,
       isLoading: false,
       phoneMask: '(###)-####-####',
-      image: '',
+      coperateNoMask: '######-#######',
+      businessNoMask: '###-##-#####',
       tagText: null,
+      category:[
+        '한식',
+        '치킨',
+        '중국집',
+        '일식/돈까스',
+        '피자/양식',
+        '족발/보쌈',
+        '분식',
+        '카페/디저트'
+      ],
+      items: [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23',
+        '24'
+      ],
+      restaurantInfo:{
+        STORE_NAME:"",
+        PHONE_NO:"",
+        ADDRESS:"",
+        PROFILE_IMG_URL:"",
+        STORE_DESC:"",
+        COPORATE_NO:"",
+        BUSINESS_No:"",
+        START_TIME:"",
+        END_TIME:"",
+        BREAK_START_TIME:"",
+        BREAK_END_TIME:"",
+        STORE_TAG:
+        [],
+        STORE_CATEGORY_CODE:""
+      },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -157,9 +285,7 @@ export default {
         password: v => (v || '').match(/^(?=.*[a-z])(?=.*\d)(?=.*(_|[^\w])).+$/) ||
           '숫자와 특수문자가 포함된 비밀번호를 작성해주세요',
         required: v => !!v || '필수입니다'
-      },
-      tags:
-      []
+      }
     }
   },
   methods: {
@@ -182,22 +308,22 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.image = e.target.result;
+        vm.restaurantInfo.PROFILE_IMG_URL = e.target.result;
       };
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.image=''
+      this.restaurantInfo.PROFILE_IMG_URL=''
     },
     enterTag(){
-      this.tags.push({
+      this.restaurantInfo.STORE_TAG.push({
         tag: this.tagText,
         status: true
       })
       this.tagText = null
     },
     deleteTag(index){
-      this.$delete(this.tags, index)
+      this.$delete(this.restaurantInfo.STORE_TAG, index)
     }
   }
 }

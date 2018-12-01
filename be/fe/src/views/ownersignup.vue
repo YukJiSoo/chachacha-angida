@@ -1,4 +1,4 @@
-<template>
+ID<template>
   <v-container grid-list-md text-xs-center align-center>
     <v-layout row wrap class="mb-0">
       <v-flex xs12 sm12>
@@ -34,7 +34,7 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="name"
+      v-model="info.NAME"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
@@ -43,7 +43,7 @@
     ></v-text-field>
     <!--이메일아이디-->
     <v-text-field
-      v-model="email"
+      v-model="info.STORE_ID"
       :rules="[rules.email]"
       box
       color="deep-purple"
@@ -52,7 +52,7 @@
     ></v-text-field>
     <!--비밀번호-->
       <v-text-field
-        v-model="password"
+        v-model="info.STORE_PASSWORD"
         :rules="[rules.password, rules.length(6)]"
         box
         color="deep-purple"
@@ -61,29 +61,6 @@
         style="min-height: 96px"
         type="password"
       ></v-text-field>
-      <!--전화번호-->
-      <v-text-field
-        v-model="phone"
-        box
-        color="deep-purple"
-        label="전화번호"
-        :mask="phoneMask"
-        :rules="[rules.required]"
-      ></v-text-field>
-      <!--사진등록-->
-    <v-flex xs12 sm12>
-      <h4 class="mb-3" align="left">회원 사진</h4>
-      <img :src='image' class="mb-3">
-      <div id="fileApp">
-        <div class="filebox" v-if="!image">
-          <label for="userImg">사진등록</label>
-          <input type="file" id="userImg" @change="onFileChange" class="mb-3">
-        </div>
-        <div v-else>
-          <v-btn @click="removeImage">이미지 삭제</v-btn>
-        </div>
-      </div>
-    </v-flex>
     <!--규정-->
       <v-checkbox
         v-model="agreement"
@@ -153,16 +130,13 @@ export default {
       registerRestaurant: '/ownerRestaurantRegister',
       agreement: false,
       dialog: false,
-      name: undefined,
-      email: undefined,
       form: false,
       isLoading: false,
-      password: undefined,
-      phone: undefined,
       phoneMask: '(###)-####-####',
-      image: '',
       info:{
-        role:'owner'
+        NAME:"",
+        STORE_ID:"",
+        STORE_PASSWORD:""
       },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
@@ -180,25 +154,6 @@ export default {
       submit(){
         alert('회원가입되었습니다'),
         this.$router.push('/')
-    },
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.createImage(files[0]);
-    },
-    createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-      var vm = this;
-
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    removeImage(){
-      this.image=''
     }
   }
 }

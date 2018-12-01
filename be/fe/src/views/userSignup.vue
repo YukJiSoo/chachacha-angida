@@ -40,7 +40,7 @@
     >
     <!--이름-->
     <v-text-field
-      v-model="info.name"
+      v-model="info.CUSTOMER_NAME"
       :rules="[rules.length(2)]"
       box
       color="deep-purple"
@@ -49,7 +49,7 @@
     ></v-text-field>
     <!--이메일아이디-->
     <v-text-field
-      v-model="info.email"
+      v-model="info.CUSTOMER_ID"
       :rules="[rules.email]"
       box
       color="deep-purple"
@@ -58,7 +58,7 @@
     ></v-text-field>
     <!--비밀번호-->
       <v-text-field
-        v-model="info.password"
+        v-model="info.CUSTOMER_PASSWORD"
         :rules="[rules.password, rules.length(6)]"
         box
         color="deep-purple"
@@ -69,7 +69,7 @@
       ></v-text-field>
       <!--전화번호-->
       <v-text-field
-        v-model="info.phone"
+        v-model="info.PHONE_NO"
         box
         color="deep-purple"
         label="전화번호"
@@ -78,20 +78,28 @@
       ></v-text-field>
       <!--주소-->
       <v-text-field
-        v-model="info.address"
+        v-model="info.ADDRESS"
         box
         color="deep-purple"
         label="주소"
         :rules="[rules.required]"
       ></v-text-field>
       <!--생년월일-->
-      <h4 class="mb-3" align="left">생년월일</h4>
+      <v-text-field
+        v-model="info.BIRTH_DATE"
+        box
+        color="deep-purple"
+        label="생년월일"
+        :rules="[rules.required]"
+        :mask="birthMask"
+        hint="YYYY/MM/DD"
+      ></v-text-field>
       <!--사진등록-->
     <v-flex xs12 sm12>
       <h4 class="mb-3" align="left">회원 사진</h4>
-      <img :src='info.image' class="mb-3">
+      <img :src='info.PROFILE_IMG_URL' class="mb-3">
       <div id="fileApp">
-        <div class="filebox" v-if="!info.image">
+        <div class="filebox" v-if="!info.PROFILE_IMG_URL">
           <label for="userImg">사진등록</label>
           <input type="file" id="userImg" @change="onFileChange" class="mb-3">
         </div>
@@ -168,21 +176,18 @@ export default {
       mainPath: '/',
       agreement: false,
       dialog: false,
-      name: undefined,
-      email: undefined,
       form: false,
       isLoading: false,
-      password: undefined,
-      phone: undefined,
       phoneMask: '(###)-####-####',
+      birthMask: '####/##/##',
       info:{
-        name: '',
-        email: '',
-        password: '',
-        phone: '',
-        image: '',
-        address: '',
-        birth: ''
+        CUSTOMER_NAME: '',
+        CUSTOMER_ID: '',
+        CUSTOMER_PASSWORD: '',
+        PHONE_NO: '',
+        PROFILE_IMG_URL: '',
+        ADDRESS: '',
+        BIRTH_DATE: ''
       },
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
@@ -213,12 +218,12 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.info.image = e.target.result;
+        vm.info.PROFILE_IMG_URL = e.target.result;
       };
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.info.image=''
+      this.info.PROFILE_IMG_URL=''
     }
   }
 }
