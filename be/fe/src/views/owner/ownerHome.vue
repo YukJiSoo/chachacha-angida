@@ -92,12 +92,12 @@
             <v-list-tile-content>
               <!--주문자와 가격-->
               <div id="status">
-                <div v-if="item.status===false">
-                  <v-list-tile-title class="medium">{{ item.customerId }}&nbsp&nbsp&nbsp&nbsp{{item.price}}&nbsp&nbsp&nbsp&nbsp
+                <div v-if="item.order_status===false">
+                  <v-list-tile-title class="medium">{{ item.CUSTOMER_ID }}&nbsp&nbsp&nbsp&nbsp{{item.TOTAL_PRICE}}&nbsp&nbsp&nbsp&nbsp
                     수락 대기중</v-list-tile-title>
                 </div>
                 <div v-else>
-                  <v-list-tile-title class="medium">{{ item.customerId }}&nbsp&nbsp&nbsp&nbsp{{item.price}}&nbsp&nbsp&nbsp&nbsp
+                  <v-list-tile-title class="medium">{{ item.CUSTOMER_ID }}&nbsp&nbsp&nbsp&nbsp{{item.TOTAL_PRICE}}&nbsp&nbsp&nbsp&nbsp
                     수락 완료</v-list-tile-title>
                 </div>
               </div>
@@ -105,7 +105,7 @@
             </v-list-tile-content>
           </v-list-tile>
           <v-list-tile
-            v-for="subItem in item.menu_list"
+            v-for="subItem in item.menu_name"
           >
             <v-list-tile-content>
               <!--주문메뉴-->
@@ -114,10 +114,10 @@
             </v-list-tile-content>
 
           </v-list-tile>
-          <div class="medium">{{item.reservation_time}}</div>
+          <div class="medium">{{item.reserv_time}}</div>
           <!--주문 수락 거절 버튼-->
           <div>
-            <v-btn v-if="item.status=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
+            <v-btn v-if="item.order_status=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
             <v-btn @click="refuse(index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
           </div>
           
@@ -194,7 +194,7 @@ export default {
       })
     },
     getOnOff(){
-      this.$axios.get(`http://localhost:3000/api/store/onOff/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/onOff/${this.ownerCode}`)
       .then((r) => {
         console.log(r.data)
         
@@ -205,7 +205,7 @@ export default {
       })
     },
     putOrderStatus(status, code){
-      this.$axios.put(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`,{ status: status, code: code })
+      this.$axios.put(`http://localhost:3000/api/reservation/owner/${code}`,{ status: status})
       .then((r) => {
         console.log(r.data)
       })
@@ -225,16 +225,16 @@ export default {
     },
     agree(item){
       item.active= false
-      item.status= true
+      item.order_status= "예약완료"
       alert("확인했습니다")
 
-      this.putOrderStatus('agree', item.code)
+      this.putOrderStatus('agree', item.ORDER_STATUS)
     },
     refuse(index){
       this.$delete(this.orderItems, index),
       alert("거절했습니다")
 
-      this.putOrderStatus('refuse', item.code)
+      this.putOrderStatus('refuse', item.ORDER_STATUS)
     },
     logout(){
       alert("로그아웃 되었습니다."),

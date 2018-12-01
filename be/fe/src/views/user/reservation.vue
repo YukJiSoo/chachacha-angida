@@ -454,7 +454,7 @@
       },
       pay(){
         this.$router.push({name:'payment', params: {
-          cart: [{menu_code:9}],
+          cart: [{menu_code:7}, {menu_code:9}],
           store_code: this.storeId,
           hour: this.hour,
           minute: this.minute,

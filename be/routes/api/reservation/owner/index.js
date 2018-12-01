@@ -2,6 +2,8 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
+const reservation = require('../../../../db_apis/reservation.js');
+
 /* GET home page. 수락대기, 예약완료만*/
 router.get('/:id', async function(req, res, next) {
   const id = req.params.id // 점주 id 
@@ -11,43 +13,47 @@ router.get('/:id', async function(req, res, next) {
 
   const rows = await reservation.findOwner(context);
 
-  rows.forEach((v,i) => {
-    rows[i].endTime = new Date()
-    rows[i].times = []
-    rows[i].times.push({ id: 0, time: 1 })
-    rows[i].times.push({ id: 1, time: 1 })
-    rows[i].timeinterval = undefined
-    rows[i].progress = 100
-    rows[i].endTime.setTime(rows[i].endTime.getTime() + 100 * 60 * 1000)
+  let orders = rows[0]
+  let menu_names = rows[1]
+
+  orders.forEach((v,i) => {
+    orders[i].actice = false
+    orders[i].menu_name = menu_names[i]
   });
 
   console.log('==========>router result');
-  console.log(rows);
+  console.log(orders);
 
-  res.send(rows);
+  res.send(orders);
 
-  const reservItems = 
-  res.send(reservItems);
 });
 
 
 /* PUT 예약상태 수정 */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async function(req, res, next) {
   const id = req.params.id
-  var {status, code} = req.body
+  var status = req.body
 
   if(status === 'agree'){
     // 수락대기 -> 수락완료
     console.log(status)
-    status = 'agreeOk'
+    status = '예약완료'
   }
   else if(status === 'refuse'){
     // 거절
     console.log(status)
-    status = 'refuseOk'
+    status = '예약취소'
   }
-  console.log(code)
-  res.send(status);
+
+  let context = {};
+  context.order_code = id
+  context.order_status = status
+
+  const rows = await reservation.update(context);
+
+  if(rows) res.send(rows);
+  else res.status(404).end();
+  
 })
 
 router.all('*', function(req, res, next) {

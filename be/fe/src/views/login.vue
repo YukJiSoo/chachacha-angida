@@ -76,7 +76,7 @@ export default {
           }
           // localStorage.setItem('test', JSON.stringify(test));
           localStorage.setItem('id', this.id);
-          localStorage.setItem('code', 14);
+          localStorage.setItem('code', 3);
 
           if(r.data.mode == 'user') this.$router.push('/home');
           else this.$router.push('/ownerHome');
