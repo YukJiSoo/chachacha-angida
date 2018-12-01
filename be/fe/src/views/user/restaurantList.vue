@@ -19,7 +19,12 @@
             </v-layout>
           </v-container>
         </v-toolbar>
-
+        <v-flex v-if="!storeItems.length" xs12 sm12 class="pa-0 black">
+          <v-img
+            src="https://www.daelim.ac.kr/coming_soon.jpg"
+          >
+          </v-img>
+        </v-flex>
         <!-- 음식점 List -->
         <v-flex v-for="store in storeItems" xs12 class="pt-2">
           <v-layout row wrap align-center @click="toDetail(store.store_code)">
