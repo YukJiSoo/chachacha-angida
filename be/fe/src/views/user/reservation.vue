@@ -322,7 +322,6 @@
         minute: 0,
         peopleNum: 0,
         allPrice:0,
-        storeId: 0,
         hour: 0,
         minute: 0,
         peopleNum: 0,

@@ -14,11 +14,11 @@
               결제금액
             </div>
             <div class="pt-2 pb-2 font-weight-bold large">
-              <span>{{reservationInfo.allPrice-reservationInfo.pointUsing-reservationInfo.couponChoice.discount}}원</span>
+              <span>{{reservationInfo.total_price-reservationInfo.point_discount-couponChoice.coupon_discount}}원</span>
             </div>
             <div>
-              <span class="grey--text text--darken-2 small">포인트 - {{reservationInfo.pointUsing}}P</span>
-              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{reservationInfo.couponChoice.discount}}원</span>
+              <span class="grey--text text--darken-2 small">포인트 - {{reservationInfo.point_discount}}P</span>
+              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{couponChoice.coupon_discount}}원</span>
             </div>
           </v-flex>
         </v-layout>
@@ -26,13 +26,13 @@
     </v-layout>
 
     <!-- 결제수단 -->
-    <v-layout align-center column class="mt-4">
+    <v-layout align-center column class="mt-4 mb-3">
       <v-flex xs12 sm12>
         <v-dialog v-model="dialogPayRule" fullscreen hide-overlay transition="dialog-bottom-transition">
           <!-- 선택 -->
           <v-card hover slot="activator">
-            <div class="px-5 py-2 mx-5 xlarge " :class="`${reservationInfo.payMethod.color}--text`">
-              {{reservationInfo.payMethod.name}}
+            <div class="px-5 py-2 mx-5 xlarge " :class="`${payMethod.color}--text`">
+              {{payMethod.name}}
             </div>
           </v-card>
           <!-- 수단내역 새창출력-->
@@ -52,7 +52,7 @@
             </v-list>
 
             <!-- 결제수단-라디오그룹 -->
-            <v-radio-group v-model="reservationInfo.payMethod" class="ml-4 mt-2">
+            <v-radio-group v-model="payMethod" class="ml-4 mt-2">
               <v-radio
                 v-for="method in payMethods"
                 class="mb-4"
@@ -64,19 +64,6 @@
             </v-radio-group>
           </v-card>
         </v-dialog>
-      </v-flex>
-    </v-layout>
-
-    <!-- 요청사항 -->
-    <v-layout align-space-around column class="mx-2 mt-5">
-      <v-flex xs12 sm12>
-        <v-text-field
-          label="requirement"
-          placeholder="요청사항"
-          v-model="reservationInfo.requirement"
-          solo
-          class="xlarge"
-        ></v-text-field>
       </v-flex>
     </v-layout>
 
@@ -95,7 +82,7 @@
             <!-- 선택 -->
             <v-card slot="activator" class="px-4 py-2">
               <div class="medium grey--text text--darken-2">
-                {{reservationInfo.couponChoice.coupon_name}}
+                {{couponChoice.coupon_name}}
               </div>
             </v-card>
             <v-card>
@@ -114,7 +101,7 @@
             </v-list>
             
             <!-- 쿠폰-체크박스 -->
-            <v-radio-group v-model="reservationInfo.couponChoice" class="ml-4 mt-2">
+            <v-radio-group v-model="couponChoice" class="ml-4 mt-2">
               <v-radio
                 v-for="coupon in couponItems"
                 :value="coupon"
@@ -150,7 +137,7 @@
           </v-flex>
           <v-flex xs12>
             <div class="small grey--text text--darken-2">
-              {{reservationInfo.allPrice/100}}P 적립예정
+              {{reservationInfo.total_price/100}}P 적립예정
             </div>
           </v-flex>
         </v-layout>
@@ -174,7 +161,7 @@
               solo
               placeholder="0"
               hint="1000P 이상 사용가능"
-              v-model="reservationInfo.pointUsing"
+              v-model="reservationInfo.point_discount"
               persistent-hint
               class="medium"
             ></v-text-field>
@@ -205,27 +192,26 @@ export default {
   name: 'default',
   data () {
     return {
-      userId: 0,
       reservationInfo:{
-        storeId: '',
+        customer_code: '',
+        store_code: '',
         hour: 0,
         minute: 0,
-        peopleNum: 0,
-        allPrice: 0,
-        requirement: '',
+        no_of_people: 0,
+        total_price: 0,
         menuItems: {},
-        pointUsing: '',
-        couponChoice: {
-          coupon_name: '쿠폰을 선택해주세요',
-          discount_amount: 0,
-          coupon_code: 1
-        },
-        payMethod: {
-          name: '결제수단',
-          color: 'black'
-        },
+        point_discount: 0,
+        coupon_discount: 0, //
       },
-
+      payMethod: {
+        name: '결제수단',
+        color: 'black'
+      },
+      couponChoice: {
+        coupon_name: '쿠폰을 선택해주세요',
+        coupon_discount: 0,
+        coupon_code: 1
+      },
       pointHave: '',
 
       payMethods: [
@@ -254,15 +240,15 @@ export default {
   },
   mounted() {
     console.log(this.$route.params)
-    this.reservationInfo.storeId = this.$route.params.storeId
+    this.reservationInfo.store_code = this.$route.params.storeId
     this.reservationInfo.hour = this.$route.params.hour
     this.reservationInfo.minute = this.$route.params.minute
-    this.reservationInfo.peopleNum = this.$route.params.peopleNum
-    this.reservationInfo.allPrice = this.$route.params.allPrice
+    this.reservationInfo.no_of_people = this.$route.params.peopleNum
+    this.reservationInfo.total_price = this.$route.params.allPrice
     this.reservationInfo.menuItems = this.$route.params.cart
-    console.log(this.reservationInfo.menuItems)
+    
 
-    this.userId = localStorage.getItem('code')
+    this.reservationInfo.customer_code = localStorage.getItem('code')
 
     this.getCoupons()
     this.getPoint()
@@ -302,7 +288,7 @@ export default {
 
     },
     putPoint(){
-      var pointChange = this.pointHave - this.pointUsing
+      var pointChange = this.pointHave - this.point_discount
       this.$axios.put(`http://localhost:3000/api/point/${this.userId}`, { point: pointChange})
       .then((r) => {
         console.log(r.data)
@@ -327,13 +313,13 @@ export default {
       })
     },
     pay(){
-      this.putCoupon(this.reservationInfo.couponChoice.coupon_code)
+      this.putCoupon(this.couponChoice.coupon_code)
       this.putPoint()
       this.postReservation()
     },
     paySuccess(){
       alert("결제가 완료되었습니다. 예약 수락응답 기다려주세요.")
-      this.$router.push('/home')
+      //this.$router.push('/home')
     },
     payFail(){
       alert("결제에 실패했습니다.")
