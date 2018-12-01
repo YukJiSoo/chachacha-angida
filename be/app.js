@@ -31,16 +31,13 @@ startup();
 
 async function shutdown(e) {
   let err = e;
-
   console.log('Shutting down application');
 
   try {
     console.log('Closing web server module');
 
-    await webServer.close();
   } catch (e) {
     console.error(e);
-
     err = err || e;
   }
 
@@ -65,20 +62,17 @@ async function shutdown(e) {
 
 process.on('SIGTERM', () => {
   console.log('Received SIGTERM');
-
   shutdown();
 });
 
 process.on('SIGINT', () => {
   console.log('Received SIGINT');
-
   shutdown();
 });
 
 process.on('uncaughtException', err => {
   console.log('Uncaught exception');
   console.error(err);
-
   shutdown(err);
 });
 

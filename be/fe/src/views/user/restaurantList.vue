@@ -22,11 +22,11 @@
 
         <!-- 음식점 List -->
         <v-flex v-for="store in storeItems" xs12 class="pt-2">
-          <v-layout row wrap align-center @click="toDetail(store.storeId)">
+          <v-layout row wrap align-center @click="toDetail(store.STORE_ID)">
             <!-- 왼쪽-사진 -->
             <v-flex xs5 sm12 class="pa-0 black">
               <v-img
-                :src="`${store.img}`"
+                :src="`${store.PROFILE_IMG_URL}`"
               >
               </v-img>
             </v-flex>
@@ -36,7 +36,7 @@
                 <!-- 이름 -->
                 <v-flex xs12 sm12 class="pt-0 pb-0">
                   <div class="xlarge font-weight-bold black--text">
-                    <span>{{store.name}}</span>
+                    <span>{{store.STORE_NAME}}</span>
                   </div>
                 </v-flex>
                 <!-- 1행 -->
@@ -49,7 +49,7 @@
                     <!-- 별점-숫자 -->
                     <v-flex xs4 sm12 class="pa-0">
                       <div class="body-1 grey--text text--darken-2 font-weight-bold">
-                        <span>{{store.star}}</span>
+                        <span>{{store.TOTAL_RATE}}</span>
                       </div>
                     </v-flex>
                     <!-- 위치 -->
@@ -84,11 +84,14 @@
                 <v-flex xs12 sm12 class="pt-0 pb-1">
                   <v-layout align-center justify-center row fill-height>
                     <!-- 태그들 -->
-                    <v-flex v-for="tag in store.tags" xs4 sm12 class="pa-0">
+                    <!-- <v-flex v-for="tag in store.tags" xs4 sm12 class="pa-0">
                       <div class="medium pink--text text--lighten-3">
-                        <span>{{tag}}</span>
+                        <span>{{store.STORE_TAG}}</span>
                       </div>
-                    </v-flex>
+                    </v-flex> -->
+                    <div class="medium pink--text text--lighten-3">
+                      <span>{{store.STORE_TAG}}</span>
+                    </div>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -129,15 +132,16 @@ export default {
     },
   methods: {
     getStores () {
-      this.$axios.post('http://localhost:3000/api/store/list',{
+      this.$axios.post('http://localhost:3000/api/store/list'
+      ,{
         category: this.category,
         lat: this.lat,
         lng: this.lng,
         keyword: this.keyword,
         locationLimit: this.locationLimit,
-      })
+      }
+      )
       .then((r) => {
-        console.log(r.data)
         this.storeItems = r.data
         console.log(this.storeItems)
       })

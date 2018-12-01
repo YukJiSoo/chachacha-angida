@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     getMenuItem(menuId){
-      this.$axios.get(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`)
+      this.$axios.get(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`)
       .then((r) => {
         console.log(r.data)
 
@@ -131,7 +131,7 @@ export default {
 
     },
     postMenuItem(){
-      this.$axios.post(`http://localhost:3000/api/store/menu/${this.ownerCode}`,this.menu)
+      this.$axios.post(`http://localhost:3000/api/menu/${this.ownerCode}`,this.menu)
       .then((r) => {
         console.log(r.data)
       })
@@ -141,7 +141,7 @@ export default {
 
     },
     putMenuItem(menuId){
-      this.$axios.put(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`, this.menu)
+      this.$axios.put(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`, this.menu)
       .then((r) => {
         console.log(r.data)
       })

@@ -1,13 +1,11 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
+
 const cal = require('../../../models/distance')
+const database = require('../../../services/database.js');
+
 /* GET home page. */
-
-router.use('/menu', require('./menu'));
-router.use('/onOff', require('./onOff'));
-
-/* POST home page. */
 router.get('/:id', (req, res, next) => {
   const storeId = req.params
 
@@ -26,7 +24,7 @@ router.get('/:id', (req, res, next) => {
   res.send(storeInfo)
 })
 
-router.post('/list', function(req, res, next) {
+router.post('/list', async function(req, res, next) {
   console.log("list test");
   console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
   
@@ -36,20 +34,36 @@ router.post('/list', function(req, res, next) {
   var storeList = [
     {
       onOff: true,
-      name: '토끼정 강남점',
-      star: 5,
+      STORE_NAME: '토끼정 강남점',
+      TOTAL_RATE: 5,
       nowSeat: 10,
       limitSeat: 30,
-      tags: ['tag1','tag2','tag3'],
-      img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-      storeId: 123
+      STORE_TAG: ['tag1','tag2','tag3'], // 스트링 #~#~#~
+      PROFILE_IMG_URL: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
+      STORE_ID: 123
     }
   ]
-
 
   if(keyword) { }// 키워드 기반 검색
   else if(category) { }// 카테고리 기반 검색
   else {}// 위치기반 검색
+
+  const query = 'select * from restaurant';
+  try {
+    const context = {};
+
+    const result = await database.simpleExecute(query);
+    console.log(result.rows);
+    storeList = result.rows;
+
+    res.json(storeList)
+
+  } catch (err) {
+    next(err);
+  }
+
+  // console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
+
   
   //
   // 파라미터
@@ -63,7 +77,6 @@ router.post('/list', function(req, res, next) {
   // 계산한 거리를 오름차순으로 정렬한다.
   // 정렬 후 응답메시지로 정렬된 데이터를 보낸다.
 
-  res.json(storeList)
 });
 
 /* POST home page. */

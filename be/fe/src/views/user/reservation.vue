@@ -398,7 +398,7 @@
           : this.onboarding - 1
       },
       getMenu () {
-        this.$axios.get(`http://localhost:3000/api/store/menu/${this.storeId}`)
+        this.$axios.get(`http://localhost:3000/api/menu/${this.storeId}`)
         .then((r) => {
           console.log(r.data)
           this.menuItems = r.data
