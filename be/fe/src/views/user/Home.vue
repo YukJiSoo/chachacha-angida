@@ -283,6 +283,7 @@ import axios from 'axios'
       }
     },
     mounted () {
+      console.log(JSON.parse(localStorage.getItem('test')))
       // this.geolocation();
       this.$refs.mapRef.$mapPromise.then((map) => {
         // map.panTo({lat: 1.38, lng: 103.80})

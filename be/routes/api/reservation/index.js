@@ -36,17 +36,19 @@ router.get('/:id', async function(req, res, next) {
 router.post('/:id', async function(req, res, next){
   const id = req.params.id
   const reservationInfo = req.body
-  console.log(reservationInfo)
 
   let context = reservationInfo;
   context.order_status = '수락대기'
-  // context = await reservation.create(context);
+  context.review_status = 'N'
+  context.customer_code = parseInt(context.customer_code, 10)
 
-  // console.log(context)
+  console.log(context)
 
-  // res.send(context);
+  var success = await reservation.create(context);
 
+  console.log(success)
 
+  res.send(success);
 })
 
 

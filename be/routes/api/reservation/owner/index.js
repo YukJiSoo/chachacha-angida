@@ -2,35 +2,31 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/:id', function(req, res, next) {
+/* GET home page. 수락대기, 예약완료만*/
+router.get('/:id', async function(req, res, next) {
   const id = req.params.id // 점주 id 
-  const date = req.body.date // 디비에서 가져올 주문내역의 날짜
 
-  const reservItems = [
-    {
-      code: 2, // 주문코드
-      customerId: '주문자1',
-      active: false,
-      store_name: '강서 동국대점',
-      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
-      price: 20000,
-      reservation_time: '9/5 18:30',
-      arrival_time: '9/5 19:00',
-      status: '수락대기'
-    },
-    {
-      code: 2, // 주문코드
-      customerId: '주문자1',
-      active: false,
-      store_name: '강서 동국대점',
-      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
-      price: 20000,
-      reservation_time: '9/5 18:30',
-      arrival_time: '9/5 19:00',
-      status: '수락대기'
-    },
-  ]
+  const context = {};
+  context.id = id;
+
+  const rows = await reservation.findOwner(context);
+
+  rows.forEach((v,i) => {
+    rows[i].endTime = new Date()
+    rows[i].times = []
+    rows[i].times.push({ id: 0, time: 1 })
+    rows[i].times.push({ id: 1, time: 1 })
+    rows[i].timeinterval = undefined
+    rows[i].progress = 100
+    rows[i].endTime.setTime(rows[i].endTime.getTime() + 100 * 60 * 1000)
+  });
+
+  console.log('==========>router result');
+  console.log(rows);
+
+  res.send(rows);
+
+  const reservItems = 
   res.send(reservItems);
 });
 
