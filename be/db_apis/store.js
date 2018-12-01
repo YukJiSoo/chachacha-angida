@@ -22,10 +22,17 @@ async function find(context) {
   const binds = {};
 
   if (context.store_category_code) {
+    console.log("add category condition to query");
     binds.store_category_code = context.store_category_code;
     query += `\nand r.store_category_code = :store_category_code`;
   }
 
+  if (context.keyword) {
+    console.log("add keyword condition to query");
+    binds.keyword = context.keyword;
+    query += `\nand r.store_name LIKE '%:keyword%'`;
+  }
+  console.log("executing query:", query);
   const result = await database.simpleExecute(query, binds);
 
   return result.rows;

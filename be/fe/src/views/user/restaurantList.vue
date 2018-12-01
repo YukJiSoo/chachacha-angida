@@ -132,24 +132,16 @@ export default {
     },
   methods: {
     getStores () {
-      // if(this.category === 'AL')
-      //   this.category = undefined
-      // console.log(this.category, this.lat, this.lng, this.keyword, this.locationLimit)
+      var data = {};
+      data.lat = this.lat;
+      data.lng = this.lng;
+      data.locationLimit = this.locationLimit;
+      if (this.category !== 'AL') data.category = this.category;
+      if (this.keyword) data.keyword = this.keyword;
+      console.log(data);
       this.$axios.get('http://localhost:3000/api/store/', {
-        parmas: {
-          store_category_code: this.category,
-          lat: this.lat,
-          lng: this.lng,
-          keyword: this.keyword,
-          locationLimit: this.locationLimit
-        },
-        headers: {
-          store_category_code: this.category,
-          lat: this.lat,
-          lng: this.lng,
-          keyword: this.keyword,
-          locationLimit: this.locationLimit
-        }
+        parmas: data,
+        headers: data
       }).then((r) => {
         this.storeItems = r.data
         console.log(this.storeItems)
