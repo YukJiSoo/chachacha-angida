@@ -22,7 +22,7 @@
 
         <!-- 음식점 List -->
         <v-flex v-for="store in storeItems" xs12 class="pt-2">
-          <v-layout row wrap align-center @click="toDetail(store.STORE_ID)">
+          <v-layout row wrap align-center @click="toDetail(store.store_code)">
             <!-- 왼쪽-사진 -->
             <v-flex xs5 sm12 class="pa-0 black">
               <v-img
@@ -140,7 +140,7 @@ export default {
       if (this.keyword) data.keyword = this.keyword;
       console.log(data);
       this.$axios.get('http://localhost:3000/api/store/', {
-        parmas: data,
+        params: data,
         headers: data
       }).then((r) => {
         this.storeItems = r.data
@@ -150,8 +150,8 @@ export default {
         this.pop(e.message)
       })
     },
-    toDetail(storeId){
-      this.$router.push({path: '/restaurantDetail',query: {storeId: storeId}})
+    toDetail(store_code){
+      this.$router.push({path: '/restaurantDetail',query: {store_code: store_code}})
     }
   }
 }

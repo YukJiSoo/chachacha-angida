@@ -14,40 +14,40 @@ const store = require('../../../db_apis/store.js');
 
 router.get('/', async function(req, res, next) {
   console.log("list test");
-  console.log(req.headers);
+  console.log(req.query);
   try {
     const context = {};
-    if (req.headers.store_code) {
+    if (req.query.store_code) {
       console.log("params.store_code");
-      context.store_code = req.headers.store_code;
+      context.store_code = req.query.store_code;
     }
 
-    if (req.headers.store_category_code) {
+    if (req.query.store_category_code) {
       console.log("params.store_category_code");
-      // if(req.headers.store_category_code !== 'AL'){
-      //   context.store_category_code = req.headers.store_category_code;
+      // if(req.query.store_category_code !== 'AL'){
+      //   context.store_category_code = req.query.store_category_code;
       // }
     }
 
-    if (req.headers.keyword) {
+    if (req.query.keyword) {
       console.log("params.keyword");
-      context.keyword = req.headers.keyword;
+      context.keyword = req.query.keyword;
     }
 
     const rows = await store.find(context);
     console.log(rows);
 
     // 사용자의 현재 위치 기반의 위도, 경도 정보가 있다면 식당과의 거리를 계산한다.
-    if (req.headers.lat && req.headers.lng) {
-      let lat = req.headers.lat;
-      let lng = req.headers.lng;
+    if (req.query.lat && req.query.lng) {
+      let lat = req.query.lat;
+      let lng = req.query.lng;
       console.log(typeof lat);
       console.log(lat, ':',  lng);
       console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200));
     }
 
 
-    if (req.headers.store_code) {
+    if (req.query.store_code) {
       if (rows.length === 1) {
         res.status(200).json(rows[0]);
       } else {

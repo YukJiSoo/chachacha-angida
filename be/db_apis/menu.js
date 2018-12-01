@@ -5,19 +5,13 @@ const database = require('../services/database.js');
 // from restaurant r, seat_cur_status s where r.store_code = s.store_code;
 const baseQuery =
   `select
-    r.store_code "store_code",
-    store_name "store_name",
-    PROFILE_IMG_URL "profile_img_url",
-    TOTAL_RATE "total_rate",
-    latitude "latitude",
-    longitude "longitude",
-    STORE_TAG "store_tag",
-    address "address",
-    phone_no "phone_no",
-    seat_status "seat_status",
-    total_seat "total_seat"
-  from restaurant r, seat_cur_status s
-  where r.store_code = s.store_code`
+    menu_code "menu_code",
+    menu_name "menu_name",
+    menu_img_url "menu_img_url",
+    menu_price "menu_price",
+    menu_desc "menu_desc",
+    store_code "store_code"
+  from menu`
 
 async function find(context) {
   let query = baseQuery;
@@ -26,20 +20,9 @@ async function find(context) {
   if (context.store_code) {
     console.log("add store_code condition to query");
     binds.store_code = context.store_code;
-    query += `\nand r.store_code = :store_code`;
+    query += `\nwhere store_code = :store_code`;
   }
 
-  if (context.store_category_code) {
-    console.log("add category condition to query");
-    binds.store_category_code = context.store_category_code;
-    query += `\nand r.store_category_code = :store_category_code`;
-  }
-
-  if (context.keyword) {
-    console.log("add keyword condition to query");
-    binds.keyword = context.keyword;
-    query += `\nand r.store_name LIKE '%:keyword%'`;
-  }
   console.log("executing query:", query);
   const result = await database.simpleExecute(query, binds);
 
