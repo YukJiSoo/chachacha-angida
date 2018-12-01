@@ -17,13 +17,13 @@
                         required
                         label="ID"
                         color="white"
-                      ></v-text-field>
+                      >{{ id }}</v-text-field>
                       <v-text-field
                         v-model="password"
                         required
                         label="Password"
                         color="white"
-                      ></v-text-field>
+                      >{{ password }}</v-text-field>
                       <v-btn flat color="white" @click="signIn">
                         Login
                       </v-btn>
@@ -65,19 +65,25 @@ export default {
   methods: {
     signIn() {
       // 디비에서 비교하는 부분 추가
+      console.log(this.id, this.password)
       axios.post(`${this.$apiRoot}user/signin`, {
         id: this.id, password: this.password
       })
       .then((r) => {
-        if(r.data.success){
-          localStorage.setItem('id', this.id);
-          //localStorage.setItem('code', r.data.code);
-          localStorage.setItem('code', 'CU00000001');
+        if (r.data.success) {
+          // var test = {
+          //   id: this.id,
+          //   code: 14
+          // }
+          // localStorage.setItem('test', JSON.stringify(test));
+          //localStorage.setItem('id', this.id);
+          //localStorage.setItem('code', 14);
+          localStorage.setItem('customerInfo', JSON.stringify(r.data));
 
           if(r.data.mode == 'user') this.$router.push('/home');
           else this.$router.push('/ownerHome');
         }
-        else{
+        else {
           alert('로그인에 실패했습니다')
         }
       })
@@ -85,7 +91,7 @@ export default {
         this.pop(e.message)
         alert('로그인에 실패했습니다')
       })
-    
+
     }
   }
 }

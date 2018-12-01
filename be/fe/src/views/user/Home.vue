@@ -120,7 +120,7 @@
                             ref="mapRef"
                             :center="{lat:currentLocation.lat, lng:currentLocation.lng}"
                             :zoom="15"
-                            
+
                             map-type-id="terrain"
                             style="width: 550px; height: 300px"
                           >
@@ -209,6 +209,7 @@ import axios from 'axios'
     name: 'Home',
     data () {
       return {
+        customerInfo: {},
         myPagePath: {
           path: '/mypage'
         },
@@ -283,6 +284,9 @@ import axios from 'axios'
       }
     },
     mounted () {
+      this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
+      this.customerInfo.currentLocation = this.currentLocation
+      console.log(this.customerInfo)
       // this.geolocation();
       this.$refs.mapRef.$mapPromise.then((map) => {
         // map.panTo({lat: 1.38, lng: 103.80})

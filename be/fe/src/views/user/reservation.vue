@@ -504,8 +504,8 @@
           storeInfo: this.storeInfo,
           selected_hour: this.selected_hour,
           selected_minute: this.selected_minute,
-          peopleNum: this.peopleNum,
-          allPrice: this.allPrice,
+          no_of_people: this.peopleNum,
+          total_price: this.allPrice,
         }})
       }
     }

@@ -186,8 +186,6 @@ export default {
       this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`)
       .then((r) => {
         
-        // for(var i=0; i<r.data.length; i++)
-        // this.orderItems.push(r.data[i])
         this.orderItems = r.data
         console.log(this.orderItems)
       })

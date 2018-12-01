@@ -2,33 +2,33 @@ const oracledb = require('oracledb');
 const database = require('../services/database.js');
 
 const baseQuery =
- `select store_name "store_name",
- customer_code "customer_code",
- order_code "order_code",
- order_time "order_time",
- total_price "total_price",
- no_of_people "no_of_people",
- reserv_time "reserv_time",
- point_discount "point_discount",
- coupon_discount "coupon_discount",
- order_status "order_status",
- r.store_code "store_code",
- review_status "review_status"
- from reserv_order r, restaurant s`;
+ `select
+   c.customer_code "customer_code",
+   c.grade_code "grade_code",
+   customer_name "customer_name",
+   address "address",
+   phone_no "phone_no",
+   birth_date "birth_date",
+   profile_img_url "profile_img_url",
+   grade_name "grade_name",
+   point_rate "point_rate"
+ from customer c, membership_grade g
+ where c.grade_code = g.grade_code`;
 
 async function find(context) {
   let query = baseQuery;
   var binds = {};
 
-  if (context.id) {
-    binds.customer_code = context.id;
+  if (context.customer_id) {
+    console.log("db customer auth check")
+    binds.customer_id = context.customer_id;
+    binds.customer_password = context.customer_password;
     query +=
-    `\nwhere r.customer_code = :customer_code and r.store_code = s.store_code
-    order by order_code DESC`;
+    `\nand customer_id = :customer_id and customer_password = :customer_password`;
   }
-
+  console.log("dbstart")
   const result = await database.simpleExecute(query, binds);
-
+  console.log("dbresult:", result)
   return result.rows;
 }
 
@@ -112,24 +112,6 @@ const createMenuSql =
   :store_code,
   :menu_code
 ) `;
-
-async function createTransaction(context){
-  let query = baseQuery;
-  var binds = {};
-
-  //:store_code, :customer_code, :order_time, :reserv_time, :no_of_people, :total_price, :point_discount, :coupon_discount, :order_status, :review_status
-  if (context) {
-    console.log("createTransaction:")
-    binds = context
-    //query +=
-    //`\nwhere r.customer_code = :customer_code and r.store_code = s.store_code
-    //order by order_code DESC`;
-  }
-  const result = await database.simpleTrasaction(binds);
-
-  return result;
-}
-module.exports.createTransaction = createTransaction;
 
 async function create(context) {
   // reserv_order에 insert
