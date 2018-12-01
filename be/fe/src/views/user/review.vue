@@ -27,12 +27,12 @@
           <v-layout align-center column wrap>
             <v-flex xs12>
               <div class="large font-weight-bold pt-4">
-                <span>강서 동국대점</span>
+                <span>{{ store_name }}</span>
               </div>
             </v-flex>
             <v-flex xs12>
               <div class="medium py-1">
-                <span>총 <strong class="orange--text">10</strong>개의 리뷰가 있어요</span>
+                <span>총 <strong class="orange--text">{{ reviewItems.length }}</strong>개의 리뷰가 있어요</span>
               </div>
             </v-flex>
             <v-flex xs12>
@@ -49,14 +49,14 @@
         <v-card flat>
           <v-layout column wrap class="px-3 pt-2">
             <!-- 이용내역 아이템 -->
-            <v-layout v-for="i in 3" row wrap class="py-3">
+            <v-layout v-for="review in reviewItems" row wrap class="py-3">
 
               <!-- 가게이름, 예약날짜, 소멸예정날짜 -->
               <v-flex xs2>
                 <v-avatar>
+                  <!-- 이미지 -->
                   <img
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
-                    alt="John"
+                    :src="`${review.review_img_url}`"
                   >
                 </v-avatar>
               </v-flex>
@@ -67,13 +67,13 @@
                   <!-- 아이디 -->
                   <v-flex xs12 class="pl-2">
                     <div class="small">
-                      <span>wltn3231</span>
+                      <span>{{ review.customer_name }}</span>
                     </div>
                   </v-flex>
                   <!-- 날짜 -->
                   <v-flex xs12 class="pl-1">
                     <div class="small grey--text pt-1">
-                      <span>2018.10.03</span>
+                      <span>{{ review.review_date.substring(0, 10) }}</span>
                     </div>
                   </v-flex>
                   <!-- 별점 -->
@@ -86,11 +86,10 @@
                       readonly="true"
                     ></v-rating>
                   </v-flex>
-                  <!-- 이미지 -->
                   <!-- 내용 -->
                   <v-flex xs12>
                     <div class="small grey--text text--darken-1 pt-1">
-                      <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
+                      <span> {{ review.contents }}</span>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -111,12 +110,36 @@ export default {
   name: 'default',
   data () {
     return {
+      store_code: '',
+      store_name: '',
       rating: 4,
       writingPath: '/writingReview',
-      restaurantDetailPath: '/restaurantDetail'
+      restaurantDetailPath: '/restaurantDetail',
+      reviewItems: []
     }
   },
+  mounted () {
+    this.store_code = this.$route.query.store_code
+    this.store_name = this.$route.query.store_name
+    console.log("review store_code:", this.store_code, ", ", this.store_name)
+    this.getReview()
+  },
   methods: {
+    // 리뷰 정보 받아오기
+    getReview () {
+      var data = {};
+      data.store_code = this.store_code;
+      this.$axios.get(`http://localhost:3000/api/review`, {
+        params: data
+      })
+      .then((r) => {
+        console.log(r.data)
+        this.reviewItems = r.data
+      })
+      .catch((e) => {
+        this.pop(e.message)
+      })
+    },
   }
 }
 </script>

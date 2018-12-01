@@ -64,15 +64,15 @@
             <v-flex v-for="menuCategory in menuCategoryList" xs4>
               <!-- <router-link :to="restaurantListPath">
                 <img
-                  :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`"
+                  :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.store_category_code}`"
                   class="image" alt="lorem" width="100%" height="100%"
-                  @click="categorySearch(menuCategory.name)"
+                  @click="categorySearch(menuCategory.store_category_code)"
                   >
               </router-link> -->
               <img
-                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.name}`"
+                :src="`${menuCategory.url}`" :data-menu-name="`${menuCategory.store_category_code}`"
                 class="image" alt="lorem" width="100%" height="100%"
-                @click="categorySearch(menuCategory.name)">
+                @click="categorySearch(menuCategory.store_category_code, menuCategory.store_category_name)">
               <!-- <img :src="`https://randomuser.me/api/portraits/men/${i + 20}.jpg`" class="image" alt="lorem" width="100%" height="100%"> -->
             </v-flex>
           </v-layout>
@@ -108,22 +108,30 @@
                           <!-- <v-img
                             src="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
                           ></v-img> -->
-                          <GmapMap
+                          <!-- <GmapMap
                             ref="mapRef"
                             :center="{lat:currentLocation.lat, lng:currentLocation.lng}"
                             :zoom="15"
                             options="{disableDefaultUI:true}"
                             map-type-id="terrain"
                             style="width: 550px; height: 300px"
+                          > -->
+                          <GmapMap
+                            ref="mapRef"
+                            :center="{lat:currentLocation.lat, lng:currentLocation.lng}"
+                            :zoom="15"
+                            
+                            map-type-id="terrain"
+                            style="width: 550px; height: 300px"
                           >
-                            <GmapMarker
+                            <!-- <GmapMarker
                               :key="index"
                               v-for="(m, index) in markers"
                               :position="m.position"
                               :clickable="true"
                               :draggable="true"
                               @click="center=m.position"
-                            />
+                            /> -->
                           </GmapMap>
                         </v-flex>
                       </v-layout>
@@ -227,39 +235,48 @@ import axios from 'axios'
         searchWord:'',
         menuCategoryList:{
           category1:{
-            name: 'all',
+            store_category_code: 'AL',
+            store_category_name: '전체',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
           },
           category2:{
-            name: 'korea',
+            store_category_code: 'KO',
+            store_category_name: '한식',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fkorea.PNG?alt=media&token=eb829e31-3c5a-46b1-a9fa-64e057b5bf06',
           },
           category3:{
-            name: 'chicken',
+            store_category_code: 'CH',
+            store_category_name: '치킨',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fchicken.PNG?alt=media&token=10fe4622-8eaf-45b4-843a-0407af27f585',
           },
           category4:{
-            name: 'china',
+            store_category_code: 'CN',
+            store_category_name: '중국집',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fchina.PNG?alt=media&token=4d02ddf2-2b52-4c0c-a8a3-a4da091f23d4',
           },
           category5:{
-            name: 'japanese',
+            store_category_code: 'JP',
+            store_category_name: '일식/돈까스',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fjapan.PNG?alt=media&token=2c3e231e-e2cb-47f3-b727-9c2febc8f913',
           },
           category6:{
-            name: 'western',
+            store_category_code: 'WE',
+            store_category_name: '피자/양식',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fwestern.PNG?alt=media&token=dc96e7cb-414d-4c58-86eb-129404d3121e',
           },
           category7:{
-            name: 'bossam',
+            store_category_code: 'ZB',
+            store_category_name: '족발/보쌈',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fbossam.PNG?alt=media&token=4661f42e-55a3-406a-85fb-6e4a43483456',
           },
           category8:{
-            name: 'bunsik',
+            store_category_code: 'BU',
+            store_category_name: '분식',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fbunsik.PNG?alt=media&token=22da5759-c347-4b18-8c2c-aed5c44c6712',
           },
           category9:{
-            name: 'cafe',
+            store_category_code: 'CA',
+            store_category_name: '카페/디저트',
             url: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fcafe.PNG?alt=media&token=9a34a1d8-d905-4c20-8306-96c2c708cfee',
           }
         }
@@ -335,9 +352,10 @@ import axios from 'axios'
           lng: this.currentLocation.lng
         }});
       },
-      categorySearch(categoryName) { // 카테고리 기반 검색
+      categorySearch(store_category_code, store_category_name) { // 카테고리 기반 검색
         this.$router.push({path: '/restaurantList', query: {
-          category: categoryName,
+          category: store_category_code,
+          store_category_name: store_category_name,
           locationLimit: this.locationSlider,
           lat: this.currentLocation.lat,
           lng: this.currentLocation.lng

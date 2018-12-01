@@ -14,7 +14,7 @@
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">{{storeInfo.name}}</span>
+                <span class="font-weight-bold subheading">{{storeInfo.store_name}}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -27,20 +27,20 @@
             <!-- 사진 -->
             <v-flex xs12 sm12 class="pa-0 black">
               <v-img
-                :src="`${storeInfo.img}`"
+                :src="`${storeInfo.profile_img_url}`"
               >
               </v-img>
             </v-flex>
             <!-- 이름 -->
             <v-flex xs12 sm12 class="pt-4 pl-2 pb-0">
               <div class="font-use font-weight-bold" style="font-size:50px">
-                <span>{{storeInfo.name}}</span>
+                <span>{{storeInfo.store_name}}</span>
               </div>
             </v-flex>
             <!-- 간단한 설명 -->
             <v-flex xs12 sm12 class="pl-4 pt-3 pr-4">
               <div class="medium grey--text text--darken-2">
-                <span>{{storeInfo.explain}} </span>
+                <span>{{storeInfo.store_desc}} </span>
               </div>
             </v-flex>
           </v-layout>
@@ -54,13 +54,13 @@
                 <!-- 별 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:40px">
-                    <span>{{storeInfo.rating}}</span>
+                    <span>{{storeInfo.total_rate}}</span>
                   </div>
                 </v-flex>
                 <!-- 점수 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <v-rating
-                    v-model="storeInfo.rating"
+                    v-model="storeInfo.total_rate"
                     background-color="yellow darken-3"
                     color="yellow darken-3"
                     small
@@ -77,13 +77,13 @@
                 <!-- 리뷰-제목 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="medium text-xs-center black--text">
-                    <span>리뷰</span>
+                    <span>리뷰보기</span>
                   </div>
                 </v-flex>
                 <!-- 리뷰개수 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="font-use font-weight-bold red--text text-xs-center" style="font-size:50px">
-                    <span>{{storeInfo.reviewNum}}</span>
+                    <span>{{storeInfo.review_num}}</span>
                   </div>
                 </v-flex>
               </v-layout>
@@ -98,7 +98,7 @@
               <span>주소 : </span><span>{{storeInfo.address}}</span>
             </div>
             <div class="small grey--text text--darken-2">
-              <span>전화번호 : </span><span>{{storeInfo.phone}}</span>
+              <span>전화번호 : </span><span>{{storeInfo.phone_no}}</span>
             </div>
           </v-flex>
           <v-divider class="mt-2"></v-divider>
@@ -108,7 +108,7 @@
             <v-flex v-for="menu in menuItems" xs6 class="pa-1">
               <v-card @click="menuDialog = true">
                 <v-img
-                  :src="`${menu.image}`"
+                  :src="`${menu.menu_img_url}`"
                   aspect-ratio="1"
                 >
                 <!-- 메뉴이름 -->
@@ -116,10 +116,10 @@
                 <v-card-text class="pa-1">
                   <v-layout align-center justify-space-between column>
                     <v-flex xs12 class="pt-1 pb-0">
-                      <div class="py-0 medium font-weight-bold">{{menu.name}}</div>
+                      <div class="py-0 medium font-weight-bold">{{menu.menu_name}}</div>
                     </v-flex>
                     <v-flex xs12 class="pt-0 pb-1">
-                      <div class="py-0 small mx-5 body-1">{{menu.price}}</div>
+                      <div class="py-0 small mx-5 body-1">{{menu.menu_price}}</div>
                     </v-flex>
                   </v-layout>
                 </v-card-text>
@@ -129,16 +129,16 @@
                 max-width="290"
               >
                 <v-card>
-                  <v-card-title class="large">{{menu.name}}</v-card-title>
+                  <v-card-title class="large">{{menu.menu_name}}</v-card-title>
                   <v-img
-                    :src="`${menu.image}`"
+                    :src="`${menu.menu_img_url}`"
                     aspect-ratio="1"
                     width="100%"
                     height="100%"
                   >
                   </v-img>
                   <v-card-text class="medium">
-                    {{menu.explain}}
+                    {{menu.menu_desc}}
                   </v-card-text>
 
                   <v-card-actions>
@@ -188,21 +188,22 @@ export default {
   name: 'default',
   data () {
     return {
-      storeId: '',
+      store_code: '',
       storeInfo:{},
       menuItems: [],
 
       reservationPath: {
         path: '/reservation',
         query: {
-          storeId:'',
+          store_code:'',
           name:''
         }
       },
       reviewPath: {
         path: '/review',
         query: {
-          storeId:''
+          store_code:'',
+          store_name:''
         }
       },
 
@@ -210,27 +211,37 @@ export default {
     }
   },
   mounted() {
-    this.storeId = this.$route.query.storeId
-    this.reservationPath.query.storeId = this.storeId
-    this.reviewPath.query.storeId = this.storeId
-
+    this.store_code = this.$route.query.store_code
+    console.log("passed store_code:", this.store_code);
     this.getStore()
     this.getMenu()
+    this.reservationPath.query.store_code = this.store_code
   },
   methods: {
     // 서버에서 가게정보 받아옴
     getStore () {
-      this.$axios.get(`http://localhost:3000/api/store/${this.storeId}`)
+      var data = {};
+      data.store_code = this.store_code;
+      this.$axios.get(`http://localhost:3000/api/store`, {
+        params: data
+      })
       .then((r) => {
         console.log(r.data)
         this.storeInfo = r.data
+        this.reviewPath.query.store_code = this.store_code
+        this.reviewPath.query.store_name = this.storeInfo.store_name
       })
       .catch((e) => {
       this.pop(e.message)
       })
     },
+    // 메뉴 정보 받아오기
     getMenu () {
-      this.$axios.get(`http://localhost:3000/api/menu/${this.storeId}`)
+      var data = {};
+      data.store_code = this.store_code;
+      this.$axios.get(`http://localhost:3000/api/menu`, {
+        params: data
+      })
       .then((r) => {
         console.log(r.data)
         this.menuItems = r.data
@@ -243,8 +254,8 @@ export default {
       this.$router.push({
         path: '/reservation',
         query: {
-          storeId:this.storeId,
-          name:this.storeInfo.name
+          store_code:this.store_code,
+          store_name:this.storeInfo.store_name
         }
       })
     }
