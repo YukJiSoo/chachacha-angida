@@ -2,7 +2,7 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET home page. */
+/* GET 점주정보가져오기 */
 router.get('/:id', function(req, res, next) {
   const id = req.params.id
   console.log(id)
@@ -23,32 +23,38 @@ router.get('/:id', function(req, res, next) {
   res.json(userInfo);
 });
 
-/* POST home page. */
+/* POST 점주 회원가입*/
 router.post('/', (req, res, next) => {
+  const info = req.body
+  console.log(info)
+  // 넘어오는 회원정보 형식
+  // info = {
+  //   name: '',
+  //   email: '',
+  //   password: '',
+  //   phone: '',
+  //   image: '',
+  //   address: '',
+  //   birth: ''
+  // }
+  var success = false; // 성공인지 아닌지
   
+  /*
+  디비쪽 구현 필요 - insert
+  */
+
+  if(success) res.json({ success: true})
+  else res.json({ success: false }) 
 })
 
-/* PUT home page. */
+/* PUT 점주 회원정보 변경 */
 router.put('/:id', (req, res, next) => {
-  const id = req.params.id
-  console.log(id)
-  
-  const userInfo = req.body
 
-  res.json(userInfo);
 })
 
-/* DELETE home page. */
+/* DELETE 점주 회원탈퇴 */
 router.delete('/:id', (req, res, next) => {
-  const id = req.params.id
-  User.deleteOne({ _id: id })
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  res.send({ success: true, msg: 'del ok' })
+
 })
 
 router.all('*', function(req, res, next) {

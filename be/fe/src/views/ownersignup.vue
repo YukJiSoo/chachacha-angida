@@ -168,9 +168,7 @@ export default {
       sex: 'man',
       phoneMask: '(###)-####-####',
       image: '',
-      info:{
-        role:'owner'
-      },
+      info:{},
       rules: {
         email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
         length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
@@ -184,9 +182,22 @@ export default {
     goBack(){
       window.history.back();
     },
-      submit(){
-        alert('회원가입되었습니다'),
+    submit(){
+      this.postUser()
+    },
+    postUser(){
+      this.$axios.post(`${this.$apiRoot}user/owner`, this.info)
+      .then((r) => {
+        if(r.data.success) {
+          alert('회원가입되었습니다. 로그인해주세요')
+        }
+        else alert('회원가입에 실패했어요')
         this.$router.push('/')
+      })
+      .catch((e) => {
+        alert('회원가입에 실패했어요')
+        this.pop(e.message)
+      })
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;

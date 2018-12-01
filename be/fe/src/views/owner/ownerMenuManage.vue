@@ -64,7 +64,7 @@ export default {
       this.$router.push('/')
     },
     getMenuList(){
-      axios.get(`http://localhost:3000/api/store/menu/${this.ownerCode}`)
+      axios.get(`http://localhost:3000/api/menu/${this.ownerCode}`)
       .then((r) => {
         this.items = r.data
         console.log(this.items)
@@ -74,7 +74,7 @@ export default {
       })
     },
     deleteMenuItem(menuId){
-      this.$axios.delete(`http://localhost:3000/api/store/menu/${this.ownerCode}/${menuId}`)
+      this.$axios.delete(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`)
       .then((r) => {
         var success = r.data
         if(success) alert("삭제되었습니다.")

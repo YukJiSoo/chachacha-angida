@@ -2,6 +2,8 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
+router.use('/menu', require('./menu'));
+router.use('/onOff', require('./onOff'));
 router.use('/user', require('./user'));
 router.use('/dbtest', require('./dbtest'));
 router.use('/store', require('./store'));

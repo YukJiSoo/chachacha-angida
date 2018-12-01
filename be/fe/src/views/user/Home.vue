@@ -204,9 +204,6 @@ import axios from 'axios'
         myPagePath: {
           path: '/mypage'
         },
-        restaurantListPath: {
-          path: '/restaurantList'
-        },
         size: 'sm',
         ad_items: [
           {
@@ -330,9 +327,6 @@ import axios from 'axios'
       }
     },
     methods: {
-      goToPageWithCategory (category){
-        console.log(category);
-      },
       keywordSearch() { // 키워드 기반 검색
         this.$router.push({path: '/restaurantList', query: {
           keyword: this.searchWord,

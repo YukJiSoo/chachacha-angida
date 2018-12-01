@@ -66,19 +66,19 @@ router.get('/:id', function(req, res, next) {
   res.send({reserv_list: reserv_lists});
 });
 
+/* post 예약 추가 */
+router.post('/:id', (req, res, next) => {
+  const id = req.params.id
+  const reservationInfo = req.body
+  var success = true
+
+  res.send(success)
+})
+
 
 /* PUT 예약상태 수정 */
 router.put('/:id', (req, res, next) => {
-  const id = req.params.id
-  const { name, age } = req.body
-  User.updateOne({ _id: id }, { $set: { name, age }})
-    .then(r => {
-      res.send({ success: true, msg: r })
-    })
-    .catch(e => {
-      res.send({ success: false, msg: e.message })
-    })
-  // res.send({ success: true, msg: 'put ok' })
+  
 })
 
 router.all('*', function(req, res, next) {

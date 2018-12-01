@@ -6,14 +6,13 @@ var router = express.Router();
 router.get('/list/:id', function(req, res, next) {
   console.log('유저 쿠폰 리스트 받아오기  - 디비 연결 추가해야함')
   const id = req.params.id
-  console.log(id)
 
-  res.json([
+  var couponItems = [
     { 
-    name:'생일 기념 할인 쿠폰',
-    firstDay: '2018.11.27',
-    lastDay: '2018.12.27',
-    discount: 1000
+      name:'생일 기념 할인 쿠폰',
+      firstDay: '2018.11.27',
+      lastDay: '2018.12.27',
+      discount: 2000
     },
     { 
       name:'생일 기념 할인 쿠폰',
@@ -21,7 +20,9 @@ router.get('/list/:id', function(req, res, next) {
       lastDay: '2018.12.27',
       discount: 1000 
     }
-  ])
+  ]
+
+  res.send(couponItems)
 });
 
 router.all('*', function(req, res, next) {
