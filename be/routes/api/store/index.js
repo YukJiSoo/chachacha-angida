@@ -6,10 +6,27 @@ const cal = require('../../../models/distance')
 
 router.use('/menu', require('./menu'));
 router.use('/onOff', require('./onOff'));
-
-router.get('/list', function(req, res, next) {
+const database = require('../../../services/database.js');
+router.get('/list', async function(req, res, next) {
   console.log("list test");
-  console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
+  const query = 'select * from restaurant';
+  try {
+    const context = {};
+
+    const result = await database.simpleExecute(query);
+    console.log(result);
+    const rows = result.rows;
+
+    res.send(rows);
+
+  } catch (err) {
+    next(err);
+  }
+
+
+
+
+  // console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
 
   //
   // 파라미터
