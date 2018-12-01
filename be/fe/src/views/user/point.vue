@@ -31,13 +31,8 @@
               </div>
             </v-flex>
             <v-flex xs12>
-              <div class="medium pt-1">
+              <div class="medium grey--text pt-1 pb-3">
                 <span>1000원이상 100원 단위로 사용 가능</span>
-              </div>
-            </v-flex>
-            <v-flex xs12>
-              <div class="medium grey--text py-3">
-                <span>이번 달 소멸 예정포인트 {{pointRemove}}원</span>
               </div>
             </v-flex>
           </v-layout>
@@ -64,12 +59,12 @@
                 <v-layout column wrap>
                   <v-flex xs12>
                     <div class="medium ">
-                      <span>{{pointItem.store}}</span>
+                      <span>{{pointItem.STORE_NAME}}</span>
                     </div>
                   </v-flex>
                   <v-flex xs12>
                     <div class="medium grey--text pt-1">
-                      <span>{{pointItem.date}} ({{getPointRemoveDay(pointItem.date)}})</span>
+                      <span>{{pointItem.OCCUR_DATE}} ({{getPointRemoveDay(pointItem.OCCUR_DATE)}})</span>
                     </div>
                   </v-flex>
                 </v-layout>                  
@@ -78,7 +73,7 @@
               <!-- 적립, 소멸포인트 값 -->
               <v-flex xs3>
                 <div class="medium orange--text pt-2">
-                  <span>+{{pointItem.point}}원 적립</span>
+                  <span>+{{pointItem.OCCUR_POINT}}원 적립</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -101,15 +96,9 @@ export default {
     return {
       mypagePath:'/mypage',
       userCode: localStorage.getItem('code'),
+      
       pointHave: 0,
-      pointRemove: 0,
-      pointHistorys: [
-        {
-          store: '',
-          date: '',
-          point: '',
-        }
-      ],
+      pointHistorys: [],
       
     }
   },
@@ -118,8 +107,14 @@ export default {
 
     this.getPoint()
     this.getPointHistory()
+    this.getTotalPoint()
   },
   methods: {
+    getTotalPoint(){
+      this.pointHistorys((v) => {
+        this.pointHave += v.OCCUR_POINT
+      })
+    },
     getPoint(){
       axios.get(`http://localhost:3000/api/point/${this.userCode}`)
       .then((r) => {
@@ -135,10 +130,8 @@ export default {
       axios.get(`http://localhost:3000/api/point/list/${this.userCode}`)
       .then((r) => {
         console.log(r.data)
-        for(var i=0; i<r.data.length; i++){
-          console.log(r.data[i])
-          this.pointHistorys.push(r.data[i])
-        }
+        this.pointHistorys = r.data
+        
       })
       .catch((e) => {
       this.pop(e.message)

@@ -96,6 +96,7 @@ export default {
   name: 'default',
   data () {
     return {
+      userCode : localStorage.getItem('code'),
       mypagePath:'/mypage',
       reservationPage:'/reservation',
       writingReviewPage:'/writingReview',
@@ -181,9 +182,11 @@ export default {
       }
     },
     getReservationHistory(){
-      axios.get('http://localhost:3000/api/reservation/${this.userCode}`')
+      this.$axios.get(`http://localhost:3000/api/reservation/${this.userCode}`)
       .then((r) => {
         this.items = r.data.reserv_list
+
+        // 확인
         console.log(this.items)
         for(var item in this.items){
           console.log(item.endTime);

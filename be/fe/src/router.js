@@ -165,11 +165,6 @@ export default new Router({
     //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     // },
     {
-      path: '/user',
-      name: 'user',
-      component: () => import('./views/user/user.vue')
-    },
-    {
       path: '/reservation',
       name: 'reservation',
       component: () => import('./views/user/reservation.vue')

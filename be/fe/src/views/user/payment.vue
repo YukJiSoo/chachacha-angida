@@ -95,7 +95,7 @@
             <!-- 선택 -->
             <v-card slot="activator" class="px-4 py-2">
               <div class="medium grey--text text--darken-2">
-                {{reservationInfo.couponChoice.name}}
+                {{reservationInfo.couponChoice.coupon_name}}
               </div>
             </v-card>
             <v-card>
@@ -121,7 +121,7 @@
                 color="orange"
                 class="mb-4"
               >
-                <div slot="label" class="xlarge black-text">{{coupon.name}}</div>
+                <div slot="label" class="xlarge black-text">{{coupon.coupon_name}}</div>
               </v-radio>
             </v-radio-group>
 
@@ -188,7 +188,7 @@
     <v-layout align-center column class="mt-5">
       <v-flex xs12>
         <div>
-          <v-btn class="angida-gradiation px-5" dark large @click="postReservation">
+          <v-btn class="angida-gradiation px-5" dark large @click="pay">
             <div class="large px-5" >
               결제하기
             </div>
@@ -216,8 +216,9 @@ export default {
         menuItems: {},
         pointUsing: '',
         couponChoice: {
-          name: '쿠폰을 선택해주세요',
-          discount: 0
+          coupon_name: '쿠폰을 선택해주세요',
+          discount_amount: 0,
+          coupon_code: 1
         },
         payMethod: {
           name: '결제수단',
@@ -270,7 +271,6 @@ export default {
     getCoupons(){
       this.$axios.get(`http://localhost:3000/api/coupon/list/${this.userId}`)
       .then((r) => {
-        
         this.couponItems = r.data
       })
       .catch((e) => {
@@ -282,7 +282,33 @@ export default {
       this.$axios.get(`http://localhost:3000/api/point/${this.userId}`)
       .then((r) => {
         
-        this.pointHave = r.data.point
+        this.pointHave = r.data.TOTAL_POINT
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
+    putCoupon(couponId){
+      this.$axios.put(`http://localhost:3000/api/coupon/${this.userId}/${couponId}`,{status: 'N'})
+      .then((r) => {
+        console.log(r.data)
+
+        if(r.data) this.paySuccess()
+        else this.payFail()
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+
+    },
+    putPoint(){
+      var pointChange = this.pointHave - this.pointUsing
+      this.$axios.put(`http://localhost:3000/api/point/${this.userId}`, { point: pointChange})
+      .then((r) => {
+        console.log(r.data)
+
+        if(r.data) this.paySuccess()
+        else this.payFail()
       })
       .catch((e) => {
       this.pop(e.message)
@@ -299,6 +325,11 @@ export default {
       .catch((e) => {
       this.pop(e.message)
       })
+    },
+    pay(){
+      this.putCoupon(this.reservationInfo.couponChoice.coupon_code)
+      this.putPoint()
+      this.postReservation()
     },
     paySuccess(){
       alert("결제가 완료되었습니다. 예약 수락응답 기다려주세요.")

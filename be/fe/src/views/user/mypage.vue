@@ -54,7 +54,7 @@
               </v-flex>
               <v-flex xs12 sm6 class="pt-0 pl-2">
                 <div class="medium orange--text text--darken-4 font-weight-bold">
-                  <span>{{point}}p</span>
+                  <span>{{TOTAL_POINT}}p</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -93,7 +93,7 @@ export default {
     return {
       myId: localStorage.getItem('id'),
       userCode: localStorage.getItem('code'),
-      point: 0,
+      TOTAL_POINT: 0,
 
       mainPath: '/home',
       message: [
@@ -180,7 +180,7 @@ export default {
       axios.get(`http://localhost:3000/api/point/${this.userCode}`)
       .then((r) => {
         console.log(r.data)
-        this.point = r.data.point
+        this.TOTAL_POINT = r.data.TOTAL_POINT
       })
       .catch((e) => {
       this.pop(e.message)
