@@ -24,9 +24,7 @@ router.get('/', async function(req, res, next) {
 
     if (req.query.store_category_code) {
       console.log("params.store_category_code");
-      // if(req.query.store_category_code !== 'AL'){
-      //   context.store_category_code = req.query.store_category_code;
-      // }
+      context.store_category_code = req.query.store_category_code;
     }
 
     if (req.query.keyword) {

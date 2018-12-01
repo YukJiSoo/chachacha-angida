@@ -14,7 +14,7 @@
           <v-container class="pa-0">
             <v-layout align-center column>
               <v-flex xs12 sm12>
-                <span class="font-weight-bold subheading">토끼정</span>
+                <span class="font-weight-bold subheading">{{ store_category_name }}</span>
               </v-flex>
             </v-layout>
           </v-container>
@@ -112,6 +112,7 @@ export default {
   data () {
     return {
       category:'',
+      store_category_name:'',
       lat:0,
       lng:0,
       keyword:'',
@@ -123,6 +124,7 @@ export default {
   },
     mounted() {
       this.category = this.$route.query.category
+      this.store_category_name = this.$route.query.store_category_name
       this.lat = this.$route.query.lat
       this.lng = this.$route.query.lng
       this.keyword = this.$route.query.keyword
@@ -136,7 +138,7 @@ export default {
       data.lat = this.lat;
       data.lng = this.lng;
       data.locationLimit = this.locationLimit;
-      if (this.category !== 'AL') data.category = this.category;
+      if (this.category !== 'AL') data.store_category_code = this.category;
       if (this.keyword) data.keyword = this.keyword;
       console.log(data);
       this.$axios.get('http://localhost:3000/api/store/', {
