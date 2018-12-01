@@ -77,7 +77,7 @@
                 <!-- 리뷰-제목 -->
                 <v-flex xs12 sm12 class="pa-0">
                   <div class="medium text-xs-center black--text">
-                    <span>리뷰</span>
+                    <span>리뷰보기</span>
                   </div>
                 </v-flex>
                 <!-- 리뷰개수 -->
@@ -202,7 +202,8 @@ export default {
       reviewPath: {
         path: '/review',
         query: {
-          store_code:''
+          store_code:'',
+          store_name:''
         }
       },
 
@@ -211,11 +212,10 @@ export default {
   },
   mounted() {
     this.store_code = this.$route.query.store_code
-    this.reservationPath.query.store_code = this.store_code
-    this.reviewPath.query.store_code = this.store_code
     console.log("passed store_code:", this.store_code);
     this.getStore()
     this.getMenu()
+    this.reservationPath.query.store_code = this.store_code
   },
   methods: {
     // 서버에서 가게정보 받아옴
@@ -228,6 +228,8 @@ export default {
       .then((r) => {
         console.log(r.data)
         this.storeInfo = r.data
+        this.reviewPath.query.store_code = this.store_code
+        this.reviewPath.query.store_name = this.storeInfo.store_name
       })
       .catch((e) => {
       this.pop(e.message)
