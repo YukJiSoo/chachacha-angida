@@ -46,14 +46,14 @@
         <v-list-tile slot="activator">
           <v-list-tile-content>
             <!--주문자와 가격-->
-            <v-list-tile-title class="xlarge">{{item.customerId}} - {{item.price}}</v-list-tile-title>
+            <v-list-tile-title class="medium">{{item.CUSTOMER_ID}} - {{item.TOTAL_PRICE}}원 {{item.RESERV_TIME.substring(0,10)}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-for="menu in item.menu_list">
+        <v-list-tile v-for="menu in item.menu_name">
           <div class="medium">{{ menu }}</div>
         </v-list-tile>
         <!--주문시간-->
-        <div class="medium">{{item.reservation_time}}</div>
+        <div class="medium">예약 시간 : {{item.RESERV_TIME.substring(11,16)}} </div>
       </v-list-group>
     </v-list>
     </v-card>
@@ -78,22 +78,17 @@ export default {
       saleItems: []
     }
   },
-  methods: {
-    sum(){
-      for(item in this.items) {
-        this.totalcost += item.cost;
-      }
-    },
+  methods: { 
     // 날짜를 넘겨주고 그에 해당되는 날짜를 받아오기로, 날짜형식:2018-11-08
     getSaleList(date){
-      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`,{date: date})
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/${this.ownerCode}`)
       .then((r) => {
         this.saleItems = r.data
         console.log(r.data)
         
         this.totalcost = 0
         this.saleItems.forEach( (v,i) => {
-          this.totalcost = this.totalcost + v.price
+          this.totalcost = this.totalcost + v.total_price
         });
       
       })

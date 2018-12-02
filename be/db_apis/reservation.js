@@ -30,10 +30,9 @@ async function find(context) {
   const result = await database.simpleExecute(query, binds);
 
   return result.rows;
+
 }
-
 module.exports.find = find;
-
 
 const ownerQuery =`select 
 customer_id,
@@ -96,6 +95,53 @@ async function findOwner(context) {
 
 module.exports.findOwner = findOwner;
 
+async function findOwnerAll(context) {
+  let query = ownerQuery;
+
+  const binds = {};
+  console.log(context)
+  if (context.id) {
+    binds.store_code = parseInt(context.id, 10);
+    query += 
+    `\nwhere r.store_code = :store_code
+    and r.customer_code = c.customer_code 
+    order by order_code DESC`;
+  }
+  
+  console.log(binds)
+  const result = await database.simpleExecute(query, binds);
+
+  console.log(result.rows)
+
+  let menu_names = []
+  for(var i=0; i< result.rows.length; i++){
+    const menu_item = result.rows[i]
+
+    let menuContext = {}
+    menuContext.order_code = menu_item.ORDER_CODE
+    menuContext.store_code = context.id
+
+    let tempQuery = menuQuery
+    console.log('od : ',menuContext.order_code, ' st : ', menuContext.store_code)
+    tempQuery += `\nwhere 
+    i.order_code = :order_code and i.store_code = :store_code and i.store_code = m.store_code and i.menu_code = m.menu_code`;
+
+    const menuResult = await database.simpleExecute(tempQuery, menuContext);
+
+    let menu_list = []
+    menuResult.rows.forEach((v,i) => {
+      menu_list.push(v.menu_name)
+    });
+    
+    console.log(menu_list)
+    
+    menu_names.push(menu_list)
+  }
+  
+  return [result.rows, menu_names];
+}
+
+module.exports.findOwnerAll = findOwnerAll;
 
 const createOrderSql =
  `insert into reserv_order (
