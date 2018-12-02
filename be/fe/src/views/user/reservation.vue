@@ -6,7 +6,7 @@
         <v-layout align-center justify-space-between row>
           <v-flex xs7 sm12>
             <div class="pt-3 pl-3 pb-2 large">
-            {{name}}
+            {{this.storeInfo.store_name}}
             </div>
           </v-flex>
           <v-flex xs4 sm12>
@@ -27,21 +27,21 @@
                 <v-layout align-center justify-center row fill-height>
                   <v-flex xs12 sm6>
                     <div class="grey--text text--darken-0 xlarge mt-5 pt-5">
-                    " 언제 도착 하시나요?
+                    " 언제 도착 하시나요? "
                     </div>
                     <div class="font-weight-black xlarge mt-5 pt-5">
                       <v-layout align-center justify-center class="pl-2">
                         <v-flex xs3>
                           <v-combobox
-                            v-model="hour"
-                            :items="items"
+                            v-model="selected_hour"
+                            :items="hoursItems"
                             suffix="시"
                           ></v-combobox>
                         </v-flex>
                         <v-flex xs3>
                           <v-combobox
-                            v-model="minute"
-                            :items="items2"
+                            v-model="selected_min"
+                            :items="minItems"
                             suffix="분"
                           ></v-combobox>
                         </v-flex>
@@ -68,7 +68,7 @@
                         <v-flex xs3 >
                           <v-combobox
                             v-model="peopleNum"
-                            :items="items3"
+                            :items="peopleItems"
                             suffix="명"
                           ></v-combobox>
                         </v-flex>
@@ -97,7 +97,7 @@
                           <v-card>
                             <v-img
                               :menuSelected="`${menu.selected}`"
-                              :src="`${menu.image}`"
+                              :src="`${menu.menu_img_url}`"
                               aspect-ratio="1"
                               @click="choiceMenu(menu)"
                               :class="{'v-card--reveal': menu.selected}"
@@ -107,10 +107,10 @@
                             <v-card-text class="pa-1" @click="menuDialog = true">
                               <v-layout justify-space-between column>
                                 <v-flex xs12 class="pt-1 pb-0">
-                                  <div class="py-0 medium font-weight-bold">{{menu.name}}</div>
+                                  <div class="py-0 medium font-weight-bold">{{menu.menu_name}}</div>
                                 </v-flex>
                                 <v-flex xs12 class="pt-0 pb-1">
-                                  <div class="py-0 mx-5 small">{{menu.price}}</div>
+                                  <div class="py-0 mx-5 small">{{menu.menu_price}}</div>
                                 </v-flex>
                               </v-layout>
                             </v-card-text>
@@ -120,16 +120,16 @@
                             max-width="290"
                           >
                             <v-card>
-                              <v-card-title class="large">{{menu.name}}</v-card-title>
+                              <v-card-title class="large">{{menu.menu_name}}</v-card-title>
                               <v-img
-                                :src="`${menu.image}`"
+                                :src="`${menu.menu_img_url}`"
                                 aspect-ratio="1"
                                 width="100%"
                                 height="100%"
                               >
                               </v-img>
                               <v-card-text class="medium">
-                                {{menu.explain}}
+                                {{menu.menu_desc}}
                               </v-card-text>
 
                               <v-card-actions>
@@ -176,6 +176,7 @@
                   color="deep-orange lighten-1"
                   class="xlarge white--text px-5"
                   @click="next"
+                  block
                 >
                   다음
                 </v-btn>
@@ -208,7 +209,7 @@
                             <v-flex xs6 sm6>
                               <div class="medium text--darken-2">
                                 <span>최소결제금액 : </span>
-                                <span>10000원</span>
+                                <span>{{ minimun_price }}원</span>
                               </div>
                             </v-flex>
                             <v-flex xs6 sm6>
@@ -219,27 +220,27 @@
                             </v-flex>
                           </v-layout>
 
-                          <v-container v-for="menu in cart" class="px-0">
+                          <v-container v-for="menu_in_cart in cart" class="px-0">
                             <v-layout align-center justify-center row fill-height>
                               <v-flex xs6 sm6>
                                 <div class="xlarge text--darken-2">
-                                  <span>{{menu.name}}</span>
+                                  <span>{{menu_in_cart.menu_name}}</span>
                                 </div>
                               </v-flex>
 
                               <v-layout text-xs-center align-center justify-space-arround row fill-height class="ml-5 mb-1">
                                 <v-flex xs3 sm6 class="pa-0 mr-2">
-                                  <v-btn icon small dark color="orange" @click="countDown(menu)">
+                                  <v-btn icon small dark color="orange" @click="countDown(menu_in_cart)">
                                     <v-icon dark>remove</v-icon>
                                   </v-btn>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
                                   <div class="large text--darken-2">
-                                    <span>{{menu.num}}</span>
+                                    <span>{{menu_in_cart.menu_num}}</span>
                                   </div>
                                 </v-flex>
                                 <v-flex xs3 sm6 class="pa-0">
-                                  <v-btn icon small dark color="orange" @click="countUp(menu)">
+                                  <v-btn icon small dark color="orange" @click="countUp(menu_in_cart)">
                                     <v-icon dark>add</v-icon>
                                   </v-btn>
                                 </v-flex>
@@ -249,7 +250,7 @@
                             <v-layout align-end justify-end row fill-height>
                               <v-flex xs3 sm6>
                                 <div class="grey--text small text--darken-2">
-                                  <span>{{menu.price*menu.num}}원</span>
+                                  <span>{{menu_in_cart.menu_price*menu_in_cart.menu_num}}원</span>
                                 </div>
                               </v-flex>
                             </v-layout>
@@ -278,7 +279,7 @@
                       </v-flex>
                       <v-flex xs3 sm6 class="px-0">
                         <div class="medium text--darken-2">
-                          <span>10000원</span>
+                          <span>{{ minimun_price }}원</span>
                         </div>
                       </v-flex>
                       <v-flex xs3 sm6 class="px-0">
@@ -297,11 +298,22 @@
                   <!-- 결제버튼 -->
                   <v-flex class="pb-0 pt-0">
                     <v-btn
+                      v-if="minimun_price <= allPrice"
                       color="deep-orange lighten-1 "
                       class="xlarge white--text px-5"
                       @click="pay"
+                      block
                     >
                       결제하기
+                    </v-btn>
+                    <v-btn
+                      v-else
+                      color="deep-orange lighten-1 "
+                      class="xlarge white--text px-5"
+                      block
+                      disabled
+                    >
+                      최소결제금액을 채워주세요!
                     </v-btn>
                   </v-flex>
                 </v-layout>
@@ -318,29 +330,21 @@
     name: 'reservation',
     data () {
       return {
-        hour: 0,
-        minute: 0,
+        selected_hour: '',
+        selected_min: '',
+        cur_time: {},
         peopleNum: 0,
         allPrice:0,
-        hour: 0,
-        minute: 0,
+        selected_hour: 0,
+        selected_minute: 0,
         peopleNum: 0,
-
-        storeId: '',
-        name: '토끼정',
+        minimun_price: 10000,
 
         menuNum: 9,
+        storeInfo:{},
         menuItems: [],
-        cart: [
-          // {
-          //   code: 1
-          //   name: '날치알 파스타',
-          //   price: 10000,
-          //   num: 2
-          // }
-        ],
-
-        items: [
+        cart: [],
+        hoursItems: [
           '10',
           '11',
           '12',
@@ -355,7 +359,7 @@
           '21',
           '22'
         ],
-        items2: [
+        minItems: [
           '00',
           '10',
           '20',
@@ -363,7 +367,7 @@
           '40',
           '50'
         ],
-        items3: [
+        peopleItems: [
           '1',
           '2',
           '3',
@@ -380,12 +384,57 @@
         menuDialog: false
       }
     },
+    created() {
+
+
+    },
     mounted() {
-      this.storeId = this.$route.query.storeId
-      this.name = this.$route.query.name
-      this.getMenu()
+      this.cur_time = new Date(Date.now())
+      this.selected_hour = this.cur_time.getHours()
+      this.selected_min = this.cur_time.getMinutes()
+
+      this.storeInfo = this.$route.params.storeInfo
+      this.menuItems = this.$route.params.menuItems
+      console.log("passed storeInfo:", this.storeInfo)
+      console.log("passed menuItems:", this.menuItems)
+      //this.getStore()
+      //this.getMenu()
+
+
+      //this.selected_hour =
     },
     methods : {
+      getStore () {
+        var data = {};
+        data.store_code = this.storeInfo.store_code;
+        this.$axios.get(`http://localhost:3000/api/store`, {
+          params: data
+        })
+        .then((r) => {
+          console.log(r.data)
+          this.storeInfo = r.data
+          this.reviewPath.query.store_code = this.storeInfo.store_code
+          this.reviewPath.query.store_name = this.storeInfo.store_name
+        })
+        .catch((e) => {
+          this.pop(e.message)
+        })
+      },
+      // 메뉴 정보 받아오기
+      getMenu () {
+        var data = {};
+        data.store_code = this.storeInfo.store_code;
+        this.$axios.get(`http://localhost:3000/api/menu`, {
+          params: data
+        })
+        .then((r) => {
+          console.log(r.data)
+          this.menuItems = r.data
+        })
+        .catch((e) => {
+        this.pop(e.message)
+        })
+      },
       next () {
         this.onboarding = this.onboarding + 1 === length
           ? 0
@@ -396,25 +445,14 @@
           ? this.length - 1
           : this.onboarding - 1
       },
-      getMenu () {
-        this.$axios.get(`http://localhost:3000/api/menu/${this.storeId}`)
-        .then((r) => {
-          console.log(r.data)
-          this.menuItems = r.data
-          this.menuItems.forEach((v,i) => { v.selected = false })
-        })
-        .catch((e) => {
-        this.pop(e.message)
-        })
-      },
       choiceMenu(menu){
         if(menu.selected) {
           menu.selected = false
 
-          var menuName = menu.name
+          var menuName = menu.menu_name
           this.cart.forEach((v,i) => {
-            if(menuName === v.name) {
-              this.allPrice -= (v.num * v.price)
+            if(menuName === v.menu_name) {
+              this.allPrice -= (v.menu_num * v.menu_price)
               this.cart.splice(i,1)
             }
           });
@@ -422,45 +460,52 @@
         else {
           menu.selected = true
           var newMenu = {
-            code: menu.code,
-            name: menu.name,
-            price: menu.price,
-            num: 1
+            menu_code: menu.menu_code,
+            menu_name: menu.menu_name,
+            menu_price: menu.menu_price,
+            menu_num: 1
           }
 
           this.cart.push(newMenu)
-          this.allPrice += menu.price
+          this.allPrice += menu.menu_price
         }
 
       },
       removeCart(menuName){
         this.cart.forEach((v,i) => {
-          if(menuName === v.name) this.cart.splice(i,1)
+          if(menuName === v.menu_name) this.cart.splice(i,1)
         });
         this.menuItems.forEach((v,i) => {
-          if(menuName === v.name) v.selected = false
+          if(menuName === v.menu_name) v.selected = false
         });
       },
       countUp(menu){
-        menu.num = menu.num + 1
-        this.allPrice += menu.price
+        menu.menu_num = menu.menu_num + 1
+        this.allPrice += menu.menu_price
       },
       countDown(menu){
-        if(menu.num === 1) this.removeCart(menu.name)
-        else if(menu.num <= 0) return
+        if(menu.menu_num === 1) this.removeCart(menu.menu_name)
+        else if(menu.menu_num <= 0) return
 
-        menu.num = menu.num - 1
-        this.allPrice -= menu.price
+        menu.menu_num = menu.menu_num - 1
+        this.allPrice -= menu.menu_price
       },
       pay(){
+        console.log("cart:", this.cart,
+        "store_code:", this.storeInfo.store_code,
+        "selected_hour", this.selected_hour,
+        "selected_min", this.selected_min,
+        "peopleNum", this.peopleNum,
+        "allPrice", this.allPrice)
+
+
         this.$router.push({name:'payment', params: {
-          cart: [{menu_code:7}, {menu_code:9}],
-          store_code: this.storeId,
-          hour: this.hour,
-          minute: this.minute,
+          cart: this.cart,
+          storeInfo: this.storeInfo,
+          selected_hour: this.selected_hour,
+          selected_minute: this.selected_minute,
           no_of_people: this.peopleNum,
           total_price: this.allPrice,
-          store_name: 'name'
         }})
       }
     }

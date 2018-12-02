@@ -2,7 +2,9 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
+const owner = require('../../../../db_apis/owner.js');
 /* GET 점주정보가져오기 */
+
 router.get('/:id', function(req, res, next) {
   const id = req.params.id
   console.log(id)
@@ -45,6 +47,47 @@ router.post('/', (req, res, next) => {
 
   if(success) res.json({ success: true})
   else res.json({ success: false }) 
+})
+
+/* POST 점주 회원가입*/
+router.post('/signin', async (req, res, next) => {
+  console.log("body:", req.body)
+  const { id, password } = req.body
+  console.log(typeof id, typeof password)
+
+  var success = true; // 성공인지 아닌지
+  var mode = 'owner'; // user인지owner인지 모드 구별
+
+  /* 디비쪽 구현 필요 */
+  try {
+    const context = {};
+    const store_id = id;
+    const store_password = password;
+    if (store_id && store_password) {
+      console.log("store body.owner_id");
+      context.store_id = store_id;
+      context.store_password = store_password;
+    }
+
+    const rows = await owner.find(context);
+    console.log("result", rows);
+
+    if (req.body.id) {
+      if (rows.length === 1) { // 로그인 성공
+        rows[0].success = true;
+        res.status(200).json(rows[0]);
+      } else { // 로그인 실패
+        res.status(404).end();
+      }
+    } else {
+      res.status(200).json(rows);
+    }
+  } catch (err) {
+    next(err);
+  }
+
+  //if(success) res.json({ success: true, code: 66, mode: mode})
+  //else res.json({ success: false })
 })
 
 /* PUT 점주 회원정보 변경 */

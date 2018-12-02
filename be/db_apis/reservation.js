@@ -22,8 +22,8 @@ async function find(context) {
 
   if (context.id) {
     binds.customer_code = context.id;
-    query += 
-    `\nwhere r.customer_code = :customer_code and r.store_code = s.store_code 
+    query +=
+    `\nwhere r.customer_code = :customer_code and r.store_code = s.store_code
     order by order_code DESC`;
   }
 
@@ -66,21 +66,22 @@ async function findOwner(context) {
   console.log(result.rows)
 
   let menu_names = []
+
   for(var i=0; i< result.rows.length; i++){
     const menu_item = result.rows[i]
-
     let menuContext = {}
+
     menuContext.order_code = menu_item.ORDER_CODE
     menuContext.store_code = context.id
 
     let tempQuery = menuQuery
     console.log('od : ',menuContext.order_code, ' st : ', menuContext.store_code)
+
     tempQuery += `\nwhere 
     i.order_code = :order_code and i.store_code = :store_code and i.store_code = m.store_code and i.menu_code = m.menu_code`;
-
     const menuResult = await database.simpleExecute(tempQuery, menuContext);
-
     let menu_list = []
+
     menuResult.rows.forEach((v,i) => {
       menu_list.push(v.menu_name)
     });
@@ -91,8 +92,8 @@ async function findOwner(context) {
   }
   
   return [result.rows, menu_names];
+  
 }
-
 module.exports.findOwner = findOwner;
 
 async function findOwnerAll(context) {
@@ -197,6 +198,24 @@ const createMenuSql =
   :menu_code
 ) `;
 
+async function createTransaction(context){
+  let query = baseQuery;
+  var binds = {};
+
+  //:store_code, :customer_code, :order_time, :reserv_time, :no_of_people, :total_price, :point_discount, :coupon_discount, :order_status, :review_status
+  if (context) {
+    console.log("createTransaction:")
+    binds = context
+    //query +=
+    //`\nwhere r.customer_code = :customer_code and r.store_code = s.store_code
+    //order by order_code DESC`;
+  }
+  const result = await database.simpleTrasaction(binds);
+
+  return result;
+}
+module.exports.createTransaction = createTransaction;
+
 async function create(context) {
   // reserv_order에 insert
   let orderContext = {}
@@ -214,7 +233,7 @@ async function create(context) {
   orderContext.order_code = {
     dir: oracledb.BIND_OUT,
     type: oracledb.NUMBER
-  }  
+  }
   console.log(orderContext)
   const orderResult = await database.simpleExecute(createOrderSql, orderContext);
 
@@ -241,7 +260,7 @@ async function create(context) {
     const menuResult = await database.simpleExecute(createMenuSql, menuContext);
     if(menuResult.rowsAffected != 1) return false
   }
-  
+
   return true;
 }
 

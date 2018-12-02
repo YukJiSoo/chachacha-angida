@@ -36,9 +36,9 @@
             <!--메뉴사진 칸-->
             <v-flex xs12 sm12 class="medium">
               <h4 class="mt-3 mb-1" align="center">메뉴 사진</h4>
-              <img :src='menu.image' class="mb-3">
+              <img :src='menu.menu_img_url' class="my-3">
               <div id="fileApp">
-                <div class="filebox" v-if="!image">
+                <div class="filebox" v-if="!menu.menu_img_url">
                   <label for="userImg">사진등록</label>
                   <input type="file" id="userImg" @change="onFileChange" class="mb-3">
                 </div>
@@ -53,7 +53,7 @@
               <v-text-field
                 label="메뉴 이름을 적어주세요"
                 solo
-                v-model='menu.name'
+                v-model='menu.menu_name'
               >
               </v-text-field>
             </v-card-text>
@@ -63,7 +63,7 @@
               <v-text-field
                 label="메뉴 가격을 적어주세요"
                 solo
-                v-model='menu.price'
+                v-model='menu.menu_price'
               >
               </v-text-field>
           </v-card-text>
@@ -73,12 +73,12 @@
             <v-textarea
               label="메뉴 설명을 적어주세요"
               solo
-              v-model='menu.explain'
+              v-model='menu.menu_desc'
             >
             </v-textarea>
           </v-card-text>
           <!--작성완료 버튼-->
-          <v-btn color="orange" dark class="font-weight-bold" @click="enrollOrUpdate(menuId)">작성 완료</v-btn>
+          <v-btn color="orange" dark class="font-weight-bold" @click="enrollOrUpdate(menu.menu_code)">작성 완료</v-btn>
           </v-card>
         </v-flex>
     </v-layout>
@@ -90,48 +90,33 @@ export default {
   name: 'menuEdit',
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
       drawer: null,
-      ownerInfoPath: '/ownerInfo',
       mainPath: '/ownerHome',
 
       menu: {},
       menuId: 'enroll',
-      
     }
   },
   mounted() {
     if(this.$route.query.type == "enroll"){
       this.menu =  {
-        image: 'https://randomuser.me/api/portraits/men/85.jpg',
-        name: '',
-        explain: '',
-        price: ''
+        menu_code : 0,
+        menu_img_url: 'https://i1.wp.com/review.wti.or.kr/wp-content/uploads/2015/07/%EB%AC%BC%EC%9D%8C%ED%91%9C.jpg?zoom=1.25&resize=200%2C252',
+        menu_name: '',
+        menu_desc: '',
+        menu_price: ''
       }
       
     } else {
-      this.menuId = this.$route.query.type
-      this.getMenuItem(this.menuId)
+      this.menu = this.$route.query.type
     }
+    console.log(this.menu)
   },
   methods: {
-    getMenuItem(menuId){
-      this.$axios.get(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`)
-      .then((r) => {
-        console.log(r.data)
-
-        this.menu = r.data
-
-        console.log(this.menu)
-      })
-      .catch((e) => {
-      this.pop(e.message)
-      })
-
-    },
     postMenuItem(){
-      this.$axios.post(`http://localhost:3000/api/menu/${this.ownerCode}`,this.menu)
+      this.$axios.post(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}`,this.menu)
       .then((r) => {
         console.log(r.data)
       })
@@ -140,8 +125,8 @@ export default {
       })
 
     },
-    putMenuItem(menuId){
-      this.$axios.put(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`, this.menu)
+    putMenuItem(menu_code){
+      this.$axios.put(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}/${menu_code}`, this.menu)
       .then((r) => {
         console.log(r.data)
       })
@@ -156,11 +141,6 @@ export default {
       else this.putMenuItem(menuId)
       
       this.$router.push('/ownerMenuManage')
-    },
-
-    logout(){
-      alert("로그아웃 되었습니다.")
-      this.$router.push('/')
     },
     goBack(){
       window.history.back();
@@ -182,7 +162,7 @@ export default {
       reader.readAsDataURL(file);
     },
     removeImage(){
-      this.image=''
+      this.menu.menu_img_url=''
     }
   }
 }

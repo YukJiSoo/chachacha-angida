@@ -2,6 +2,7 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 const menu = require('../../../db_apis/menu.js');
+
 /* GET menu page. 모든 메뉴 출력*/
 router.get('/', async function(req, res, next) {
   console.log("menu list test");
@@ -18,6 +19,7 @@ router.get('/', async function(req, res, next) {
 
     if (req.query.menu_code) {
       if (rows.length === 1) {
+        console.log(req.query.menu_code)
         res.status(200).json(rows[0]);
       } else {
         res.status(404).end();
@@ -31,24 +33,58 @@ router.get('/', async function(req, res, next) {
 });
 
 /* POST home page. */
-router.post('/:storeId', (req, res, next) => {
+router.post('/:storeId', async function(req, res, next) {
   const storeId = req.params.storeId
   const menu = req.body
-
+  console.log(menu)
   // 디비에 메뉴 추가하는 로직 작성 필요
+  console.log("menu list test");
+  
+  try {
+    const context = {};
+    if (storeId) {
+      context.store_code = storeId;
+      context.menu = menu;
+    }
 
-  res.send(menu)
+    const rows = await menu.create(context);
+    console.log(rows);
+
+    res.status(201).json(rows);
+
+  } catch (err) {
+    next(err);
+  }
 })
 
 /* PUT home page. */
-router.put('/:storeId/:menuId', (req, res, next) => {
+router.put('/:storeId/:menuId', async (req, res, next) => {
   const {storeId, menuId} = req.params
   const menu = req.body
 
-  // 디비에 메뉴 업데이트하는 로직 작성 필요
+  console.log(menu)
+  // 디비에 메뉴 추가하는 로직 작성 필요
+  console.log("menu list test");
+  
+  try {
+    const context = {};
+    if (storeId) {
+      context.store_code = storeId;
+      context.menu_code = menuId;
+      context.menu = menu;
+    }
 
-  res.send(menu)
+    const rows = await menu.update(context);
+    console.log(rows);
+
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
+
+  } catch (err) {
+    next(err);
+  }
 })
+
 
 /* DELETE home page. */
 router.delete('/:storeId/:menuId', (req, res, next) => {

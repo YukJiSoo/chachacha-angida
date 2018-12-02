@@ -31,69 +31,92 @@ async function find(context) {
 
 module.exports.find = find;
 
+async function findOne(context) {
+  let query = baseQuery;
+  const binds = {};
+
+  if (context.store_code) {
+    console.log("add store_code condition to query");
+    binds.store_code = context.store_code;
+    binds.menu_code = context.menu_code;
+    query += `\nwhere store_code = :store_code and menu_code = :menu_code`;
+  }
+
+  console.log("executing query:", query);
+  const result = await database.simpleExecute(query, binds);
+
+  return result.rows;
+}
+
+module.exports.findOne = findOne;
+
 const createSql =
- `insert into employees (
-    first_name,
-    last_name,
-    email,
-    phone_number,
-    hire_date,
-    job_id,
-    salary,
-    commission_pct,
-    manager_id,
-    department_id
+ `insert into menu (
+    menu_code,
+    menu_name,
+    menu_img_url,
+    menu_price,
+    menu_desc,
+    store_code
   ) values (
-    :first_name,
-    :last_name,
-    :email,
-    :phone_number,
-    :hire_date,
-    :job_id,
-    :salary,
-    :commission_pct,
-    :manager_id,
-    :department_id
-  ) returning employee_id
-  into :employee_id`;
+    meu_seq.NEXTVAL,
+    :menu_name,
+    :menu_img_url,
+    :menu_price,
+    :menu_desc,
+    :store_code
+  ) returning menu_code
+  into :menu_code`;
 
-async function create(emp) {
-  const employee = Object.assign({}, emp);
+async function create(context) {
+  let menuContext = {}
 
-  employee.employee_id = {
+  menuContext.menu_name = context.menu.menu_name
+  menuContext.menu_img_url = context.menu.menu_img_url
+  menuContext.menu_price  = context.menu_price
+  menuContext.menu_desc  = context.menu_desc
+  menuContext.store_code = context.store_code
+
+  menuContext.menu_code = {
     dir: oracledb.BIND_OUT,
     type: oracledb.NUMBER
   }
+  console.log(menuContext)
+  const menuResult = await database.simpleExecute(createSql, menuContext);
 
-  const result = await database.simpleExecute(createSql, employee);
+  const menu_code = menuResult.outBinds.menu_code[0];
+  console.log(menu_code)
 
-  employee.employee_id = result.outBinds.employee_id[0];
-
-  return employee;
+  return menu_code
 }
 
 module.exports.create = create;
 
 const updateSql =
- `update employees
-  set first_name = :first_name,
-    last_name = :last_name,
-    email = :email,
-    phone_number = :phone_number,
-    hire_date = :hire_date,
-    job_id = :job_id,
-    salary = :salary,
-    commission_pct = :commission_pct,
-    manager_id = :manager_id,
-    department_id = :department_id
-  where employee_id = :employee_id`;
+  `update menu
+  set menu_name = :menu_name,
+  menu_img_url = :menu_img_url,
+  menu_price = :menu_price,
+  menu_desc = :menu_desc,
+  store_code = :store_code
+  where menu_code = :menu_code`;
+ 
 
-async function update(emp) {
-  const employee = Object.assign({}, emp);
-  const result = await database.simpleExecute(updateSql, employee);
+async function update(context) {
+  let menuContext = {}
 
-  if (result.rowsAffected && result.rowsAffected === 1) {
-    return employee;
+  menuContext.menu_name = context.menu.menu_name
+  menuContext.menu_img_url = context.menu.menu_img_url
+  menuContext.menu_price  = context.menu_price
+  menuContext.menu_desc  = context.menu_desc
+  menuContext.store_code = context.store_code
+  menuContext.menu_code = contest.menu_code
+
+  console.log(menuContext)
+  const menuResult = await database.simpleExecute(updateSql, menuContext);
+
+  if (menuResult.rowsAffected && menuResult.rowsAffected === 1) {
+    return menuResult;
   } else {
     return null;
   }

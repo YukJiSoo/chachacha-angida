@@ -99,7 +99,7 @@
                 </div>
               </v-list-tile>
             </v-list>
-            
+
             <!-- 쿠폰-체크박스 -->
             <v-radio-group v-model="couponChoice" class="ml-4 mt-2">
               <v-radio
@@ -136,7 +136,7 @@
             </div>
           </v-flex>
           <v-flex xs12>
-            <div class="small grey--text text--darken-2">
+            <div class="small red--text text--darken-2">
               {{reservationInfo.total_price/100}}P 적립예정
             </div>
           </v-flex>
@@ -158,12 +158,13 @@
         <v-layout align-end column>
           <v-flex xs6>
             <v-text-field
+              v-model="reservationInfo.point_discount"
               solo
               placeholder="0"
               hint="1000P 이상 사용가능"
-              v-model="reservationInfo.point_discount"
               persistent-hint
               class="medium"
+              :disabled="pointCondition == 1 ? false : true"
             ></v-text-field>
           </v-flex>
         </v-layout>
@@ -213,20 +214,20 @@ export default {
         coupon_code: 1
       },
       pointHave: '',
-
+      pointCondition: 0,
       payMethods: [
         {
           payment_status: '네이버페이',
           color: 'green'
-        }, 
+        },
         {
           payment_status: '카카오페이',
           color: 'yellow'
-        }, 
+        },
         {
           payment_status: '신용카드',
           color: 'blue'
-        }, 
+        },
         {
           payment_status: '무통장입금',
           color: 'black'
@@ -239,20 +240,14 @@ export default {
     }
   },
   mounted() {
-    // this.reservationInfo.store_code = this.$route.params.store_code
-    // this.reservationInfo.reserv_time = this.$route.params.reserv_time
-    // this.reservationInfo.order_time = this.$route.params.order_time
-    // this.reservationInfo.no_of_people = this.$route.params.peopleNum
-    // this.reservationInfo.total_price = this.$route.params.allPrice
-    this.reservationInfo.store_code = 1
+    console.log("storeInfo123:",this.$route.params.storeInfo)
+    this.reservationInfo.store_code = this.$route.params.storeInfo.store_code
     this.reservationInfo.reserv_time = new Date()
     this.reservationInfo.order_time = new Date()
-    this.reservationInfo.no_of_people = 3
-    this.reservationInfo.total_price = 1
+    this.reservationInfo.no_of_people = this.$route.params.no_of_people
+    this.reservationInfo.total_price = this.$route.params.total_price
     this.reservationInfo.menuItems = this.$route.params.cart
-    this.reservationInfo.store_name = this.$route.params.store_name
-
-    console.log(this.reservationInfo.menuItems)
+    this.reservationInfo.store_name = this.$route.params.storeInfo.store_name
 
     this.getCoupons()
     this.getPoint()
@@ -264,18 +259,20 @@ export default {
         this.couponItems = r.data
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
 
     },
     getPoint(){
       this.$axios.get(`http://localhost:3000/api/point/${this.reservationInfo.userId}`)
       .then((r) => {
-        
         this.pointHave = r.data.TOTAL_POINT
+        if(this.pointHave >= 1000)
+          this.pointCondition = 1
+        console.log("pointCondition:",this.pointCondition)
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     putCoupon(couponId){
@@ -287,7 +284,7 @@ export default {
         else this.payFail()
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
 
     },
@@ -301,19 +298,19 @@ export default {
         else this.payFail()
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     postReservation(){
-      this.$axios.post(`http://localhost:3000/api/reservation/${this.reservationInfo.customer_code}`, this.reservationInfo)
+      this.$axios.post(`http://localhost:3000/api/reservation/`, this.reservationInfo)
       .then((r) => {
         console.log(r.data)
-        
+
         if(r.data) this.paySuccess()
         else this.payFail()
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     pay(){
