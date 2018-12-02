@@ -35,7 +35,7 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next){
   const id = req.params.id
   const reservationInfo = req.body
-  console.log("reservationInfo", reservationInfo)
+  console.log("reservationInfo body: ", reservationInfo)
 
   let context = reservationInfo;
   context.payment_amount = context.total_price - context.point_discount - context.coupon_discount
@@ -47,13 +47,11 @@ router.post('/', async function(req, res, next){
     context.menuItems[i].menucode = parseInt(context.menuItems[i].menucode, 10)
   }
 
-  console.log(context)
+  console.log("reservationInfo context: ", context)
+  var result = await reservation.createTransaction(context);
+  console.log("reservationInfo result: ", result)
 
-  //var success = await reservation.create(context);
-
-  //console.log(success)
-
-  res.send(success);
+  res.send(result);
 })
 
 

@@ -44,7 +44,6 @@ router.post('/', (req, res, next) => {
 router.post('/signin', async (req, res, next) => {
   console.log("body:", req.body)
   const { id, password } = req.body
-  console.log(typeof id, typeof password)
 
   var success = true; // 성공인지 아닌지
   var mode = 'user'; // user인지owner인지 모드 구별
@@ -55,7 +54,7 @@ router.post('/signin', async (req, res, next) => {
     const customer_id = id;
     const customer_password = password;
     if (customer_id && customer_password) {
-      console.log("custotmer body.customer_id");
+      console.log("custotmer :", customer_id, customer_password);
       context.customer_id = customer_id;
       context.customer_password = customer_password;
     }

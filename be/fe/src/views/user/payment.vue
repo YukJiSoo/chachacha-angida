@@ -14,11 +14,13 @@
               결제금액
             </div>
             <div class="pt-2 pb-2 font-weight-bold large">
-              <span>{{reservationInfo.total_price-reservationInfo.point_discount-couponChoice.coupon_discount}}원</span>
+              <span>
+                {{ reservationInfo.total_price - reservationInfo.point_discount - reservationInfo.couponChoice.coupon_discount }}원
+              </span>
             </div>
             <div>
               <span class="grey--text text--darken-2 small">포인트 - {{reservationInfo.point_discount}}P</span>
-              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{couponChoice.coupon_discount}}원</span>
+              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{reservationInfo.couponChoice.coupon_discount}}원</span>
             </div>
           </v-flex>
         </v-layout>
@@ -82,7 +84,7 @@
             <!-- 선택 -->
             <v-card slot="activator" class="px-4 py-2">
               <div class="medium grey--text text--darken-2">
-                {{couponChoice.coupon_name}}
+                {{reservationInfo.couponChoice.coupon_name}}
               </div>
             </v-card>
             <v-card>
@@ -101,7 +103,7 @@
             </v-list>
 
             <!-- 쿠폰-체크박스 -->
-            <v-radio-group v-model="couponChoice" class="ml-4 mt-2">
+            <v-radio-group v-model="reservationInfo.couponChoice" class="ml-4 mt-2">
               <v-radio
                 v-for="coupon in couponItems"
                 :value="coupon"
@@ -193,25 +195,27 @@ export default {
   name: 'default',
   data () {
     return {
+      customerInfo: {},
       reservationInfo:{
         store_name: '',
-        customer_code: localStorage.getItem('code'),
         store_code: '',
+        // customer_code는 localStorage에서 customerInfo를 JSON.parse 해서 갖고와야함.
+        customer_code: '',
         reserv_time: '',
         no_of_people: 0,
         total_price: 0,
         menuItems: {},
-        point_discount: 0,
+        point_discount: 0, // 사용할 포인트
         coupon_discount: 0,
+        couponChoice: { // 사용할 쿠폰
+          coupon_name: '쿠폰을 선택해주세요',
+          coupon_discount: 0,
+          coupon_code: 1
+        },
         payMethod: {
           payment_status: '결제수단',
           color: 'black'
         },
-      },
-      couponChoice: {
-        coupon_name: '쿠폰을 선택해주세요',
-        coupon_discount: 0,
-        coupon_code: 1
       },
       pointHave: '',
       pointCondition: 0,
@@ -240,7 +244,9 @@ export default {
     }
   },
   mounted() {
-    console.log("storeInfo123:",this.$route.params.storeInfo)
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
+    /* 트랜잭션에 필요한 예약 정보 초기화 */
+    this.reservationInfo.customer_code = this.customerInfo.customer_code
     this.reservationInfo.store_code = this.$route.params.storeInfo.store_code
     this.reservationInfo.reserv_time = new Date()
     this.reservationInfo.order_time = new Date()

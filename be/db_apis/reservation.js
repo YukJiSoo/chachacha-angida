@@ -119,11 +119,11 @@ async function createTransaction(context){
 
   //:store_code, :customer_code, :order_time, :reserv_time, :no_of_people, :total_price, :point_discount, :coupon_discount, :order_status, :review_status
   if (context) {
-    console.log("createTransaction:")
-    binds = context
-    //query +=
-    //`\nwhere r.customer_code = :customer_code and r.store_code = s.store_code
-    //order by order_code DESC`;
+    console.log("createTransaction:");
+    binds = context;
+    binds.order_time = new Date();
+    binds.reserv_time = new Date();
+    binds.reserv_time.setHours(binds.selected_hour, binds.selected_min)
   }
   const result = await database.simpleTrasaction(binds);
 
@@ -150,10 +150,12 @@ async function create(context) {
     type: oracledb.NUMBER
   }
   console.log(orderContext)
-  const orderResult = await database.simpleExecute(createOrderSql, orderContext);
 
+  /* TRANSATION START */
+  const orderResult = await database.simpleExecute(createOrderSql, orderContext);
   const order_code = orderResult.outBinds.order_code[0];
   console.log(order_code)
+
   // payment에 생성
   let paymentContext = {}
   paymentContext.order_code = parseInt(order_code,10)
@@ -175,6 +177,7 @@ async function create(context) {
     const menuResult = await database.simpleExecute(createMenuSql, menuContext);
     if(menuResult.rowsAffected != 1) return false
   }
+  /* TRANSATION END */
 
   return true;
 }

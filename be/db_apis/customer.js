@@ -26,9 +26,9 @@ async function find(context) {
     query +=
     `\nand customer_id = :customer_id and customer_password = :customer_password`;
   }
-  console.log("dbstart")
+  console.log("customer.js dbstart")
   const result = await database.simpleExecute(query, binds);
-  console.log("dbresult:", result)
+  console.log("customer.js dbresult:", result)
   return result.rows;
 }
 
