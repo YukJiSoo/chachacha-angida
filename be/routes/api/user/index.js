@@ -74,6 +74,7 @@ router.post('/signin', async (req, res, next) => {
       res.status(200).json(rows);
     }
   } catch (err) {
+    console.log(err);
     next(err);
   }
 

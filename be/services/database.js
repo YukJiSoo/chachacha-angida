@@ -81,9 +81,9 @@ function simpleTrasactionForOrder(statement, binds = [], opts = {}) {
   return new Promise(async (resolve, reject) => {
     let conn;
 
-    if(isEmpty(opts)) {
-
-    }
+    // if(isEmpty(opts)) {
+    //
+    // }
     opts.outFormat = oracledb.OBJECT;
     opts.autoCommit = false;
 
@@ -129,20 +129,20 @@ function simpleTrasactionForOrder(statement, binds = [], opts = {}) {
           menu_code: { type: oracledb.NUMBER},
           menu_num: { type: oracledb.NUMBER},
         } };
-      const result = await conn.executeMany(create_MENU_ORDER_ITEM_Query, menu_order_item_binds, menu_options);
+      result = await conn.executeMany(create_MENU_ORDER_ITEM_Query, menu_order_item_binds, menu_options);
       /* END: MENU_ORDER_ITEM Insert (주문한 메뉴의 개수만큼 삽입해야한다.)  */
 
       /* [Optionnal] CUSTOMER_COUPON Update Copon_status =  Y */
       if (binds.coupon_discount !== 0){
-        const result = await conn.execute(create_CUSTOMER_COUPON_Query, binds, opts);
+        result = await conn.execute(create_CUSTOMER_COUPON_Query, binds, opts);
       }
       /* [Optionnal] CUSTOMER_POINT Update TOTAL_POINT = TOTAL_POINT - coupon_discount*/
       if (binds.point_discount !== 0){
-        const result = await conn.execute(create_RERSERV_ORDER_Query, binds, opts);
+        result = await conn.execute(create_RERSERV_ORDER_Query, binds, opts);
       }
       /* PAYMENT Insert -> 성공하면 commit */
       opts.autoCommit = true;
-      const result = await conn.execute(create_RERSERV_ORDER_Query, binds, opts);
+      result = await conn.execute(create_RERSERV_ORDER_Query, binds, opts);
 
       resolve(result);
     } catch (err) {
@@ -161,7 +161,7 @@ function simpleTrasactionForOrder(statement, binds = [], opts = {}) {
 }
 
 module.exports.simpleExecute = simpleTrasactionForOrder;
-// 
+//
 // function isEmpty(obj) {
 //     for(var key in obj) {
 //         if(obj.hasOwnProperty(key))

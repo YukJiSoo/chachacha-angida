@@ -20,7 +20,7 @@ async function find(context) {
   var binds = {};
 
   if (context.customer_id) {
-    console.log("db customer auth check")
+    console.log("db customer auth check: ", context.customer_id, context.customer_password)
     binds.customer_id = context.customer_id;
     binds.customer_password = context.customer_password;
     query +=
