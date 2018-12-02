@@ -24,14 +24,19 @@ async function find(context) {
     binds.customer_id = context.customer_id;
     binds.customer_password = context.customer_password;
     query +=
-    `\nand customer_id = :customer_id and customer_password = :customer_password`;
+    // `\nand customer_id = :customer_id and customer_password = :customer_password`;
+    `\nand customer_id = 'PJS' and customer_password = 'qwer1234'`;
   }
-  console.log("dbstart")
+  console.log("binds:", binds);
+  console.log("dbstart query:", query)
+  var opts = {
+    bindDefs: {
+      customer_id: { type: oracledb.STRING, maxSize: 18},
+      customer_password: { type: oracledb.STRING, maxSize: 18}
+    } };
   const result = await database.simpleExecute(query, binds);
   console.log("dbresult:", result)
   return result.rows;
 }
 
 module.exports.find = find;
-
-

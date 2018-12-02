@@ -330,13 +330,11 @@
     name: 'reservation',
     data () {
       return {
-        selected_hour: '',
-        selected_min: '',
         cur_time: {},
         peopleNum: 0,
         allPrice:0,
         selected_hour: 0,
-        selected_minute: 0,
+        selected_min: 0,
         peopleNum: 0,
         minimun_price: 10000,
 
@@ -460,6 +458,7 @@
         else {
           menu.selected = true
           var newMenu = {
+            store_code:this.storeInfo.store_code,
             menu_code: menu.menu_code,
             menu_name: menu.menu_name,
             menu_price: menu.menu_price,
@@ -503,9 +502,10 @@
           cart: this.cart,
           storeInfo: this.storeInfo,
           selected_hour: this.selected_hour,
-          selected_minute: this.selected_minute,
+          selected_min: this.selected_min,
           no_of_people: this.peopleNum,
           total_price: this.allPrice,
+
         }})
       }
     }
