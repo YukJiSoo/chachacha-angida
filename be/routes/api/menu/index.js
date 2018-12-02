@@ -33,42 +33,27 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-function getMenuFromRec(menu, storeId) {
-  const menuItem = {
-    store_code : storeId,
-    menu_name : menu.menu_name,
-    menu_img_url : menu.menu_img_url,
-    menu_desc : menu.menu_desc,
-    menu_price : parseInt(menu.menu_price,10),
-  };
-
-  return menuItem;
-
-}
 
 /* POST home page. */
 router.post('/:storeId', async function(req, res, next) {
-  const storeId = req.params.storeId
-  const menu = req.body
-  console.log(menu)
-  // 디비에 메뉴 추가하는 로직 작성 필요
   console.log("menu list test");
-  
+  console.log(req.body);
   try {
     const context = {};
-    if (storeId) {
-      context.store_code = storeId;
-      context.menu_name = menu.menu_name;
-      context.menu_img_url = menu.menu_img_url
-      context.menu_desc = menu.desc
-      context.menu_price = menu.menu_price
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_name = req.body.menu_name
+      context.menu_img_url = req.body.menu_img_url
+      context.menu_desc = req.body.menu_desc
+      context.menu_price = req.body.menu_price
     }
-
     console.log(context);
     const rows = await menu.create(context);
     console.log(rows);
 
-    res.status(201).json(rows);
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
 
   } catch (err) {
     console.log(err)
@@ -78,28 +63,21 @@ router.post('/:storeId', async function(req, res, next) {
 
 /* PUT home page. */
 router.put('/:storeId/:menuId', async function(req, res, next){
-  const {storeId, menuId} = req.params
-  const menu = req.body
-
-  console.log(menu)
-  // 디비에 메뉴 추가하는 로직 작성 필요
   console.log("menu list test");
-  
+  console.log(req.body);
   try {
-    let putContext = getMenuFromRec(menu, storeId);
-    //putContext.menu_code = menuId
-    // const putContext = {};
-    // if (storeId) {
-    //   putContext.store_code = storeId;
-    //   putContext.menu_name = menu.menu_name;
-    //   putContext.menu_img_url = menu.menu_img_url
-    //   putContext.menu_desc = menu.menu_desc
-    //   putContext.menu_price = parseInt(menu.menu_price,10)
-    //   putContext.menu_code = menuId
-    // }
-
-    //console.log(putContext)
-    putContext = await menu.updateMenu(putContext);
+    const context = {};
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_name = req.body.menu_name
+      context.menu_img_url = req.body.menu_img_url
+      context.menu_desc = req.body.menu_desc
+      context.menu_price = req.body.menu_price
+      context.menu_code = req.params.menuId
+    }
+    console.log(context);
+    const rows = await menu.updateMenu(context);
     console.log(rows);
 
     if(rows !== null) res.status(201).json(rows);
@@ -112,12 +90,27 @@ router.put('/:storeId/:menuId', async function(req, res, next){
 })
 
 /* DELETE home page. */
-router.delete('/:storeId/:menuId', (req, res, next) => {
-  const {storeId, menuId} = req.params
-  var success = true
-  // 디비에 메뉴 삭제하는 로직 작성 필요
+router.delete('/:storeId/:menuId', async (req, res, next) => {
+  console.log("menu list test");
+  console.log(req.body);
+  try {
+    const context = {};
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_code = req.params.menuId
+    }
+    console.log(context);
+    const rows = await menu.delete(context);
+    console.log(rows);
 
-  res.send(success)
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
+
+  } catch (err) {
+    console.log(err)
+    next(err);
+  }
 })
 
 router.all('*', function(req, res, next) {

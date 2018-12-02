@@ -8,9 +8,9 @@
           <v-list two-line>
             <!--메뉴등록 버튼-->
             <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
-            <template v-for="item in items">
+            <template v-for="(item, index) in items">
               <v-divider></v-divider>
-                <img :src="item.menu_img_url" class="mt-3">
+                <v-img :src="item.menu_img_url" class="mt-3" aspect-ratio="1.7" contain></v-img>
               <v-list-tile>
               <!--메뉴 이미지-->
 
@@ -27,7 +27,7 @@
               <!--메뉴 수정 버튼-->
               <v-btn dark color="blue" class="medium" @click="editMenu(item)">수정</v-btn>
               <!--메뉴 삭제 버튼-->
-              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menu_code)">삭제</v-btn>
+              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menu_code, index)">삭제</v-btn>
 
             </template>
           </v-list>
@@ -51,7 +51,7 @@ export default {
     }
   },
   methods: {
-    deleteMenu(menuId){
+    deleteMenu(menuId, index){
       this.$delete(this.items, index)
       alert("삭제되었습니다.")
       this.deleteMenuItem(menuId)
@@ -80,10 +80,11 @@ export default {
       })
     },
     deleteMenuItem(menuId){
-      this.$axios.delete(`http://localhost:3000/api/menu/${ownerInfo.store_code}/${menuId}`)
+      this.$axios.delete(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}/${menuId}`)
       .then((r) => {
-        var success = r.data
-        if(success) alert("삭제되었습니다.")
+        // var success = r.data
+        // if(success) alert("삭제되었습니다.")
+        console.log(r.data)
 
         this.getMenuList()
       })

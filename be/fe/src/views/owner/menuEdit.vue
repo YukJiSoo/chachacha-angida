@@ -118,7 +118,7 @@ export default {
     postMenuItem(){
       this.$axios.post(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}`,this.menu)
       .then((r) => {
-        console.log(r.data)
+        console.log(r.data,'번째 메뉴가 삽입됨')
       })
       .catch((e) => {
       this.pop(e.message)
@@ -135,12 +135,13 @@ export default {
       })
     },
     enrollOrUpdate(menuId){
-      // alert("완료되었습니다.")
       console.log(menuId)
       if(menuId == 0) this.postMenuItem()
       else this.putMenuItem(menuId)
-      
-      // this.$router.push('/ownerMenuManage')
+
+      alert("완료되었습니다.")
+
+      this.$router.push('/ownerMenuManage')
     },
     goBack(){
       window.history.back();

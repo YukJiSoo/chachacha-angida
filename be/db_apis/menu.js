@@ -39,7 +39,7 @@ const createSql =
     menu_desc,
     store_code
   ) values (
-    meu_seq.NEXTVAL,
+    menu_seq.NEXTVAL,
     :menu_name,
     :menu_img_url,
     :menu_price,
@@ -51,11 +51,11 @@ const createSql =
 async function create(context) {
   let menuContext = {}
 
-  menuContext.menu_name = context.menu.menu_name
-  menuContext.menu_img_url = context.menu.menu_img_url
-  menuContext.menu_price  = context.menu_price
+  menuContext.menu_name = context.menu_name
+  menuContext.menu_img_url = context.menu_img_url
+  menuContext.menu_price  = parseInt(context.menu_price,10)
   menuContext.menu_desc  = context.menu_desc
-  menuContext.store_code = context.store_code
+  menuContext.store_code = parseInt(context.store_code,10)
 
   menuContext.menu_code = {
     dir: oracledb.BIND_OUT,
@@ -86,12 +86,12 @@ async function updateMenu(context) {
   console.log(context)
   let menuUpContext = {}
 
-  menuUpContext.menu_name = context.menu.menu_name
-  menuUpContext.menu_img_url = context.menu.menu_img_url
+  menuUpContext.menu_name = context.menu_name
+  menuUpContext.menu_img_url = context.menu_img_url
   menuUpContext.menu_price  = context.menu_price
   menuUpContext.menu_desc  = context.menu_desc
   menuUpContext.store_code = context.store_code
-  menuUpContext.menu_code = contest.menu_code
+  menuUpContext.menu_code = context.menu_code
 
   console.log(menuUpContext)
   const menuResult = await database.simpleExecute(updateSql, menuUpContext);
@@ -107,16 +107,15 @@ module.exports.updateMenu = updateMenu;
 
 const deleteSql =
  `begin
-    delete from job_history
-    where employee_id = :employee_id;
-    delete from employees
-    where employee_id = :employee_id;
+    delete from menu
+    where menu_code = :menu_code and store_code = :store_code;
     :rowcount := sql%rowcount;
   end;`
 
-async function del(id) {
+async function del(context) {
   const binds = {
-    employee_id: id,
+    menu_code: context.menu_code,
+    store_code: context.store_code,
     rowcount: {
       dir: oracledb.BIND_OUT,
       type: oracledb.NUMBER
