@@ -70,9 +70,14 @@ export default {
       })
       .then((r) => {
         if(r.data.success){
+          var test = {
+            id: this.id,
+            code: 14
+          }
+          // localStorage.setItem('test', JSON.stringify(test));
           localStorage.setItem('id', this.id);
-          localStorage.setItem('code', r.data.code);
-          
+          localStorage.setItem('code', 3);
+
           if(r.data.mode == 'user') this.$router.push('/home');
           else this.$router.push('/ownerHome');
         }

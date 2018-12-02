@@ -2,69 +2,61 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-const cal = require('../../../models/distance')
-const database = require('../../../services/database.js');
+const cal = require('../../../models/distance');
+// const database = require('../../../services/database.js');
 
-/* GET home page. */
-router.get('/:id', (req, res, next) => {
-  const storeId = req.params
+const store = require('../../../db_apis/store.js');
 
-  var storeInfo = {
-    img: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-    name: '토끼정',
-    explain: '토끼토끼',
-    rating: 4,
-    reviewNum: 10,
-    address: '어디어디',
-    phone: '전화번호',
-  }
-  
-  // 디비에서 id에 해당하는 가게정보 불러오기
+// router.get('/:id', (req, res, next) => {
+//   // 디비에서 id에 해당하는 가게정보 불러오기
+//   res.send(storeInfo)
+// })
 
-  res.send(storeInfo)
-})
-
-router.get('/list/', async function(req, res, next) {
+router.get('/', async function(req, res, next) {
   console.log("list test");
-  console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
-  
-  const { category, lat, lng, keyword, locationLimit} = req.query
-  console.log(category, lat, lng, keyword, locationLimit)
-  // 필요한 데이터
-  var storeList = [
-    {
-      onOff: true,
-      STORE_NAME: '토끼정 강남점',
-      TOTAL_RATE: 5,
-      nowSeat: 10,
-      limitSeat: 30,
-      STORE_TAG: ['tag1','tag2','tag3'], // 스트링 #~#~#~
-      PROFILE_IMG_URL: 'https://firebasestorage.googleapis.com/v0/b/angida-fe7f6.appspot.com/o/menucategory%2Fall.PNG?alt=media&token=53c537f8-caa2-499b-bab3-569cc54e4bbe',
-      STORE_ID: 123
-    }
-  ]
-
-  if(keyword) { }// 키워드 기반 검색
-  else if(category) { }// 카테고리 기반 검색
-  else {}// 위치기반 검색
-
-  const query = 'select * from restaurant';
+  console.log(req.query);
   try {
     const context = {};
+    if (req.query.store_code) {
+      console.log("params.store_code");
+      context.store_code = req.query.store_code;
+    }
 
-    const result = await database.simpleExecute(query);
-    console.log(result.rows);
-    storeList = result.rows;
+    if (req.query.store_category_code) {
+      console.log("params.store_category_code");
+      context.store_category_code = req.query.store_category_code;
+    }
 
-    res.json(storeList)
+    if (req.query.keyword) {
+      console.log("params.keyword");
+      context.keyword = req.query.keyword;
+    }
 
+    const rows = await store.find(context);
+    console.log(rows);
+
+    // 사용자의 현재 위치 기반의 위도, 경도 정보가 있다면 식당과의 거리를 계산한다.
+    if (req.query.lat && req.query.lng) {
+      let lat = req.query.lat;
+      let lng = req.query.lng;
+      console.log(typeof lat);
+      console.log(lat, ':',  lng);
+      console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200));
+    }
+
+
+    if (req.query.store_code) {
+      if (rows.length === 1) {
+        res.status(200).json(rows[0]);
+      } else {
+        res.status(404).end();
+      }
+    } else {
+      res.status(200).json(rows);
+    }
   } catch (err) {
     next(err);
   }
-
-  // console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200))
-
-  
   //
   // 파라미터
   // - 사용자의 현재 위치 좌표-위도

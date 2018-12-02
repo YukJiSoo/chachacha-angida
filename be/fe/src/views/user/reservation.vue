@@ -322,7 +322,6 @@
         minute: 0,
         peopleNum: 0,
         allPrice:0,
-        storeId: 0,
         hour: 0,
         minute: 0,
         peopleNum: 0,
@@ -455,12 +454,13 @@
       },
       pay(){
         this.$router.push({name:'payment', params: {
-          cart: this.cart,
-          storeId: this.storeId,
+          cart: [{menu_code:7}, {menu_code:9}],
+          store_code: this.storeId,
           hour: this.hour,
           minute: this.minute,
-          peopleNum: this.peopleNum,
-          allPrice: this.allPrice,
+          no_of_people: this.peopleNum,
+          total_price: this.allPrice,
+          store_name: 'name'
         }})
       }
     }

@@ -2,77 +2,53 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
+const reservation = require('../../../db_apis/reservation.js');
+const database = require('../../../services/database.js');
+
 router.use('/owner', require('./owner'));
 
 /* GET home page. */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
   const id = req.params.id
-  const reserv_lists = [
-    {
-      store_name: '오제존맛집',
-      menu_list: '간짜장 볶음밥 외 2개',
-      total_price: '20000원',
-      reservation_time: '9/5 19:00',
-      arrival_time: '9/5 19:00',
-      status: '수락대기',
-      //item.endTime.setTime(oldDateObj.getTime() + 100 * 60 * 1000)
-      progress: 100,
-      times: [
-        { id: 0, time: 1 },
-        { id: 1, time: 1 },
-      ],
-      timeinterval: undefined,
-      endTime: '2018-11-30T17:20:33.000Z' // 9시간 더해서 보내야함.
-    },
-    {
-      store_name: '알촌',
-      menu_list: '간짜장 볶음밥 외 2개',
-      total_price: '20000원',
-      reservation_time: '9/5 19:00',
-      arrival_time: '9/4 19:00',
-      status: '예약완료',
-      progress: 100,
-      times: [
-        { id: 0, time: 1 },
-        { id: 1, time: 1 },
-      ],
-      timeinterval: undefined,
-      endTime: new Date('Dec 1, 2018 20:55:30')
-    },
-    {
-      store_name: '강서 동국대점3',
-      menu_list: '555간짜장 볶음밥 외 2개',
-      total_price: '20000원',
-      reservation_time: '9/5 19:00',
-      arrival_time: '9/3 19:00',
-      status: '취소완료',
-      progress: 0,
-      times: [
-        { id: 0, time: 1 },
-        { id: 1, time: 1 },
-      ],
-      timeinterval: undefined,
-      endTime: new Date('Dec 1, 2018 06:20:30')
-    }
-  ]
-  var timettt = new Date('2018-11-30T02:43:46.000Z');
-  timettt.setTime(timettt.getTime() + 2*540 * 60 * 1000)
-  console.log(timettt);
 
-  let t = Date.parse(new Date("2018-11-30T17:30:48.000Z")) - Date.parse(new Date());
-  console.log("t:"+t)
-  console.log(new Date("2018-11-30T08:20:33.000Z"))
-  console.log(new Date())
-  res.send({reserv_list: reserv_lists});
+  const context = {};
+  context.id = id;
+
+  const rows = await reservation.find(context);
+
+  rows.forEach((v,i) => {
+    rows[i].endTime = new Date()
+    rows[i].times = []
+    rows[i].times.push({ id: 0, time: 1 })
+    rows[i].times.push({ id: 1, time: 1 })
+    rows[i].timeinterval = undefined
+    rows[i].progress = 100
+    rows[i].endTime.setTime(rows[i].endTime.getTime() + 100 * 60 * 1000)
+  });
+
+  console.log('==========>router result');
+  console.log(rows);
+
+  res.send(rows);
 });
 
 /* post 예약 추가 */
-router.post('/:id', (req, res, next) => {
+router.post('/:id', async function(req, res, next){
   const id = req.params.id
   const reservationInfo = req.body
-  var success = true
 
-  res.send(success)
+  let context = reservationInfo;
+  context.order_status = '수락대기'
+  context.review_status = 'N'
+  context.customer_code = parseInt(context.customer_code, 10)
+
+  console.log(context)
+
+  var success = await reservation.create(context);
+
+  console.log(success)
+
+  res.send(success);
 })
 
 

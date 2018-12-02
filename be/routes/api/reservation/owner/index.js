@@ -2,56 +2,58 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/:id', function(req, res, next) {
-  const id = req.params.id // 점주 id 
-  const date = req.body.date // 디비에서 가져올 주문내역의 날짜
+const reservation = require('../../../../db_apis/reservation.js');
 
-  const reservItems = [
-    {
-      code: 2, // 주문코드
-      customerId: '주문자1',
-      active: false,
-      store_name: '강서 동국대점',
-      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
-      price: 20000,
-      reservation_time: '9/5 18:30',
-      arrival_time: '9/5 19:00',
-      status: '수락대기'
-    },
-    {
-      code: 2, // 주문코드
-      customerId: '주문자1',
-      active: false,
-      store_name: '강서 동국대점',
-      menu_list: ['간짜장 볶음밥', '짬뽕', '짜장면'],
-      price: 20000,
-      reservation_time: '9/5 18:30',
-      arrival_time: '9/5 19:00',
-      status: '수락대기'
-    },
-  ]
-  res.send(reservItems);
+/* GET home page. 수락대기, 예약완료만*/
+router.get('/:id', async function(req, res, next) {
+  const id = req.params.id // 점주 id 
+
+  const context = {};
+  context.id = id;
+
+  const rows = await reservation.findOwner(context);
+
+  let orders = rows[0]
+  let menu_names = rows[1]
+
+  orders.forEach((v,i) => {
+    orders[i].actice = false
+    orders[i].menu_name = menu_names[i]
+  });
+
+  console.log('==========>router result');
+  console.log(orders);
+
+  res.send(orders);
+
 });
 
 
 /* PUT 예약상태 수정 */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async function(req, res, next) {
   const id = req.params.id
-  var {status, code} = req.body
+  var status = req.body
 
   if(status === 'agree'){
     // 수락대기 -> 수락완료
     console.log(status)
-    status = 'agreeOk'
+    status = '예약완료'
   }
   else if(status === 'refuse'){
     // 거절
     console.log(status)
-    status = 'refuseOk'
+    status = '예약취소'
   }
-  console.log(code)
-  res.send(status);
+
+  let context = {};
+  context.order_code = id
+  context.order_status = status
+
+  const rows = await reservation.update(context);
+
+  if(rows) res.send(rows);
+  else res.status(404).end();
+  
 })
 
 router.all('*', function(req, res, next) {
