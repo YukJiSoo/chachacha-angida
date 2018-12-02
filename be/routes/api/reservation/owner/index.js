@@ -2,10 +2,12 @@ var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
 
+const reservation = require('../../../../db_apis/reservation.js');
+
 /* GET home page. 수락대기, 예약완료만*/
 router.get('/:id', async function(req, res, next) {
   const id = req.params.id // 점주 id 
-
+  
   const context = {};
   context.id = id;
 

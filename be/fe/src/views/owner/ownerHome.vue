@@ -11,12 +11,12 @@
         <v-list>
           <v-list-tile avatar :to="ownerInfoPath">
             <v-list-tile-avatar>
-              <v-img :src="info.img"></v-img>
+              <v-img :src="ownerInfo.profile_img_url"></v-img>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title class="font-use">{{info.ownerName}}</v-list-tile-title>
-              <v-list-tile-title class="xlarge">{{info.restaurantName}}</v-list-tile-title>
+              <v-list-tile-title class="font-use">{{ownerInfo.owner_name}}</v-list-tile-title>
+              <v-list-tile-title class="xlarge">{{ownerInfo.store_name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-btn color="orange" class="font-use font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -69,16 +69,9 @@
 
     <v-flex xs12 sm12>
       <!-- 음식점 이름-->
-      <h1 class="large">{{info.restaurantName}}</h1>
+      <h1 class="large">{{ownerInfo.store_name}}</h1>
       <h3 class="xlarge">주문관리</h3>
     </v-flex>
-    <!-- system on/off-->
-    <v-layout align-center justify-end fill-height>
-      <span class="medium">system 사용</span>
-      <v-flex xs2 sm2>
-        <v-checkbox :input-value="onOff" @change="switchOnOff"></v-checkbox>
-      </v-flex>
-    </v-layout>
 
     <!--주문정보-->
     <v-card>
@@ -132,8 +125,7 @@ export default {
   name: 'default',
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
-      info:{},
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
       onOff: false,
       drawer: null,
@@ -168,13 +160,13 @@ export default {
     }
   },
   mounted() {
-    this.getUserInfo()
+    // this.getUserInfo()
     this.getOrders()
-    this.getOnOff()
+    //this.getOnOff()
   },
   methods: {
     getUserInfo(){
-      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerInfo.store_code}`)
       .then((r) => {
         this.info = r.data
       })
@@ -183,7 +175,7 @@ export default {
       })
     },
     getOrders(){
-      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerInfo.store_code}`)
       .then((r) => {
         
         this.orderItems = r.data
@@ -194,7 +186,7 @@ export default {
       })
     },
     getOnOff(){
-      this.$axios.get(`http://localhost:3000/api/store/onOff/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/store/onOff/${this.ownerInfo.store_code}`)
       .then((r) => {
         console.log(r.data)
         
@@ -205,7 +197,7 @@ export default {
       })
     },
     putOrderStatus(status, code){
-      this.$axios.put(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`,{ status: status, code: code })
+      this.$axios.put(`http://localhost:3000/api/reservation/owner/${this.ownerInfo.store_code}`,{ status: status, code: code })
       .then((r) => {
         console.log(r.data)
       })
@@ -214,7 +206,7 @@ export default {
       })
     },
     putOnOff(){
-      this.$axios.put(`http://localhost:3000/api/store/onOff/${this.ownerCode}`,{ status: this.onOff })
+      this.$axios.put(`http://localhost:3000/api/store/onOff/${this.ownerInfo.store_code}`,{ status: this.onOff })
       .then((r) => {
         console.log(r.data)
         //this.orderItems = r.data

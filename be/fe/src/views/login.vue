@@ -27,9 +27,6 @@
                       <v-btn flat color="white" @click="signIn">
                         Login
                       </v-btn>
-                      <v-btn flat color="white" :to="ownerHomePath">
-                        OwnerLogin
-                      </v-btn>
                       <v-btn flat color="white" :to="signUpPath">
                         SignUp
                       </v-btn>
@@ -64,33 +61,78 @@ export default {
   },
   methods: {
     signIn() {
-      // 디비에서 비교하는 부분 추가
       console.log(this.id, this.password)
-      axios.post(`${this.$apiRoot}user/signin`, {
-        id: this.id, password: this.password
-      })
-      .then((r) => {
-        if (r.data.success) {
-          // var test = {
-          //   id: this.id,
-          //   code: 14
-          // }
-          // localStorage.setItem('test', JSON.stringify(test));
-          //localStorage.setItem('id', this.id);
-          //localStorage.setItem('code', 14);
-          localStorage.setItem('customerInfo', JSON.stringify(r.data));
+      if(this.id.substring(0,3) === 'st_') {
+        console.log('점주')
+        axios.post(`${this.$apiRoot}user/owner/signin`, {
+          id: this.id, password: this.password
+        })
+        .then((r) => {
+          if (r.data.success) {
+            // store_name	"store_name",
+            // address "address",
+            // coporate_no "coporate_no",
+            // business_no "business_no"
+            // phone_no "phone_no",
+            // latitude	"latitude",
+            // longitude "longitude",
+            // profile_Img_Url "profile_Img_Url",
+            // total_Rate "total_Rate",
+            // store_Desc "store_Desc",
+            // store_Tag "store_Tag",
+            // store_Tag "store_Tag",
+            // store_id	"store_id",
+            // store_password	"store_password",
+            // store_Category_Code "store_Category_Code",
+            // start_Time "start_Time",
+            // end_Time	"end_Time",
+            // break_start_time	"break_start_time",
+            // break_end_time	"break_end_time",
+            // owner_Name "owner_Name"
 
-          if(r.data.mode == 'user') this.$router.push('/home');
-          else this.$router.push('/ownerHome');
-        }
-        else {
+            localStorage.setItem('ownerInfo', JSON.stringify(r.data));
+            this.$router.push('/ownerHome');
+          }
+          else {
+            alert('로그인에 실패했습니다')
+          }
+        })
+        .catch((e) => {
+          this.pop(e.message)
           alert('로그인에 실패했습니다')
-        }
-      })
-      .catch((e) => {
-        this.pop(e.message)
-        alert('로그인에 실패했습니다')
-      })
+        })
+        
+      }
+      else{
+        axios.post(`${this.$apiRoot}user/signin`, {
+          id: this.id, password: this.password
+        })
+        .then((r) => {
+          if (r.data.success) {
+            // c.customer_code "customer_code",
+            // c.grade_code "grade_code",
+            // customer_name "customer_name",
+            // address "address",
+            // phone_no "phone_no",
+            // birth_date "birth_date",
+            // profile_img_url "profile_img_url",
+            // grade_name "grade_name",
+            // point_rate "point_rate"
+            localStorage.setItem('customerInfo', JSON.stringify(r.data));
+
+            if(r.data.mode == 'user') this.$router.push('/home');
+            else this.$router.push('/ownerHome');
+          }
+          else {
+            alert('로그인에 실패했습니다')
+          }
+        })
+        .catch((e) => {
+          this.pop(e.message)
+          alert('로그인에 실패했습니다')
+        })
+
+      }
 
     }
   }
