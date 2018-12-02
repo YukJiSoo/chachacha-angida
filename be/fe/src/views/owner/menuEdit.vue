@@ -135,12 +135,12 @@ export default {
       })
     },
     enrollOrUpdate(menuId){
-      alert("완료되었습니다.")
-
-      if(menuId == "enroll") this.postMenuItem()
+      // alert("완료되었습니다.")
+      console.log(menuId)
+      if(menuId == 0) this.postMenuItem()
       else this.putMenuItem(menuId)
       
-      this.$router.push('/ownerMenuManage')
+      // this.$router.push('/ownerMenuManage')
     },
     goBack(){
       window.history.back();

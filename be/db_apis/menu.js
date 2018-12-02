@@ -1,8 +1,6 @@
 const oracledb = require('oracledb');
 const database = require('../services/database.js');
 
-// select store_name, seat_status, total_seat
-// from restaurant r, seat_cur_status s where r.store_code = s.store_code;
 const baseQuery =
   `select
     menu_code "menu_code",
@@ -31,24 +29,6 @@ async function find(context) {
 
 module.exports.find = find;
 
-async function findOne(context) {
-  let query = baseQuery;
-  const binds = {};
-
-  if (context.store_code) {
-    console.log("add store_code condition to query");
-    binds.store_code = context.store_code;
-    binds.menu_code = context.menu_code;
-    query += `\nwhere store_code = :store_code and menu_code = :menu_code`;
-  }
-
-  console.log("executing query:", query);
-  const result = await database.simpleExecute(query, binds);
-
-  return result.rows;
-}
-
-module.exports.findOne = findOne;
 
 const createSql =
  `insert into menu (
@@ -102,18 +82,19 @@ const updateSql =
   where menu_code = :menu_code`;
  
 
-async function update(context) {
-  let menuContext = {}
+async function updateMenu(context) {
+  console.log(context)
+  let menuUpContext = {}
 
-  menuContext.menu_name = context.menu.menu_name
-  menuContext.menu_img_url = context.menu.menu_img_url
-  menuContext.menu_price  = context.menu_price
-  menuContext.menu_desc  = context.menu_desc
-  menuContext.store_code = context.store_code
-  menuContext.menu_code = contest.menu_code
+  menuUpContext.menu_name = context.menu.menu_name
+  menuUpContext.menu_img_url = context.menu.menu_img_url
+  menuUpContext.menu_price  = context.menu_price
+  menuUpContext.menu_desc  = context.menu_desc
+  menuUpContext.store_code = context.store_code
+  menuUpContext.menu_code = contest.menu_code
 
-  console.log(menuContext)
-  const menuResult = await database.simpleExecute(updateSql, menuContext);
+  console.log(menuUpContext)
+  const menuResult = await database.simpleExecute(updateSql, menuUpContext);
 
   if (menuResult.rowsAffected && menuResult.rowsAffected === 1) {
     return menuResult;
@@ -122,7 +103,7 @@ async function update(context) {
   }
 }
 
-module.exports.update = update;
+module.exports.updateMenu = updateMenu;
 
 const deleteSql =
  `begin

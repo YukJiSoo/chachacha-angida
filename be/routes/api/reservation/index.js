@@ -49,7 +49,7 @@ router.post('/', async function(req, res, next){
 
   console.log(context)
 
-  //var success = await reservation.create(context);
+  var success = await reservation.create(context);
 
   //console.log(success)
 
