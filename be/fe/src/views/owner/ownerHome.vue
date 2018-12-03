@@ -63,72 +63,77 @@
       </v-flex>
     </v-layout>
 
-    <v-flex xs12 sm12 class="mb-3">
-      <!-- 음식점 이름-->
-      <h1 class="large">{{ownerInfo.store_name}}</h1>
-      <h3 class="xlarge">현재 주문상태</h3>
-    </v-flex>
-    
-    
-    <div v-if="progress" class="mt-4 pt-5">
-      <v-progress-circular
-        :size="150"
-        :width="20"
-        color="orange"
-        indeterminate
-      ></v-progress-circular>
-      <div class="xlarge mt-5">예약정보를 불러오는 중입니다...</div>
-    </div>
+    <div v-if="onOff == 'ON'">
+      <v-flex xs12 sm12 class="mb-3">
+        <!-- 음식점 이름-->
+        <h1 class="large">{{ownerInfo.store_name}}</h1>
+        <h3 class="xlarge">현재 주문상태</h3>
+      </v-flex>
+      
+      
+      <div v-if="progress" class="mt-4 pt-5">
+        <v-progress-circular
+          :size="150"
+          :width="20"
+          color="orange"
+          indeterminate
+        ></v-progress-circular>
+        <div class="xlarge mt-5">예약정보를 불러오는 중입니다...</div>
+      </div>
 
-    <div v-if="!progress" class="mb-3">
-      <div class="medium pr-2">{{date}}</div>
-      <span class="medium pr-2">예약정보가 계속해서 업데이트중 입니다 </span>
-      <v-progress-circular
-        :size="20"
-        :width="3"
-        color="blue"
-        indeterminate
-      ></v-progress-circular>
+      <div v-if="!progress" class="mb-3">
+        <div class="medium pr-2">{{date}}</div>
+        <span class="medium pr-2">예약정보가 계속해서 업데이트중 입니다 </span>
+        <v-progress-circular
+          :size="20"
+          :width="3"
+          color="blue"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+      <!--주문정보-->
+      <v-card v-if="!progress">
+        <v-list>
+          <v-list-group
+            v-for="(item,index) in orderItems"
+            v-model="item.active"
+            no-action
+          >
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <!--주문자와 가격-->
+                <div id="status">
+                  <div v-if="item.ORDER_STATUS==='수락대기'">
+                    <span class="medium mr-2 purple--text">{{item.RESERV_TIME.substring(11,16)}}</span>
+                    <span class="medium mr-2">{{item.TOTAL_PRICE}}원</span>
+                    <span class="medium yellow--text text--darken-3">{{item.ORDER_STATUS}}</span>
+                  </div>
+                  <div v-else>
+                    <span class="medium mr-2 purple--text">{{item.RESERV_TIME.substring(11,16)}}</span>
+                    <span class="medium mr-2">{{item.TOTAL_PRICE}}원</span>
+                    <span class="medium blue--text">{{item.ORDER_STATUS}}</span>
+                  </div>
+                </div>
+              </v-list-tile-content>
+            </v-list-tile>
+            <div v-for="menu in item.menu_name" class="medium py-1">
+              <v-icon>restaurant_menu</v-icon>
+              {{ menu }}
+            </div>
+            <div class="medium">주문자 : {{ item.CUSTOMER_ID }}</div>
+            <!--주문 수락 거절 버튼-->
+            <div>
+              <v-btn v-if="item.ORDER_STATUS=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
+              <v-btn @click="refuse(item, index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
+            </div>
+            
+          </v-list-group>
+        </v-list>
+      </v-card>
     </div>
-    <!--주문정보-->
-    <v-card v-if="!progress">
-      <v-list>
-        <v-list-group
-          v-for="(item,index) in orderItems"
-          v-model="item.active"
-          no-action
-        >
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <!--주문자와 가격-->
-              <div id="status">
-                <div v-if="item.ORDER_STATUS==='수락대기'">
-                  <span class="medium mr-2 purple--text">{{item.RESERV_TIME.substring(11,16)}}</span>
-                  <span class="medium mr-2">{{item.TOTAL_PRICE}}원</span>
-                  <span class="medium yellow--text text--darken-3">{{item.ORDER_STATUS}}</span>
-                </div>
-                <div v-else>
-                  <span class="medium mr-2 purple--text">{{item.RESERV_TIME.substring(11,16)}}</span>
-                  <span class="medium mr-2">{{item.TOTAL_PRICE}}원</span>
-                  <span class="medium blue--text">{{item.ORDER_STATUS}}</span>
-                </div>
-              </div>
-            </v-list-tile-content>
-          </v-list-tile>
-          <div v-for="menu in item.menu_name" class="medium py-1">
-            <v-icon>restaurant_menu</v-icon>
-            {{ menu }}
-          </div>
-          <div class="medium">주문자 : {{ item.CUSTOMER_ID }}</div>
-          <!--주문 수락 거절 버튼-->
-          <div>
-            <v-btn v-if="item.ORDER_STATUS=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
-            <v-btn @click="refuse(item, index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
-          </div>
-          
-        </v-list-group>
-      </v-list>
-    </v-card>
+    <div v-else>
+      <div class="large">알림 기능이 꺼져있습니다</div>
+    </div>
   </v-container>
 </template>
 
@@ -141,7 +146,7 @@ export default {
       date: new Date().toISOString().substr(0, 10),
 
       progress: true,
-      onOff: false,
+      onOff: localStorage.getItem('onOff'),
       drawer: null,
 
       ownerInfoPath: '/ownerInfo',
@@ -175,8 +180,11 @@ export default {
     }
   },
   mounted() {
-    this.getOrders()
-    this.updateOrder = setInterval(this.getOrders, 3000)
+    if(this.onOff == 'ON'){
+      this.getOrders()
+      this.updateOrder = setInterval(this.getOrders, 3000)
+    }
+    
   },
   methods: {
     getOrders(){

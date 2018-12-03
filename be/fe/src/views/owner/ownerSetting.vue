@@ -1,14 +1,13 @@
 <template>
   <v-container grid-list-md text-xs-center align-center>
     <basicSet></basicSet>
-    <v-layout align-center justify-end>
+    <v-layout align-center justify-center>
       <!--한칸-->
-      <v-flex xs10 sm10>
-        <p class="text-xs-left xlarge">알림 받기</p>
+      <v-flex xs8 sm10>
+        <p class="text-xs-left xlarge mt-3">알림 받기</p>
       </v-flex>
-      <v-flex xs2 sm2 class="pt-0">
-        <!--스위치-->
-        <v-switch v-model="switch1" class="pt-0"></v-switch>
+      <v-flex xs4 sm2>
+        <v-btn @click="changeOnOff" color="orange" dark class="medium">{{onOff}}</v-btn>
       </v-flex>
       <v-divider></v-divider>
       <!--끝-->
@@ -27,10 +26,21 @@ export default {
   name: 'ownerSetting',
   data () {
     return {
-      
+      onOff : localStorage.getItem('onOff')
     }
   },
   methods: {
+    changeOnOff(){
+      if(this.onOff == 'ON') {
+        localStorage.setItem('onOff','OFF')
+        this.onOff = 'OFF'
+      }
+      else {
+        this.onOff = 'ON'
+        localStorage.setItem('onOff','ON')
+      }
+      console.log(this.onOff)
+    }
   }
 }
 </script>
