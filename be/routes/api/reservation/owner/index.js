@@ -6,8 +6,8 @@ const reservation = require('../../../../db_apis/reservation.js');
 
 /* GET home page. 수락대기, 예약완료만*/
 router.get('/:id', async function(req, res, next) {
-  const id = req.params.id // 점주 id 
-  
+  const id = req.params.id // 점주 id
+
   const context = {};
   context.id = id;
 
@@ -31,7 +31,7 @@ router.get('/:id', async function(req, res, next) {
 
 /* GET 모두*/
 router.get('/all/:id', async function(req, res, next) {
-  const id = req.params.id // 점주 id 
+  const id = req.params.id // 점주 id
 
   const context = {};
   context.id = id;
@@ -55,7 +55,7 @@ router.get('/all/:id', async function(req, res, next) {
 
 /* GET 모두*/
 router.get('/all/income/:id', async function(req, res, next) {
-  const id = req.params.id // 점주 id 
+  const id = req.params.id // 점주 id
 
   const context = {};
   context.id = id;
@@ -81,7 +81,7 @@ router.get('/all/income/:id', async function(req, res, next) {
 router.put('/:id', async function(req, res, next) {
   const id = req.params.id
   var order_status = req.body.status
-  
+
 
   let context = {};
   context.order_code = id
@@ -96,12 +96,12 @@ router.put('/:id', async function(req, res, next) {
     console.log(order_status)
     context.order_status = '예약취소'
   }
-  
+  updateTest
   const rows = await reservation.update(context);
 
   if(rows) res.send(rows);
   else res.status(404).end();
-  
+
 })
 
 router.all('*', function(req, res, next) {
