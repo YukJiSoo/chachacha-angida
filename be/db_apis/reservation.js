@@ -50,7 +50,7 @@ async function findOwner(context) {
   let query = ownerQuery;
 
   const binds = {};
-  console.log(context)
+  // console.log(context)
   if (context.id) {
     binds.store_code = parseInt(context.id, 10);
     query +=
@@ -60,10 +60,10 @@ async function findOwner(context) {
     order by order_code DESC`;
   }
 
-  console.log(binds)
+  // console.log(binds)
   const result = await database.simpleExecute(query, binds);
 
-  console.log(result.rows)
+  // console.log(result.rows)
 
   let menu_names = []
 
@@ -75,7 +75,7 @@ async function findOwner(context) {
     menuContext.store_code = context.id
 
     let tempQuery = menuQuery
-    console.log('od : ',menuContext.order_code, ' st : ', menuContext.store_code)
+    // console.log('od : ',menuContext.order_code, ' st : ', menuContext.store_code)
 
     tempQuery += `\nwhere
     i.order_code = :order_code and i.store_code = :store_code and i.store_code = m.store_code and i.menu_code = m.menu_code`;
@@ -86,7 +86,7 @@ async function findOwner(context) {
       menu_list.push(v.menu_name)
     });
 
-    console.log(menu_list)
+    // console.log(menu_list)
 
     menu_names.push(menu_list)
   }
@@ -430,15 +430,32 @@ const updateSql =
 set order_status = :order_status
 where order_code = :order_code`;
 
-async function update(context) {
-  const bind = Object.assign({}, context);
-  const result = await database.simpleExecute(updateSql, bind);
+const test =
+`select * from reserv_order
+where order_code = :order_code`;
 
+async function update(context) {
+  let bind = {}
+  bind.order_status = context.order_status
+  bind.order_code = parseInt(context.order_code,10)
+
+  let opts = {}
+  opts.autoCommit = true
+  console.log("reservation.js update() bind", bind)
+  const result = await database.simpleExecute(updateSql, bind, opts);
+  
+  let tb = {}
+  tb.order_code = parseInt(context.order_code,10)
+  const testresult = await database.simpleExecute(test, tb, opts);
+
+  console.log(testresult)
   if (result.rowsAffected && result.rowsAffected === 1) {
     return bind;
   } else {
     return null;
   }
+
+  
 }
 
 module.exports.update = update;

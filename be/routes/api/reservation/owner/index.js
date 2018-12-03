@@ -22,9 +22,6 @@ router.get('/:id', async function(req, res, next) {
     orders[i].RESERV_TIME = new Date(orders[i].RESERV_TIME.getTime() + 9 * 60 * 60 * 1000)
   });
 
-  console.log('==========>router result');
-  console.log(orders);
-
   res.send(orders);
 
 });
@@ -84,7 +81,6 @@ router.put('/:id', async function(req, res, next) {
   
 
   let context = {};
-  context.order_code = id
 
   if(order_status === 'agree'){
     // 수락대기 -> 수락완료
@@ -96,9 +92,10 @@ router.put('/:id', async function(req, res, next) {
     console.log(order_status)
     context.order_status = '예약취소'
   }
+  context.order_code = id
   
   const rows = await reservation.update(context);
-
+  
   if(rows) res.send(rows);
   else res.status(404).end();
   
