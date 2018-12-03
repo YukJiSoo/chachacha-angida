@@ -60,7 +60,7 @@
                     <!-- 위치 -->
                     <v-flex xs6 sm12 class="pa-0">
                       <div class="medium grey--text text--darken-2 font-weight-bold">
-                        <span>약 300m</span>
+                        <span>약 {{ store.distance_to_store }} m</span>
                       </div>
                     </v-flex>
                   </v-layout>

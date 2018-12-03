@@ -27,7 +27,7 @@
           <v-layout align-center column wrap>
             <v-flex xs12>
               <div class="large font-weight-bold pt-4">
-                <span>보유포인트 {{pointHave}}P</span>
+                <span>보유포인트 {{ total_point }}P</span>
               </div>
             </v-flex>
             <v-flex xs12>
@@ -53,7 +53,7 @@
               <v-flex xs12>
                 <v-divider></v-divider>
               </v-flex>
-              
+
               <!-- 가게이름, 예약날짜, 소멸예정날짜 -->
               <v-flex xs8>
                 <v-layout column wrap>
@@ -67,7 +67,7 @@
                       <span>{{pointItem.OCCUR_DATE}} ({{getPointRemoveDay(pointItem.OCCUR_DATE)}})</span>
                     </div>
                   </v-flex>
-                </v-layout>                  
+                </v-layout>
               </v-flex>
 
               <!-- 적립, 소멸포인트 값 -->
@@ -96,15 +96,15 @@ export default {
     return {
       mypagePath:'/mypage',
       userCode: localStorage.getItem('code'),
-      
+      total_point: 0,
       pointHave: 0,
       pointHistorys: [],
-      
+
     }
   },
   mounted() {
     //this.userCode = localStorage.getItem('code')
-
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
     this.getPoint()
     this.getPointHistory()
     this.getTotalPoint()
@@ -116,27 +116,30 @@ export default {
       })
     },
     getPoint(){
-      axios.get(`http://localhost:3000/api/point/${this.userCode}`)
+      var data = {};
+      data.customer_code = this.customerInfo.customer_code;
+      this.$axios.get('http://localhost:3000/api/point/', {
+        params: data
+      })
       .then((r) => {
-        console.log(r.data)
-        this.point = r.data.point
+        console.log("갖고온 포인트 정보:", r.data)
+        this.total_point = r.data.total_point
       })
       .catch((e) => {
-      this.pop(e.message)
-      })  
-      
+        this.pop(e.message)
+      })
     },
     getPointHistory(){
       axios.get(`http://localhost:3000/api/point/list/${this.userCode}`)
       .then((r) => {
         console.log(r.data)
         this.pointHistorys = r.data
-        
+
       })
       .catch((e) => {
       this.pop(e.message)
-      })  
-      
+      })
+
     },
     getPointRemoveDay(date){
       var dateArr = date.split('.')
