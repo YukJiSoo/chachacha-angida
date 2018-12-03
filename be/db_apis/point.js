@@ -2,16 +2,15 @@ const oracledb = require('oracledb');
 const database = require('../services/database.js');
 
 const baseQuery =
- `select TOTAL_POINT "TOTAL_POINT",
-  from CUSTOMER_POINT`;
+ `select total_point "total_point" from CUSTOMER_POINT`;
 
 async function find(context) {
   let query = baseQuery;
   const binds = {};
 
-  if (context.id) {
-    binds.CUSTOMER_CODE = context.id;
-    query += `\nwhere CUSTOMER_CODE = :CUSTOMER_CODE`;
+  if (context.customer_code) {
+    binds.customer_code = context.customer_code;
+    query += `\nwhere customer_code = :customer_code`;
   }
 
   const result = await database.simpleExecute(query, binds);

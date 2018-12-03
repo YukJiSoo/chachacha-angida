@@ -13,7 +13,7 @@
         <v-subheader class="xlarge">당일 총 매출 : {{totalcost}}원
         </v-subheader>
         </v-layout>
-        <v-divider></v-divider>
+        <v-divider class="mb-3"></v-divider>
           <!--달력-->
         <v-dialog
           ref="dialog"
@@ -33,19 +33,19 @@
           ></v-text-field>
           <v-date-picker v-model="date" scrollable color="orange">
             <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="ho(date)">OK</v-btn>
+            <v-btn flat color="primary" @click="updateOrder(date)">OK</v-btn>
           </v-date-picker>
         </v-dialog>
           <!--달력 끝-->
 
-        <div v-if="progress" class="mt-4 pt-5 pb-5">
-          <v-progress-circular
-            :size="150"
-            :width="20"
-            color="orange"
-            indeterminate
-          ></v-progress-circular>
-        </div>
+      <div v-if="progress" class="mt-4 pt-5 pb-5 mb-3">
+        <v-progress-circular
+          :size="150"
+          :width="20"
+          color="orange"
+          indeterminate
+        ></v-progress-circular>
+      </div>
       <v-list-group
         v-if="!progress"
         v-for="item in saleItems"
@@ -90,21 +90,19 @@ export default {
       progress: true,
       
       ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
-      saleItems: []
+      saleItems: [],
+      allSaleItems: []
     }
   },
   methods: { 
     // 날짜를 넘겨주고 그에 해당되는 날짜를 받아오기로, 날짜형식:2018-11-08
-    getSaleList(date){
-      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/${this.ownerInfo.store_code}`)
+    getSaleList(){
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/income/${this.ownerInfo.store_code}`)
       .then((r) => {
-        this.saleItems = r.data
+        this.allSaleItems = r.data
         console.log(r.data)
         
-        this.totalcost = 0
-        this.saleItems.forEach( (v,i) => {
-          this.totalcost = this.totalcost + parseInt(v.total_price,10)
-        });
+        this.updateOrder(this.date)
         this.progress = false
       
       })
@@ -112,13 +110,23 @@ export default {
         console.error(e.message)
       })
     },
-    ho(date){
+    updateOrder(date){
       this.$refs.dialog.save(date)
-      this.getSaleList(this.date)
+
+      this.saleItems = []
+      this.totalcost = 0
+      this.allSaleItems.forEach( (v,i) => {
+        if(v.RESERV_TIME.substring(0,10) == date){
+          this.saleItems.push(v)
+          this.totalcost = this.totalcost + parseInt(v.TOTAL_PRICE,10)
+        }
+      });
+      
     }
   },
   mounted() {
-    this.getSaleList(this.date) 
+    this.getSaleList()
+    
   },
   
 }

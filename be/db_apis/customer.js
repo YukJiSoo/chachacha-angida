@@ -26,12 +26,15 @@ async function find(context) {
     query +=
     `\nand customer_id = :customer_id and customer_password = :customer_password`;
   }
-  console.log("dbstart")
-  const result = await database.simpleExecute(query, binds);
+  var opts = {
+    bindDefs: {
+      customer_id: { type: oracledb.STRING, maxSize: 18},
+      customer_password: { type: oracledb.STRING, maxSize: 18}
+    } };
+  console.log("customer.js find() binds >> ", binds);
+  const result = await database.simpleExecute(query, binds, opts);
   console.log("dbresult:", result)
   return result.rows;
 }
 
 module.exports.find = find;
-
-

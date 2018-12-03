@@ -32,6 +32,34 @@ async function find(context) {
 
 module.exports.find = find;
 
+const ownerReviewQuery =
+  `select
+  r.review_code "review_code",
+  customer_name "customer_name",
+  r.contents "contents",
+  review_date "review_date",
+  review_img_url "review_img_url"
+from review r, restaurant s, customer c
+where r.store_code = s.store_code`
+
+async function findOwner(context) {
+  let query = ownerReviewQuery;
+  const binds = {};
+
+  if (context.store_code) {
+    console.log("add store_code condition to query");
+    binds.store_code = context.store_code;
+    query += `\nand r.store_code = :store_code`;
+  }
+
+  console.log("executing query:", query);
+  const result = await database.simpleExecute(query, binds);
+
+  return result.rows;
+}
+
+module.exports.findOwner = findOwner;
+
 const createSql =
  `insert into employees (
     first_name,

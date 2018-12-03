@@ -91,6 +91,7 @@ export default {
             // owner_Name "owner_Name"
 
             localStorage.setItem('ownerInfo', JSON.stringify(r.data));
+            localStorage.setItem('onOff', 'ON');
             this.$router.push('/ownerHome');
           }
           else {

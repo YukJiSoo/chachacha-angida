@@ -11,18 +11,43 @@
         <v-expansion-panel
           expand
         >
-          <v-expansion-panel-content
-            v-for="item in reviewItems"
-            :key="item"
-          >
-            <div slot="header"><h2 class="xlarge">{{item.title}}</h2></div>
+          <v-expansion-panel-content v-for="item in reviewItems">
+            <div slot="header"><h2 class="xlarge">{{item.customer_name}} {{item.review_date.substring(0,10)}}</h2></div>
             <v-card>
-              <h3 class="medium">&nbsp;&nbsp;&nbsp;&nbsp;ID: {{item.ID}} &nbsp;&nbsp;&nbsp;&nbsp;
+              <h3 class="medium">&nbsp;&nbsp;&nbsp;&nbsp;ID: {{item.customer_name}} &nbsp;&nbsp;&nbsp;&nbsp;
                 <v-icon
                   color="red"
                   @click="report">block</v-icon>
+                <v-dialog v-model="dialog" persistent max-width="600px">
+                  <v-icon
+                  color="green"
+                  slot="activator"
+                  class="ml-3">card_giftcard</v-icon>
+                  <v-card>
+                    <v-card-title>
+                      <span class="xlarge orange--text">쿠폰발급</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container grid-list-md>
+                        <v-layout wrap>
+                          <v-flex xs12>
+                            <v-text-field label="쿠폰이름" required color="orange " class="medium"></v-text-field>
+                          </v-flex>
+                          <v-flex xs12>
+                            <v-text-field label="할인가격" required color="orange " class=" medium"></v-text-field>
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="orange" class="medium" flat @click="dialog = false">닫기</v-btn>
+                      <v-btn color="orange" class="medium" flat @click="dialog = giveCoupon(item.customer_name)">발급</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </h3>
-              <v-card-text class="medium">{{item.subtitle}}</v-card-text>
+              <v-card-text class="medium">{{item.contents}}</v-card-text>
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -39,9 +64,9 @@ export default {
   name: 'ownerReviewManage',
   data () {
     return {
-      userCode: localStorage.getItem('code'),
-      
-      reviewItems: []
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
+      reviewItems: [],
+      dialog: false
     }
   },
   methods: {
@@ -52,11 +77,14 @@ export default {
     report(){
       alert("신고되었습니다.")
     },
+    giveCoupon(name){
+      alert(`${name} 님에게 쿠폰이 발급되었습니다.`)
+    },
     getReviewList(){
-      this.$axios.get(`http://localhost:3000/api/review/owner/${this.userCode}`)
+      this.$axios.get(`http://localhost:3000/api/review/owner/${this.ownerInfo.store_code}`)
       .then((r) => {
         this.reviewItems = r.data
-        console.log(r)
+        console.log(this.reviewItems)
       })
       .catch((e) => {
         console.error(e.message)

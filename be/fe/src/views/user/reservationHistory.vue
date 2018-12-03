@@ -28,9 +28,9 @@
       <v-flex xs12 sm12>
         <div class="body-2 grey--text text--darken-1 px-3 pt-2">
           <span class="mx-4 blue--text text--darken-2">주문시간</span>
-          <span>{{i.order_time.substring(11,19)}}</span>
+          <span>{{i.order_time.substring(11,13)}}시{{i.order_time.substring(14,16)}}분</span>
           <span class="mx-4 blue--text text--darken-2">도착시간</span>
-          <span>{{i.reserv_time.substring(11,19)}}</span>
+          <span>{{i.reserv_time.substring(11,13)}}시{{i.reserv_time.substring(14,16)}}분</span>
         </div>
       </v-flex>
       <v-flex xs12 sm12>
@@ -94,7 +94,7 @@ export default {
   name: 'default',
   data () {
     return {
-      userCode : localStorage.getItem('code'),
+      customerInfo: {},
       mypagePath:'/mypage',
       reservationPage:'/reservation',
       writingReviewPage:'/writingReview',
@@ -111,6 +111,7 @@ export default {
     }
   },
   mounted() {
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
     this.getReservationHistory()
   },
   computed:{ },
@@ -180,15 +181,13 @@ export default {
       }
     },
     getReservationHistory(){
-      this.$axios.get(`http://localhost:3000/api/reservation/${this.userCode}`)
+      var data = {};
+      data.customer_code = this.customerInfo.customer_code;
+      this.$axios.get('http://localhost:3000/api/reservation/', {
+        params: data
+      })
       .then((r) => {
         this.items = r.data
-
-        // 확인
-        console.log(this.items)
-        for(var item in this.items){
-          console.log(item.endTime);
-        }
         // // item 객체 생성
         // for(var i in r.data.reserv_list){
         //   this.items.push(new reservItem(i.reservation_time, i.arrival_time, i.menu_list, i.status, i.store_name, i.total_price))
@@ -207,7 +206,7 @@ export default {
       let status = !item.progress && (item.order_status === '수락대기' && item.order_status !== '예약완료')
       return status;
     },
-    
+
   }
 }
 </script>

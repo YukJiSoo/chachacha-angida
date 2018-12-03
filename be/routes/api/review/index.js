@@ -31,26 +31,18 @@ router.get('/', async function(req, res, next) {
 })
 
 // 식당에 등록된 리뷰 get
-router.get('/owner/:id', function(req, res, next) {
+router.get('/owner/:id', async function(req, res, next) {
   const id = req.params.id
-  var reviewList = [
-    {
-      ID: '차민형',
-      title: '맛있다',
-      subtitle: "맛있다"
-    },
-    {
-      ID: '박준서',
-      title: '맛없다',
-      subtitle: "맛없다"
-    },
-    {
-      ID: '육지수',
-      title: '걍그럼',
-      subtitle: "걍그럼"
-    }
-  ]
-  res.send(reviewList)
+
+  const context = {};
+  context.store_code = id;
+
+  const rows = await review.findOwner(context);
+
+  console.log('==========>router result');
+  console.log(rows);
+
+  res.send(rows)
 })
 
 // 사용자가 리뷰 작성 post

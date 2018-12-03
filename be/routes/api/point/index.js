@@ -6,32 +6,34 @@ const point = require('../../../db_apis/point.js');
 const database = require('../../../services/database.js');
 
 /* GET point  . */
-router.get('/:id', async function(req, res, next) {
-  const id = req.params.id
-  // 디비 만들어지면 테스트
-  // const context = {};
+router.get('/', async function(req, res, next) {
+  const context = {};
 
-  // context.id = parseInt(id, 10);
+  console.log("point test");
+  console.log(req.query);
 
-  // const rows = await employees.find(context);
+  try {
+    const context = {};
+    if (req.query.customer_code) {
+      console.log("point query.customer_code");
+      context.customer_code = parseInt(req.query.customer_code, 10);
+    }
+    console.log(context);
+    const rows = await point.find(context);
+    console.log(rows);
 
-  // console.log('==========>router result');
-  // console.log(result.rows);
-
-  // if (id) {
-  //   if (rows.length === 1) {
-  //     res.status(200).json(rows[0]);
-  //   } else {
-  //     res.status(404).end();
-  //   }
-  // } else {
-  //   res.status(200).json(rows);
-  // }
-
-  // var TOTAL_POINT = rows[0].TOTAL_POINT
-  var TOTAL_POINT = 100
-
-  res.send({TOTAL_POINT})
+    if (req.query.customer_code) {
+      if (rows.length === 1) {
+        res.status(200).json(rows[0]);
+      } else {
+        res.status(404).end();
+      }
+    } else {
+      res.status(200).json(rows);
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 /* GET point detail . */
