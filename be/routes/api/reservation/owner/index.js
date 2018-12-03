@@ -19,6 +19,7 @@ router.get('/:id', async function(req, res, next) {
   orders.forEach((v,i) => {
     orders[i].actice = false
     orders[i].menu_name = menu_names[i]
+    orders[i].RESERV_TIME = new Date(orders[i].RESERV_TIME.getTime() + 9 * 60 * 60 * 1000)
   });
 
   console.log('==========>router result');

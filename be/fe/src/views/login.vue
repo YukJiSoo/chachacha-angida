@@ -15,7 +15,7 @@
                       <v-text-field
                         v-model="id"
                         required
-                        label="ID"
+                        label="id"
                         color="white"
                       >{{ id }}</v-text-field>
                       <v-text-field
@@ -23,6 +23,7 @@
                         required
                         label="Password"
                         color="white"
+                        type="password"
                       >{{ password }}</v-text-field>
                       <v-btn flat color="white" @click="signIn">
                         Login

@@ -193,7 +193,10 @@ export default {
         
         this.orderItems = r.data
         this.progress = false
-        console.log(this.orderItems)
+        console.log(this.orderItems.menu_name)
+        this.orderItems.forEach((v,i) => {
+          this.orderItems[i].RESERV_TIME = new Date(this.orderItems[i].RESERV_TIME.getTime() + 9 * 60 * 60 * 1000)
+        });
       })
       .catch((e) => {
       this.pop(e.message)
