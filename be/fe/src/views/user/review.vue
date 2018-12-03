@@ -87,15 +87,11 @@
                   <v-img v-if="review.review_img_url != NULL" width=250 height=200
                     :src="`${review.review_img_url}`"
                   ></v-img>
-
               </v-flex>
             </v-layout>
-
           </v-layout>
         </v-card>
       </v-flex>
-
-
     </v-layout>
   </v-container>
 </template>
