@@ -84,10 +84,10 @@
                       <span> {{ review.contents }}</span>
                     </div>
                   </v-flex>
-                  <v-img width=200 height=200
+                  <v-img v-if="review.review_img_url != NULL" width=250 height=200
                     :src="`${review.review_img_url}`"
                   ></v-img>
-                
+
               </v-flex>
             </v-layout>
 
