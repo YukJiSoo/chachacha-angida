@@ -8,8 +8,7 @@ const database = require('../../../services/database.js');
 router.use('/owner', require('./owner'));
 
 /* GET home page. */
-router.get('/:id', async function(req, res, next) {
-  const id = req.params.id
+router.get('/', async function(req, res, next) {
 
   const context = {};
   context.id = id;
@@ -33,20 +32,26 @@ router.get('/:id', async function(req, res, next) {
 });
 
 /* post 예약 추가 */
-router.post('/:id', async function(req, res, next){
+router.post('/', async function(req, res, next){
   const id = req.params.id
   const reservationInfo = req.body
+  console.log("reservationInfo", reservationInfo)
 
   let context = reservationInfo;
+  context.payment_amount = context.total_price - context.point_discount - context.coupon_discount
   context.order_status = '수락대기'
   context.review_status = 'N'
   context.customer_code = parseInt(context.customer_code, 10)
+  context.store_code = parseInt(context.store_code, 10)
+  for(var i = 0; i < context.menuItems.length; i++){
+    context.menuItems[i].menucode = parseInt(context.menuItems[i].menucode, 10)
+  }
 
   console.log(context)
 
   var success = await reservation.create(context);
 
-  console.log(success)
+  //console.log(success)
 
   res.send(success);
 })
@@ -54,7 +59,7 @@ router.post('/:id', async function(req, res, next){
 
 /* PUT 예약상태 수정 */
 router.put('/:id', (req, res, next) => {
-  
+
 })
 
 router.all('*', function(req, res, next) {

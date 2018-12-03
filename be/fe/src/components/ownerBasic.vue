@@ -11,12 +11,12 @@
         <v-list>
           <v-list-tile avatar :to="ownerInfoPath">
             <v-list-tile-avatar>
-              <v-img :src="info.img"></v-img>
+              <v-img :src="ownerInfo.profile_img_url"></v-img>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title class="font-use black--text">{{info.ownerName}}</v-list-tile-title>
-              <v-list-tile-title class="xlarge black--text">{{info.restaurantName}}</v-list-tile-title>
+              <v-list-tile-title class="font-use black--text">{{ownerInfo.owner_name}}</v-list-tile-title>
+              <v-list-tile-title class="xlarge black--text">{{ownerInfo.store_name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-btn color="orange" class="font-use font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -74,8 +74,7 @@ export default {
   name: 'ownerInfo',
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
-      info:{},
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
       drawer: null,
       mainPath: '/ownerHome',
@@ -106,18 +105,9 @@ export default {
     }
   },
   mounted() {
-    this.getUserInfo()
+    console.log(this.ownerInfo)
   },
   methods: {
-    getUserInfo(){
-      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
-      .then((r) => {
-        this.info = r.data
-      })
-      .catch((e) => {
-      this.pop(e.message)
-      })
-    },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')

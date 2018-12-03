@@ -79,12 +79,12 @@
                   <!-- 별점 -->
                   <v-flex xs12>
                     <v-rating
-                      v-model="rating"
+                      v-model="review.review_rate"
                       background-color="yellow darken-3"
                       color="yellow darken-3"
                       small
-                      readonly="true"
-                    ></v-rating>
+                      :readonly="true"
+                    >{{ review.review_rate }}</v-rating>
                   </v-flex>
                   <!-- 내용 -->
                   <v-flex xs12>

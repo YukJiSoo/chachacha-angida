@@ -1,8 +1,6 @@
 const oracledb = require('oracledb');
 const database = require('../services/database.js');
 
-// select store_name, seat_status, total_seat
-// from restaurant r, seat_cur_status s where r.store_code = s.store_code;
 const baseQuery =
   `select
     menu_code "menu_code",
@@ -31,88 +29,93 @@ async function find(context) {
 
 module.exports.find = find;
 
+
 const createSql =
- `insert into employees (
-    first_name,
-    last_name,
-    email,
-    phone_number,
-    hire_date,
-    job_id,
-    salary,
-    commission_pct,
-    manager_id,
-    department_id
+ `insert into menu (
+    menu_code,
+    menu_name,
+    menu_img_url,
+    menu_price,
+    menu_desc,
+    store_code
   ) values (
-    :first_name,
-    :last_name,
-    :email,
-    :phone_number,
-    :hire_date,
-    :job_id,
-    :salary,
-    :commission_pct,
-    :manager_id,
-    :department_id
-  ) returning employee_id
-  into :employee_id`;
+    menu_seq.NEXTVAL,
+    :menu_name,
+    :menu_img_url,
+    :menu_price,
+    :menu_desc,
+    :store_code
+  ) returning menu_code
+  into :menu_code`;
 
-async function create(emp) {
-  const employee = Object.assign({}, emp);
+async function create(context) {
+  let menuContext = {}
 
-  employee.employee_id = {
+  menuContext.menu_name = context.menu_name
+  menuContext.menu_img_url = context.menu_img_url
+  menuContext.menu_price  = parseInt(context.menu_price,10)
+  menuContext.menu_desc  = context.menu_desc
+  menuContext.store_code = parseInt(context.store_code,10)
+
+  menuContext.menu_code = {
     dir: oracledb.BIND_OUT,
     type: oracledb.NUMBER
   }
+  console.log(menuContext)
+  const menuResult = await database.simpleExecute(createSql, menuContext);
 
-  const result = await database.simpleExecute(createSql, employee);
+  const menu_code = menuResult.outBinds.menu_code[0];
+  console.log(menu_code)
 
-  employee.employee_id = result.outBinds.employee_id[0];
-
-  return employee;
+  return menu_code
 }
 
 module.exports.create = create;
 
 const updateSql =
- `update employees
-  set first_name = :first_name,
-    last_name = :last_name,
-    email = :email,
-    phone_number = :phone_number,
-    hire_date = :hire_date,
-    job_id = :job_id,
-    salary = :salary,
-    commission_pct = :commission_pct,
-    manager_id = :manager_id,
-    department_id = :department_id
-  where employee_id = :employee_id`;
+  `update menu
+  set menu_name = :menu_name,
+  menu_img_url = :menu_img_url,
+  menu_price = :menu_price,
+  menu_desc = :menu_desc,
+  store_code = :store_code
+  where menu_code = :menu_code`;
+ 
 
-async function update(emp) {
-  const employee = Object.assign({}, emp);
-  const result = await database.simpleExecute(updateSql, employee);
+async function updateMenu(context) {
+  console.log(context)
+  let menuUpContext = {}
 
-  if (result.rowsAffected && result.rowsAffected === 1) {
-    return employee;
+  menuUpContext.menu_name = context.menu_name
+  menuUpContext.menu_img_url = context.menu_img_url
+  menuUpContext.menu_price  = context.menu_price
+  menuUpContext.menu_desc  = context.menu_desc
+  menuUpContext.store_code = context.store_code
+  menuUpContext.menu_code = context.menu_code
+
+  console.log(menuUpContext)
+  const menuResult = await database.simpleExecute(updateSql, menuUpContext);
+
+  if (menuResult.rowsAffected && menuResult.rowsAffected === 1) {
+    return menuResult;
   } else {
     return null;
   }
 }
 
-module.exports.update = update;
+module.exports.updateMenu = updateMenu;
 
 const deleteSql =
  `begin
-    delete from job_history
-    where employee_id = :employee_id;
-    delete from employees
-    where employee_id = :employee_id;
+    delete from menu
+    where menu_code = :menu_code and store_code = :store_code;
     :rowcount := sql%rowcount;
   end;`
 
-async function del(id) {
+async function del(context) {
   const binds = {
-    employee_id: id,
+    menu_code: context.menu_code,
+    store_code: context.store_code,
     rowcount: {
       dir: oracledb.BIND_OUT,
       type: oracledb.NUMBER

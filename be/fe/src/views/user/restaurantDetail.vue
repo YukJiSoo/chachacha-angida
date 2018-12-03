@@ -64,7 +64,7 @@
                     background-color="yellow darken-3"
                     color="yellow darken-3"
                     small
-                    readonly="true"
+                    :readonly="true"
                   ></v-rating>
                 </v-flex>
               </v-layout>
@@ -105,13 +105,12 @@
 
           <!-- 5행 메뉴종류 -->
           <v-layout row wrap class="mt-2">
-            <v-flex v-for="menu in menuItems" xs6 class="pa-1">
-              <v-card @click="menuDialog = true">
+            <v-flex v-for="(menu, index) in menuItems" xs6 class="pa-1">
+              <v-card @click="menuDialog[index].status = true">
                 <v-img
                   :src="`${menu.menu_img_url}`"
                   aspect-ratio="1"
                 >
-                <!-- 메뉴이름 -->
                 </v-img>
                 <v-card-text class="pa-1">
                   <v-layout align-center justify-space-between column>
@@ -125,7 +124,7 @@
                 </v-card-text>
               </v-card>
               <v-dialog
-                v-model="menuDialog"
+                v-model="menuDialog[index].status"
                 max-width="290"
               >
                 <v-card>
@@ -147,7 +146,7 @@
                     <v-btn
                       color="orange darken-1"
                       flat="flat"
-                      @click="menuDialog = false"
+                      @click="menuDialog[index].status = false"
                       class="font-use"
                     >
                       닫기
@@ -206,16 +205,17 @@ export default {
           store_name:''
         }
       },
-
-      menuDialog: false
+      menuDialog: []
     }
   },
   mounted() {
     this.store_code = this.$route.query.store_code
     console.log("passed store_code:", this.store_code);
     this.getStore()
+
     this.getMenu()
     this.reservationPath.query.store_code = this.store_code
+    
   },
   methods: {
     // 서버에서 가게정보 받아옴
@@ -232,7 +232,7 @@ export default {
         this.reviewPath.query.store_name = this.storeInfo.store_name
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     // 메뉴 정보 받아오기
@@ -245,19 +245,47 @@ export default {
       .then((r) => {
         console.log(r.data)
         this.menuItems = r.data
+        console.log(this.menuItems.length)
+        for(var i=0; i<this.menuItems.length; i++){
+          this.menuDialog.push({status:false})
+        }
+        console.log(this.menuDialog);
       })
       .catch((e) => {
-      this.pop(e.message)
+        this.pop(e.message)
       })
     },
     toReservation(){
+      // this.$router.addRoutes([{
+      //   path: '/reservation',
+      //   name: 'reservation',
+      //   component: reservation,
+      //   props: true
+      // }]);
+      // this.$router.push({
+      //   name: 'reservation',
+      //   params: {
+      //     store_code:this.store_code,
+      //     store_name:this.storeInfo.store_name,
+      //     store_info:this.storeInfo,
+      //     menuItems:this.menuItems
+      //   }
+      // });
       this.$router.push({
-        path: '/reservation',
-        query: {
-          store_code:this.store_code,
-          store_name:this.storeInfo.store_name
+        name: "reservation",
+        params: {
+          storeInfo: this.storeInfo,
+          menuItems: this.menuItems
         }
       })
+      /*this.$router.push({
+        path: '/reservation',
+        query: {
+
+          //store_info:JSON.stringify(this.storeInfo),
+          //menuItems:JSON.stringify(this.menuItems)
+        }
+      })*/
     }
   }
 }

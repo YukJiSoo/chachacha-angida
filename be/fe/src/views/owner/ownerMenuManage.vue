@@ -4,30 +4,37 @@
     <!--menu list-->
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <v-card>
+        <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
+        <div v-if="progress" class="mt-4 pt-5">
+          <v-progress-circular
+            :size="150"
+            :width="20"
+            color="orange"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+        <v-card v-if="!progress">
           <v-list two-line>
             <!--메뉴등록 버튼-->
-            <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
-            <template v-for="item in items">
+            
+            <template v-for="(item, index) in items">
               <v-divider></v-divider>
-                <img :src="item.image" class="mt-3">
+                <v-img :src="item.menu_img_url" class="mt-3" aspect-ratio="1.7" contain></v-img>
               <v-list-tile>
               <!--메뉴 이미지-->
-
-
                 <v-list-tile-content text-xs-center class="medium">
                   <!--메뉴이름-->
-                  <v-list-tile-title v-html="item.name"></v-list-tile-title>
+                  <v-list-tile-title v-html="item.menu_name"></v-list-tile-title>
                   <!--메뉴설명-->
-                  <v-list-tile-sub-title v-html="item.explain"></v-list-tile-sub-title>
+                  <v-list-tile-sub-title v-html="item.menun_desc"></v-list-tile-sub-title>
                   <!--메뉴가격-->
-                  <h4>{{item.price}}원</h4>
+                  <h4>{{item.menu_price}}원</h4>
                 </v-list-tile-content>
               </v-list-tile>
               <!--메뉴 수정 버튼-->
-              <v-btn dark color="blue" class="medium" @click="editMenu(item.menuId)">수정</v-btn>
+              <v-btn dark color="blue" class="medium" @click="editMenu(item)">수정</v-btn>
               <!--메뉴 삭제 버튼-->
-              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menuId)">삭제</v-btn>
+              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menu_code, index)">삭제</v-btn>
 
             </template>
           </v-list>
@@ -46,27 +53,35 @@ export default {
   name: 'ownerMenuManage',
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
+      progress: true,
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
       items: []
     }
   },
   methods: {
-    deleteMenu(menuId){
+    deleteMenu(menuId, index){
       this.$delete(this.items, index)
       alert("삭제되었습니다.")
       this.deleteMenuItem(menuId)
     },
     editMenu(type){
-      this.$router.push({path:'/menuEdit', query: {type: type}})
+      if(type === 'enroll') this.$router.push({path:'/menuEdit', query: {type: type}})
+      else this.$router.push({path:'/menuEdit', query: {type: type }})
+
     },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
     },
     getMenuList(){
-      axios.get(`http://localhost:3000/api/menu/${this.ownerCode}`)
+      var data = {};
+      data.store_code = this.ownerInfo.store_code;
+      axios.get(`http://localhost:3000/api/menu`,{
+        params: data
+      })
       .then((r) => {
         this.items = r.data
+        this.progress = false
         console.log(this.items)
       })
       .catch((e) => {
@@ -74,10 +89,11 @@ export default {
       })
     },
     deleteMenuItem(menuId){
-      this.$axios.delete(`http://localhost:3000/api/menu/${this.ownerCode}/${menuId}`)
+      this.$axios.delete(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}/${menuId}`)
       .then((r) => {
-        var success = r.data
-        if(success) alert("삭제되었습니다.")
+        // var success = r.data
+        // if(success) alert("삭제되었습니다.")
+        console.log(r.data)
 
         this.getMenuList()
       })

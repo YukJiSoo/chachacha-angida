@@ -11,12 +11,12 @@
         <v-list>
           <v-list-tile avatar :to="ownerInfoPath">
             <v-list-tile-avatar>
-              <v-img :src="info.img"></v-img>
+              <v-img :src="ownerInfo.profile_img_url"></v-img>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title class="font-use">{{info.ownerName}}</v-list-tile-title>
-              <v-list-tile-title class="xlarge">{{info.restaurantName}}</v-list-tile-title>
+              <v-list-tile-title class="font-use">{{ownerInfo.owner_name}}</v-list-tile-title>
+              <v-list-tile-title class="xlarge">{{ownerInfo.store_name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-btn color="orange" class="font-use font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -67,21 +67,23 @@
       </v-flex>
     </v-layout>
 
-    <v-flex xs12 sm12>
+    <v-flex xs12 sm12 class="mb-4">
       <!-- 음식점 이름-->
-      <h1 class="large">{{info.restaurantName}}</h1>
+      <h1 class="large">{{ownerInfo.store_name}}</h1>
       <h3 class="xlarge">주문관리</h3>
     </v-flex>
-    <!-- system on/off-->
-    <v-layout align-center justify-end fill-height>
-      <span class="medium">system 사용</span>
-      <v-flex xs2 sm2>
-        <v-checkbox :input-value="onOff" @change="switchOnOff"></v-checkbox>
-      </v-flex>
-    </v-layout>
+    
+    <div v-if="progress" class="mt-4 pt-5">
+      <v-progress-circular
+        :size="150"
+        :width="20"
+        color="orange"
+        indeterminate
+      ></v-progress-circular>
+    </div>
 
     <!--주문정보-->
-    <v-card>
+    <v-card v-if="!progress">
       <v-list>
         <v-list-group
           v-for="(item,index) in orderItems"
@@ -92,33 +94,32 @@
             <v-list-tile-content>
               <!--주문자와 가격-->
               <div id="status">
-                <div v-if="item.order_status===false">
-                  <v-list-tile-title class="medium">{{ item.CUSTOMER_ID }}&nbsp&nbsp&nbsp&nbsp{{item.TOTAL_PRICE}}&nbsp&nbsp&nbsp&nbsp
-                    수락 대기중</v-list-tile-title>
+                <div v-if="item.ORDER_STATUS==='수락대기'">
+                  <span class="medium mr-2 green--text">{{ item.CUSTOMER_ID }}</span>
+                  <span class="medium mr-2">{{item.TOTAL_PRICE}}</span>
+                  <span class="medium yellow--text text--darken-3">수락 대기중</span>
                 </div>
                 <div v-else>
-                  <v-list-tile-title class="medium">{{ item.CUSTOMER_ID }}&nbsp&nbsp&nbsp&nbsp{{item.TOTAL_PRICE}}&nbsp&nbsp&nbsp&nbsp
-                    수락 완료</v-list-tile-title>
+                  <span class="medium mr-2 green--text">{{ item.CUSTOMER_ID }}</span>
+                  <span class="medium mr-2">{{item.TOTAL_PRICE}}</span>
+                  <span class="medium blue--text">수락 완료</span>
                 </div>
               </div>
 
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile
-            v-for="subItem in item.menu_name"
-          >
+          <v-list-tile v-for="subItem in item.menu_name">
             <v-list-tile-content>
               <!--주문메뉴-->
               <v-list-tile-title class="medium">{{subItem}}</v-list-tile-title>
               <!--주문시간-->
             </v-list-tile-content>
-
           </v-list-tile>
           <div class="medium">{{item.reserv_time}}</div>
           <!--주문 수락 거절 버튼-->
           <div>
-            <v-btn v-if="item.order_status=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
-            <v-btn @click="refuse(index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
+            <v-btn v-if="item.ORDER_STATUS=='수락대기'" @click="agree(item)" color="blue lighten-2" class="medium font-weight-bold white--text">수락</v-btn>
+            <v-btn @click="refuse(item, index)" color="red lighten-2" class="medium font-weight-bold white--text">거절</v-btn>
           </div>
           
         </v-list-group>
@@ -132,9 +133,9 @@ export default {
   name: 'default',
   data () {
     return {
-      ownerCode: localStorage.getItem('code'),
-      info:{},
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
+      progress: true,
       onOff: false,
       drawer: null,
 
@@ -168,25 +169,15 @@ export default {
     }
   },
   mounted() {
-    this.getUserInfo()
     this.getOrders()
-    this.getOnOff()
   },
   methods: {
-    getUserInfo(){
-      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
-      .then((r) => {
-        this.info = r.data
-      })
-      .catch((e) => {
-      this.pop(e.message)
-      })
-    },
     getOrders(){
-      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerInfo.store_code}`)
       .then((r) => {
         
         this.orderItems = r.data
+        this.progress = false
         console.log(this.orderItems)
       })
       .catch((e) => {
@@ -194,7 +185,7 @@ export default {
       })
     },
     getOnOff(){
-      this.$axios.get(`http://localhost:3000/api/onOff/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/store/onOff/${this.ownerInfo.store_code}`)
       .then((r) => {
         console.log(r.data)
         
@@ -205,7 +196,7 @@ export default {
       })
     },
     putOrderStatus(status, code){
-      this.$axios.put(`http://localhost:3000/api/reservation/owner/${code}`,{ status: status})
+      this.$axios.put(`http://localhost:3000/api/reservation/owner/${this.ownerInfo.store_code}`,{ status: status, code: code })
       .then((r) => {
         console.log(r.data)
       })
@@ -214,7 +205,7 @@ export default {
       })
     },
     putOnOff(){
-      this.$axios.put(`http://localhost:3000/api/store/onOff/${this.ownerCode}`,{ status: this.onOff })
+      this.$axios.put(`http://localhost:3000/api/store/onOff/${this.ownerInfo.store_code}`,{ status: this.onOff })
       .then((r) => {
         console.log(r.data)
         //this.orderItems = r.data
@@ -225,16 +216,16 @@ export default {
     },
     agree(item){
       item.active= false
-      item.order_status= "예약완료"
+      item.ORDER_STATUS= "예약완료"
       alert("확인했습니다")
 
-      this.putOrderStatus('agree', item.ORDER_STATUS)
+      this.putOrderStatus(item.ORDER_CODE, 'argee')
     },
-    refuse(index){
+    refuse(item, index){
       this.$delete(this.orderItems, index),
       alert("거절했습니다")
 
-      this.putOrderStatus('refuse', item.ORDER_STATUS)
+      this.putOrderStatus(item.ORDER_CODE, 'refuse')
     },
     logout(){
       alert("로그아웃 되었습니다."),

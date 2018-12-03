@@ -1,7 +1,9 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
+
 const menu = require('../../../db_apis/menu.js');
+
 /* GET menu page. 모든 메뉴 출력*/
 router.get('/', async function(req, res, next) {
   console.log("menu list test");
@@ -12,12 +14,13 @@ router.get('/', async function(req, res, next) {
       console.log("menu params.store_code");
       context.store_code = req.query.store_code;
     }
-
+    console.log(context);
     const rows = await menu.find(context);
     console.log(rows);
 
     if (req.query.menu_code) {
       if (rows.length === 1) {
+        console.log(req.query.menu_code)
         res.status(200).json(rows[0]);
       } else {
         res.status(404).end();
@@ -30,33 +33,84 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+
 /* POST home page. */
-router.post('/:storeId', (req, res, next) => {
-  const storeId = req.params.storeId
-  const menu = req.body
+router.post('/:storeId', async function(req, res, next) {
+  console.log("menu list test");
+  console.log(req.body);
+  try {
+    const context = {};
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_name = req.body.menu_name
+      context.menu_img_url = req.body.menu_img_url
+      context.menu_desc = req.body.menu_desc
+      context.menu_price = req.body.menu_price
+    }
+    console.log(context);
+    const rows = await menu.create(context);
+    console.log(rows);
 
-  // 디비에 메뉴 추가하는 로직 작성 필요
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
 
-  res.send(menu)
+  } catch (err) {
+    console.log(err)
+    next(err);
+  }
 })
 
 /* PUT home page. */
-router.put('/:storeId/:menuId', (req, res, next) => {
-  const {storeId, menuId} = req.params
-  const menu = req.body
+router.put('/:storeId/:menuId', async function(req, res, next){
+  console.log("menu list test");
+  console.log(req.body);
+  try {
+    const context = {};
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_name = req.body.menu_name
+      context.menu_img_url = req.body.menu_img_url
+      context.menu_desc = req.body.menu_desc
+      context.menu_price = req.body.menu_price
+      context.menu_code = req.params.menuId
+    }
+    console.log(context);
+    const rows = await menu.updateMenu(context);
+    console.log(rows);
 
-  // 디비에 메뉴 업데이트하는 로직 작성 필요
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
 
-  res.send(menu)
+  } catch (err) {
+    console.log(err)
+    next(err);
+  }
 })
 
 /* DELETE home page. */
-router.delete('/:storeId/:menuId', (req, res, next) => {
-  const {storeId, menuId} = req.params
-  var success = true
-  // 디비에 메뉴 삭제하는 로직 작성 필요
+router.delete('/:storeId/:menuId', async (req, res, next) => {
+  console.log("menu list test");
+  console.log(req.body);
+  try {
+    const context = {};
+    if (true) {
+      console.log("menu params.store_code");
+      context.store_code = req.params.storeId
+      context.menu_code = req.params.menuId
+    }
+    console.log(context);
+    const rows = await menu.delete(context);
+    console.log(rows);
 
-  res.send(success)
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
+
+  } catch (err) {
+    console.log(err)
+    next(err);
+  }
 })
 
 router.all('*', function(req, res, next) {
