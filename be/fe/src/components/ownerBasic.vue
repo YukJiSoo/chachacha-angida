@@ -83,7 +83,7 @@ export default {
       menuItems: [
         {
           title: '주문관리',
-          path: '/ownerHome',
+          path: '/ownerOrderManage',
         },
         {
           title: '매출관리',
@@ -106,6 +106,7 @@ export default {
   },
   mounted() {
     console.log(this.ownerInfo)
+    clearInterval(this.updateOrder)
   },
   methods: {
     logout(){

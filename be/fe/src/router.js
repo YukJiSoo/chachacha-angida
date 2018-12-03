@@ -47,6 +47,11 @@ export default new Router({
       component: () => import('./views/choosesignup.vue')
     },
     {
+      path: '/ownerOrderManage',
+      name: 'ownerOrderManage',
+      component: () => import('./views/owner/ownerOrderManage.vue')
+    },
+    {
       path: '/userSignup',
       name: 'userSignup',
       component: () => import('./views/userSignup.vue')
