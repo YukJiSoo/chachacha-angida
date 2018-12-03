@@ -26,11 +26,11 @@
       <v-flex xs12 sm12>
         <v-expansion-panel class="pa-0 ma-0">
           <v-expansion-panel-content
-            v-for="(item, index) in items"
+            v-for="(notice, index) in noticeItems"
           >
-            <div slot="header" class="medium">{{item.title}}</div>
+            <div slot="header" class="medium">{{notice.notice_name}}</div>
             <v-card>
-              <v-card-text class="medium">{{item.content}}</v-card-text>
+              <v-card-text class="medium">{{notice.notice_contents}}</v-card-text>
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -46,40 +46,35 @@
   export default {
     data () {
       return {
-        mypagePath:'/mypage',
-        items:[]
-        // items: [
-        //   //공지사항 각각 정보
-        //   {
-        //     title: '공지사항 1', //제목
-        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        //   },
-        //   {
-        //     title: '공지사항 2',
-        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        //   },
-        //   {
-        //     title: '공지사항 3',
-        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        //   },
-        //   {
-        //     title: '공지사항 4',
-        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        //   }
-        // ]
+        notice_code:'',
+        notice_contents:'',
+        manager_code:'',
+        notice_name:'',
+        noticeItems:[]
       }
     },
-    methods: {
-    },
     mounted() {
-      axios.get('http://localhost:3000/api/notice')
-      .then((r) => {
-        this.items = r.data.notice
-        console.log(r)
-      })
-      .catch((e) => {
-        console.error(e.message)
-      })
+      this.notice_code = this.$route.query.notice_code
+      this.notice_name = this.$route.query.notice_name
+      // console.log("review store_code:", this.store_code, ", ", this.store_name)
+      this.getNotice()
+    },
+    methods: {
+      // 리뷰 정보 받아오기
+      getNotice () {
+        var data = {};
+        data.notice_code = this.notice_code;
+        this.$axios.get(`http://localhost:3000/api/notice`, {
+          params: data
+        })
+        .then((r) => {
+          console.log(r.data)
+          this.noticeItems = r.data
+        })
+        .catch((e) => {
+          this.pop(e.message)
+        })
+      },
     }
   }
 </script>
