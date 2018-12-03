@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon @click="$goBack()">
+          <v-btn icon @click="goToMypage()">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -73,6 +73,9 @@
       }
     },
     methods:{
+      goToMypage() {
+        this.$router.push('/mypage')
+      }
     },
     mounted() {
       axios.get('http://localhost:3000/api/Q&A')

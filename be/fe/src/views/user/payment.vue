@@ -305,7 +305,7 @@ export default {
     },
     paySuccess(){
       alert("결제가 완료되었습니다. 예약 수락응답 기다려주세요.")
-      this.$router.push('/reservationHistory')
+      this.$router.push('/Home')
     },
     payFail(){
       alert("결제에 실패했습니다.")

@@ -151,13 +151,13 @@ async function findIncomeAll(context) {
   console.log(context)
   if (context.id) {
     binds.store_code = parseInt(context.id, 10);
-    query += 
+    query +=
     `\nwhere r.store_code = :store_code
-    and r.customer_code = c.customer_code 
+    and r.customer_code = c.customer_code
     and r.order_status = '방문완료'
     order by order_code DESC`;
   }
-  
+
   console.log(query)
   console.log(binds)
   const result = await database.simpleExecute(query, binds);
@@ -174,7 +174,7 @@ async function findIncomeAll(context) {
 
     let tempQuery = menuQuery
     console.log('od : ',menuContext.order_code, ' st : ', menuContext.store_code)
-    tempQuery += `\nwhere 
+    tempQuery += `\nwhere
     i.order_code = :order_code and i.store_code = :store_code and i.store_code = m.store_code and i.menu_code = m.menu_code`;
 
     const menuResult = await database.simpleExecute(tempQuery, menuContext);
@@ -183,12 +183,12 @@ async function findIncomeAll(context) {
     menuResult.rows.forEach((v,i) => {
       menu_list.push(v.menu_name)
     });
-    
+
     console.log(menu_list)
-    
+
     menu_names.push(menu_list)
   }
-  
+
   return [result.rows, menu_names];
 }
 
@@ -359,7 +359,7 @@ async function create(context) {
     });
   }
   var menu_options = {
-    autoCommit: false, // 명시적 false
+    autoCommit: true, // 명시적 false
     bindDefs: {
       order_code: { type: oracledb.NUMBER},
       store_code: { type: oracledb.NUMBER},

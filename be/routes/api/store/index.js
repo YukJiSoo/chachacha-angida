@@ -35,15 +35,22 @@ router.get('/', async function(req, res, next) {
     const rows = await store.find(context);
     console.log(rows);
 
+
     // 사용자의 현재 위치 기반의 위도, 경도 정보가 있다면 식당과의 거리를 계산한다.
     if (req.query.lat && req.query.lng) {
-      let lat = req.query.lat;
-      let lng = req.query.lng;
-      console.log(typeof lat);
-      console.log(lat, ':',  lng);
-      console.log(cal.getDistance(37.558196, 127.000131, 37.561870, 126.998200));
+      let lat = parseFloat(req.query.lat);
+      let lng = parseFloat(req.query.lng);
+      rows.forEach((v,i) => {
+        rows[i].distance_to_store = cal.getDistance(lat, lng, rows[i].latitude, rows[i].longitude);
+        console.log("computed distance_to_store:", rows[i].distance_to_store);
+      });
     }
 
+    rows.sort(function (a, b) {
+      if (a.distance_to_store > b.distance_to_store) return 1;
+      if (a.distance_to_store < b.distance_to_store) return -1;
+      return 0;
+    });
 
     if (req.query.store_code) {
       if (rows.length === 1) {
