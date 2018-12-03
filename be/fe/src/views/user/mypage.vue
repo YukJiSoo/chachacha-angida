@@ -54,19 +54,19 @@
               </v-flex>
               <v-flex xs12 sm6 class="pt-0 pl-2">
                 <div class="medium orange--text text--darken-4 font-weight-bold">
-                  <span>{{TOTAL_POINT}}p</span>
+                  <span>{{pointHave}}p</span>
                 </div>
               </v-flex>
             </v-layout>
           </v-layout>
         </v-container>
       </v-flex>
-      
+
       <!-- 그 외 버튼 -->
       <v-flex xs12 sm12>
         <v-container grid-list-md text-xs-center align-center class="pa-0">
           <v-layout column wrap>
-            <v-flex 
+            <v-flex
               v-for="anotherMenu in anotherMenuList"
               xs12 sm12 class="py-3 grey--text text--lighten-5 orange lighten-3" >
               <router-link :to="anotherMenu.to" class="text--decoration-none">
@@ -75,7 +75,7 @@
                 </div>
               </router-link>
             </v-flex>
-            
+
           </v-layout>
         </v-container>
       </v-flex>
@@ -92,8 +92,7 @@ export default {
   data () {
     return {
       myId: localStorage.getItem('id'),
-      userCode: localStorage.getItem('code'),
-      TOTAL_POINT: 0,
+      pointHave: 0,
 
       mainPath: '/home',
       message: [
@@ -173,20 +172,26 @@ export default {
     }
   },
   mounted() {
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
+    this.myId = this.customerInfo.customer_name;
+    console.log(this.customerInfo);
     this.getPoint()
   },
   methods: {
     getPoint(){
-      axios.get(`http://localhost:3000/api/point/${this.userCode}`)
+      var data = {};
+      data.customer_code = this.customerInfo.customer_code;
+      this.$axios.get('http://localhost:3000/api/point/', {
+        params: data
+      })
       .then((r) => {
-        console.log(r.data)
-        this.TOTAL_POINT = r.data.TOTAL_POINT
+        console.log("갖고온 포인트 정보:", r.data)
+        this.pointHave = r.data.total_point;
       })
       .catch((e) => {
-      this.pop(e.message)
-      })  
-      
-    }
+        this.pop(e.message)
+      })
+    },
   }
 }
 </script>

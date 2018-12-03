@@ -215,7 +215,7 @@ export default {
 
     this.getMenu()
     this.reservationPath.query.store_code = this.store_code
-    
+
   },
   methods: {
     // 서버에서 가게정보 받아옴
