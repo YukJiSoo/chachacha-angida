@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-md text-xs-center align-center class="pa-0">
+  <v-container grid-list-md text-xs-center align-center>
     <v-layout>
         <!--네비게이션-->
       <v-navigation-drawer
@@ -15,8 +15,8 @@
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title class="font-use black--text">{{ownerInfo.owner_name}}</v-list-tile-title>
-              <v-list-tile-title class="xlarge black--text">{{ownerInfo.store_name}}</v-list-tile-title>
+              <v-list-tile-title class="font-use">{{ownerInfo.owner_name}}</v-list-tile-title>
+              <v-list-tile-title class="xlarge">{{ownerInfo.store_name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-btn color="orange" class="font-use font-weight-bold white--text" @click="logout">로그아웃</v-btn>
@@ -66,20 +66,77 @@
         <!-- toolbar end-->
       </v-flex>
     </v-layout>
+
+    <v-flex xs12 sm12 class="mb-3">
+      <!-- 음식점 이름-->
+      <h1 class="large">{{ownerInfo.store_name}}</h1>
+      <h3 class="xlarge">주문관리</h3>
+    </v-flex>
+
+    <div v-if="progress" class="mt-4 pt-5">
+      <v-progress-circular
+        :size="150"
+        :width="20"
+        color="orange"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+
+    <!-- 주문정보-->
+    <v-card v-if="!progress">
+      <v-list>
+        <v-list-group
+          v-for="(item,index) in orderItems"
+          v-model="item.active"
+          no-action
+        >
+          <v-list-tile slot="activator">
+            <v-list-tile-content>
+              <!--주문자와 가격-->
+              <div id="status">
+                <div>
+                  <span class="medium mr-2 purple--text">{{ item.CUSTOMER_ID }}</span>
+                  <span class="medium mr-2">{{item.TOTAL_PRICE}}</span>
+                  <span v-if="item.ORDER_STATUS==='수락대기'" class="medium yellow--text text--darken-3">{{item.ORDER_STATUS}}</span>
+                  <span v-if="item.ORDER_STATUS==='예약완료'" class="medium blue--text">{{item.ORDER_STATUS}}</span>
+                  <span v-if="item.ORDER_STATUS==='예약취소'" class="medium red--text">{{item.ORDER_STATUS}}</span>
+                  <span v-if="item.ORDER_STATUS==='방문완료'" class="medium green--text">{{item.ORDER_STATUS}}</span>
+                </div>
+              </div>
+
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile v-for="subItem in item.menu_name">
+            <v-list-tile-content>
+              <!--주문메뉴-->
+              <v-list-tile-title class="medium">{{subItem}}</v-list-tile-title>
+              <!--주문시간-->
+            </v-list-tile-content>
+          </v-list-tile>
+          <div class="medium">{{item.reserv_time}}</div>
+          
+        </v-list-group>
+      </v-list>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'ownerInfo',
+  name: 'default',
   data () {
     return {
       ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
+      progress: true,
+      onOff: false,
       drawer: null,
-      mainPath: '/ownerHome',
+
       ownerInfoPath: '/ownerInfo',
+      mainPath: '/ownerHome',
       
+      orderItems:[],
+
       menuItems: [
         {
           title: '주문관리',
@@ -101,28 +158,34 @@ export default {
           title: '환경설정',
           path: '/ownerSetting',
         }
-      ]
+      ],
+      updateOrder: '',
     }
   },
   mounted() {
-    console.log(this.ownerInfo)
-    clearInterval(this.updateOrder)
+    this.getOrders()
   },
   methods: {
+    getOrders(){
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/${this.ownerInfo.store_code}`)
+      .then((r) => {
+        
+        this.orderItems = r.data
+        this.progress = false
+        console.log(this.orderItems)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
     logout(){
       alert("로그아웃 되었습니다."),
       this.$router.push('/')
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
-.angida-gradiation{
-   background: #fc8e53;
-   background: -moz-linear-gradient(left, #fc8e53 0%, #f17432 0%, #fc8e53 0%, #fc8e53 17%, #ea5507 55%, #f70000 100%);
-   background: -webkit-linear-gradient(left, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
-   background: linear-gradient(to right, #fc8e53 0%,#f17432 0%,#fc8e53 0%,#fc8e53 17%,#ea5507 55%,#f70000 100%);
-   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fc8e53', endColorstr='#f70000',GradientType=1 );
-}
+
 </style>

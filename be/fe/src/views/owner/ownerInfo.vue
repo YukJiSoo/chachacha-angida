@@ -7,32 +7,24 @@
       </v-flex>
         <!--사용자사진-->
       <v-flex xs12 sm12>
-        <h4 class="mb-3 medium">사용자 사진</h4>
-        <img :src='info.img' class="mb-3">
+        <h4 class="mb-3 medium">프로필 사진</h4>
+        <img :src='ownerInfo.profile_img_url' class="mb-3">
         </v-flex>
       <!--사용자 이름-->
       <v-flex xs12 sm12>
         <h4 class="mb-3 medium">사용자 이름</h4>
         <v-text-field
-          :value="info.ownerName"
+          :value="ownerInfo.owner_name"
           solo
           readonly
           class="xlarge"
         >
         </v-text-field>
-        <!--사용자 전화번호-->
-        <h4 class="mt-3 mb-3 medium">사용자 전화번호</h4>
-        <v-text-field
-          :value="info.phone"
-          solo
-          readonly
-          :mask="phoneMask"
-          class="xlarge"
-        ></v-text-field>
+
         <!--등록 음식점 이름-->
         <h4 class="mt-3 mb-3 medium">등록 음식점</h4>
         <v-text-field
-          :value="info.restaurantName"
+          :value="ownerInfo.store_name"
           solo
           readonly
           class="xlarge"
@@ -41,10 +33,9 @@
         <!--등록 음식점 전화번호-->
         <h4 class="mt-3 mb-3 medium">등록 음식점 전화번호</h4>
         <v-text-field
-          :value="info.restaurantNumber"
+          :value="ownerInfo.phone_no"
           solo
           readonly
-          :mask="phoneMask"
           class="xlarge"
         ></v-text-field>
     <div>
@@ -68,25 +59,14 @@ export default {
   name: 'ownerInfo',  
   data () {
     return {
-      info:{},
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
       phoneMask: '(###)-####-####',
 
     }
   },
   mounted() {
-    this.getUserInfo()
   },
   methods: {
-    getUserInfo(){
-      this.$axios.get(`http://localhost:3000/api/user/owner/${this.ownerCode}`)
-      .then((r) => {
-        this.info = r.data
-      })
-      .catch((e) => {
-      this.pop(e.message)
-      })
-    },
-
     quitAngida(){
       alert("회원 탈퇴되었습니다."),
       this.$router.push('/')
