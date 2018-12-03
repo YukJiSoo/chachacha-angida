@@ -109,6 +109,7 @@ async function findOwnerAll(context) {
     order by order_code DESC`;
   }
   
+  console.log(query)
   console.log(binds)
   const result = await database.simpleExecute(query, binds);
 

@@ -37,7 +37,17 @@
           </v-date-picker>
         </v-dialog>
           <!--달력 끝-->
+
+        <div v-if="progress" class="mt-4 pt-5 pb-5">
+          <v-progress-circular
+            :size="150"
+            :width="20"
+            color="orange"
+            indeterminate
+          ></v-progress-circular>
+        </div>
       <v-list-group
+        v-if="!progress"
         v-for="item in saleItems"
         v-model="item.active"
         :key="item.title"
@@ -46,14 +56,18 @@
         <v-list-tile slot="activator">
           <v-list-tile-content>
             <!--주문자와 가격-->
-            <v-list-tile-title class="medium">{{item.CUSTOMER_ID}} - {{item.TOTAL_PRICE}}원 {{item.RESERV_TIME.substring(0,10)}}</v-list-tile-title>
+            <div>
+              <span class="medium green--text pr-2">{{item.RESERV_TIME.substring(0,10)}}</span>
+              <span class="medium yellow--text text--darken-3 pr-2">{{item.RESERV_TIME.substring(11,16)}}</span>
+              <span class="medium blue--text">{{item.TOTAL_PRICE}}원</span>
+            </div>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-for="menu in item.menu_name">
-          <div class="medium">{{ menu }}</div>
-        </v-list-tile>
-        <!--주문시간-->
-        <div class="medium">예약 시간 : {{item.RESERV_TIME.substring(11,16)}} </div>
+        <div class="medium py-2">주문자 : {{item.CUSTOMER_ID}} </div>
+        <div v-for="menu in item.menu_name" class="medium py-1">
+          <v-icon>restaurant_menu</v-icon>
+          {{ menu }}
+        </div>
       </v-list-group>
     </v-list>
     </v-card>
@@ -73,23 +87,25 @@ export default {
       sheet: false,
       date: new Date().toISOString().substr(0, 10),
       modal: false,
+      progress: true,
       
-      ownerCode: localStorage.getItem('code'),
+      ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
       saleItems: []
     }
   },
   methods: { 
     // 날짜를 넘겨주고 그에 해당되는 날짜를 받아오기로, 날짜형식:2018-11-08
     getSaleList(date){
-      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/${this.ownerCode}`)
+      this.$axios.get(`http://localhost:3000/api/reservation/owner/all/${this.ownerInfo.store_code}`)
       .then((r) => {
         this.saleItems = r.data
         console.log(r.data)
         
         this.totalcost = 0
         this.saleItems.forEach( (v,i) => {
-          this.totalcost = this.totalcost + v.total_price
+          this.totalcost = this.totalcost + parseInt(v.total_price,10)
         });
+        this.progress = false
       
       })
       .catch((e) => {

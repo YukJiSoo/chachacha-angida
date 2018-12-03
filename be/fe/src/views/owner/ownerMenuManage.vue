@@ -4,17 +4,24 @@
     <!--menu list-->
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <v-card>
+        <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
+        <div v-if="progress" class="mt-4 pt-5">
+          <v-progress-circular
+            :size="150"
+            :width="20"
+            color="orange"
+            indeterminate
+          ></v-progress-circular>
+        </div>
+        <v-card v-if="!progress">
           <v-list two-line>
             <!--메뉴등록 버튼-->
-            <v-btn color="orange" dark class="xlarge mb-3" @click="editMenu('enroll')">메뉴 등록</v-btn>
+            
             <template v-for="(item, index) in items">
               <v-divider></v-divider>
                 <v-img :src="item.menu_img_url" class="mt-3" aspect-ratio="1.7" contain></v-img>
               <v-list-tile>
               <!--메뉴 이미지-->
-
-
                 <v-list-tile-content text-xs-center class="medium">
                   <!--메뉴이름-->
                   <v-list-tile-title v-html="item.menu_name"></v-list-tile-title>
@@ -46,6 +53,7 @@ export default {
   name: 'ownerMenuManage',
   data () {
     return {
+      progress: true,
       ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
       items: []
     }
@@ -73,6 +81,7 @@ export default {
       })
       .then((r) => {
         this.items = r.data
+        this.progress = false
         console.log(this.items)
       })
       .catch((e) => {

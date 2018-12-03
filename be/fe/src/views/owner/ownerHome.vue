@@ -72,9 +72,18 @@
       <h1 class="large">{{ownerInfo.store_name}}</h1>
       <h3 class="xlarge">주문관리</h3>
     </v-flex>
+    
+    <div v-if="progress" class="mt-4 pt-5">
+      <v-progress-circular
+        :size="150"
+        :width="20"
+        color="orange"
+        indeterminate
+      ></v-progress-circular>
+    </div>
 
     <!--주문정보-->
-    <v-card>
+    <v-card v-if="!progress">
       <v-list>
         <v-list-group
           v-for="(item,index) in orderItems"
@@ -126,6 +135,7 @@ export default {
     return {
       ownerInfo: JSON.parse(localStorage.getItem('ownerInfo')),
 
+      progress: true,
       onOff: false,
       drawer: null,
 
@@ -167,6 +177,7 @@ export default {
       .then((r) => {
         
         this.orderItems = r.data
+        this.progress = false
         console.log(this.orderItems)
       })
       .catch((e) => {
