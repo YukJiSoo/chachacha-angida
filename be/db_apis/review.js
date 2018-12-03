@@ -9,9 +9,10 @@ const baseQuery =
     contents "contents",
     review_rate "review_rate",
     review_date "review_date",
-    review_img_url "review_img_url"
+    review_img_url "review_img_url",
+    delete_status "delete_status"
   from review r, customer c
-  where r.customer_code = c.customer_code`
+  where r.customer_code = c.customer_code and r.delete_status = 'N'`
 
 async function find(context) {
   let query = baseQuery;
