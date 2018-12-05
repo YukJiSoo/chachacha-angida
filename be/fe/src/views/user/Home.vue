@@ -216,16 +216,13 @@ import axios from 'axios'
         size: 'sm',
         ad_items: [
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+            src: require('./ad_1.jpg')
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+            src: require('./ad_2.jpg')
           },
           {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+            src: require('./ad_3.jpg')
           }
         ],
         currentLocation: { lat : 37.558196, lng : 127.000131},

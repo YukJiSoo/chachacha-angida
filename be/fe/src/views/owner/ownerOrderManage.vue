@@ -91,11 +91,14 @@
           no-action
         >
           <v-list-tile slot="activator">
-            <v-list-tile-content>
+            <v-list-tile-content v-if="index === (orderItems.length-1)">
+              <div class="medium align-center">더보기</div>
+            </v-list-tile-content>
+            <v-list-tile-content v-else>
               <!--주문자와 가격-->
               <div id="status">
                 <div>
-                  <span class="medium mr-2 purple--text">{{ item.CUSTOMER_ID }}</span>
+                  <span class = "medium mr-2 purple--text">{{item.RESERV_TIME.substring(0,10)}}</span>
                   <span class="medium mr-2">{{item.TOTAL_PRICE}}</span>
                   <span v-if="item.ORDER_STATUS==='수락대기'" class="medium yellow--text text--darken-3">{{item.ORDER_STATUS}}</span>
                   <span v-if="item.ORDER_STATUS==='예약완료'" class="medium blue--text">{{item.ORDER_STATUS}}</span>
@@ -113,7 +116,7 @@
               <!--주문시간-->
             </v-list-tile-content>
           </v-list-tile>
-          <div class="medium">{{item.reserv_time}}</div>
+          <span v-if="index !== (orderItems.length-1)" class="medium">예약시간 : {{item.RESERV_TIME.substring(11,16)}} / 주문자 : {{ item.CUSTOMER_ID }}</span>
           
         </v-list-group>
       </v-list>
@@ -173,6 +176,7 @@ export default {
         this.orderItems = r.data
         this.progress = false
         console.log(this.orderItems)
+        this.orderItems.push({})
       })
       .catch((e) => {
       this.pop(e.message)

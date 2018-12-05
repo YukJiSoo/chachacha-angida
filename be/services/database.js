@@ -22,7 +22,6 @@ function simpleExecute(statement, binds = [], opts = {}) {
       opts.autoCommit = true;
     }
     opts.outFormat = oracledb.OBJECT; // outFormat을 설정한다.
-
     try {
 
       conn = await oracledb.getConnection();

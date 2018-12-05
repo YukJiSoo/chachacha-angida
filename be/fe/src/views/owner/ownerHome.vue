@@ -94,7 +94,9 @@
       <!--주문정보-->
       <v-card v-if="!progress">
         <v-list>
+          <div v-if="orderItems.length === 0" class="large py-3">예약이 없습니다 ㅜㅜ</div>
           <v-list-group
+            v-else
             v-for="(item,index) in orderItems"
             v-model="item.active"
             no-action
@@ -190,13 +192,14 @@ export default {
     getOrders(){
       this.$axios.get(`http://localhost:3000/api/reservation/owner/${this.ownerInfo.store_code}`)
       .then((r) => {
-        
-        this.orderItems = r.data
         this.progress = false
-        console.log(this.orderItems.menu_name)
-        this.orderItems.forEach((v,i) => {
-          this.orderItems[i].RESERV_TIME = new Date(this.orderItems[i].RESERV_TIME.getTime() + 9 * 60 * 60 * 1000)
-        });
+        if(r.data.length !== this.orderItems.length){
+          this.orderItems = r.data
+          console.log(this.orderItems.menu_name)
+          this.orderItems.forEach((v,i) => {
+            this.orderItems[i].RESERV_TIME = new Date(this.orderItems[i].RESERV_TIME.getTime() + 9 * 60 * 60 * 1000)
+          });
+        }
       })
       .catch((e) => {
       this.pop(e.message)
@@ -206,7 +209,6 @@ export default {
       this.$axios.put(`http://localhost:3000/api/reservation/owner/${code}`,{ status: status })
       .then((r) => {
         console.log(r.data)
-        this.progress = true
       })
       .catch((e) => {
       this.pop(e.message)

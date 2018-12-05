@@ -103,7 +103,7 @@ export default {
     if(this.$route.query.type == "enroll"){
       this.menu =  {
         menu_code : 0,
-        menu_img_url: 'https://i1.wp.com/review.wti.or.kr/wp-content/uploads/2015/07/%EB%AC%BC%EC%9D%8C%ED%91%9C.jpg?zoom=1.25&resize=200%2C252',
+        menu_img_url: '',
         menu_name: '',
         menu_desc: '',
         menu_price: ''
@@ -126,6 +126,7 @@ export default {
 
     },
     putMenuItem(menu_code){
+      console.log('put')
       this.$axios.put(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}/${menu_code}`, this.menu)
       .then((r) => {
         console.log(r.data)
@@ -136,12 +137,16 @@ export default {
     },
     enrollOrUpdate(menuId){
       console.log(menuId)
-      if(menuId == 0) this.postMenuItem()
-      else this.putMenuItem(menuId)
+      if(menuId == 0) {
+        this.postMenuItem()
+      }
+      else {
+        this.putMenuItem(menuId)
+      }
 
       alert("완료되었습니다.")
 
-      this.$router.push('/ownerMenuManage')
+      this.$router.push('/ownerHome')
     },
     goBack(){
       window.history.back();
@@ -158,7 +163,7 @@ export default {
       var vm = this;
 
       reader.onload = (e) => {
-        vm.image = e.target.result;
+        vm.menu.menu_img_url = e.target.result;
       };
       reader.readAsDataURL(file);
     },
