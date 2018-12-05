@@ -53,9 +53,9 @@ async function create(context) {
 
   menuContext.menu_name = context.menu_name
   menuContext.menu_img_url = context.menu_img_url
-  menuContext.menu_price  = parseInt(context.menu_price,10)
+  menuContext.menu_price  = context.menu_price
   menuContext.menu_desc  = context.menu_desc
-  menuContext.store_code = parseInt(context.store_code,10)
+  menuContext.store_code = context.store_code
 
   menuContext.menu_code = {
     dir: oracledb.BIND_OUT,

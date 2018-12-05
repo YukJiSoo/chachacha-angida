@@ -106,6 +106,7 @@ async function findOwnerAll(context) {
     query +=
     `\nwhere r.store_code = :store_code
     and r.customer_code = c.customer_code
+    and ROWNUM <= 10 
     order by order_code DESC`;
   }
 

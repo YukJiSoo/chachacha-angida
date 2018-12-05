@@ -34,7 +34,7 @@
               <!--메뉴 수정 버튼-->
               <v-btn dark color="blue" class="medium" @click="editMenu(item)">수정</v-btn>
               <!--메뉴 삭제 버튼-->
-              <v-btn dark color="red" class="medium" @click="deleteMenu(item.menu_code, index)">삭제</v-btn>
+              <v-btn dark color="red" class="medium" @click="deleteMenuItem(item.menu_code)">삭제</v-btn>
 
             </template>
           </v-list>
@@ -89,10 +89,11 @@ export default {
       })
     },
     deleteMenuItem(menuId){
+      console.log(menuId)
       this.$axios.delete(`http://localhost:3000/api/menu/${this.ownerInfo.store_code}/${menuId}`)
       .then((r) => {
-        // var success = r.data
-        // if(success) alert("삭제되었습니다.")
+        var success = r.data
+        if(success !== null) alert("삭제되었습니다.")
         console.log(r.data)
 
         this.getMenuList()

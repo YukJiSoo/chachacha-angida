@@ -28,8 +28,8 @@ router.get('/list/:id', async function(req, res, next) {
   //   res.status(200).json(rows);
   // }
 
-  var COUPON_LIST = 
-  [{ 
+  var COUPON_LIST =
+  [{
     coupon_code: 1,
     coupon_name:'생일 기념 할인 쿠폰',
     issued_date: '2018.11.27',
@@ -38,7 +38,7 @@ router.get('/list/:id', async function(req, res, next) {
     coupon_status: '사용',
     min_order_amount: 100,
    },
-   { 
+   {
     coupon_code: 2,
     coupon_name:' 할인 쿠폰',
     issued_date: '2018.11.27',
@@ -80,8 +80,8 @@ router.put('/:userId/:couponId', async function(req, res, next) {
   //   res.status(200).json(rows);
   // }
 
-  var COUPON_LIST = 
-  [{ 
+  var COUPON_LIST =
+  [{
     coupon_code: 1,
     coupon_name:'생일 기념 할인 쿠폰',
     issued_date: '2018.11.27',
@@ -90,7 +90,7 @@ router.put('/:userId/:couponId', async function(req, res, next) {
     coupon_status: '사용',
     min_order_amount: 100,
    },
-   { 
+   {
     coupon_code: 2,
     coupon_name:' 할인 쿠폰',
     issued_date: '2018.11.27',
