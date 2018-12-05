@@ -94,7 +94,7 @@
       <!--주문정보-->
       <v-card v-if="!progress">
         <v-list>
-          <div v-if="orderItems.length === 0" class="large py-3">예약이 없습니다!</div>
+          <div v-if="orderItems.length === 0" class="large py-3">예약이 없습니다 ㅜㅜ</div>
           <v-list-group
             v-else
             v-for="(item,index) in orderItems"
