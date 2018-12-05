@@ -16,13 +16,14 @@ module.exports.close = close;
 function simpleExecute(statement, binds = [], opts = {}) {
   return new Promise(async (resolve, reject) => {
     let conn;
-
-    opts.outFormat = oracledb.OBJECT;
+    
+    
     if (isEmpty(opts)) {
       console.log("simpleExecute >> opts is empty. so autoCommit is true");
       opts.autoCommit = true;
     }
 
+    opts.outFormat = oracledb.OBJECT;
     try {
 
       conn = await oracledb.getConnection();
