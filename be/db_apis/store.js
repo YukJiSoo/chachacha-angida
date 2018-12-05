@@ -53,8 +53,8 @@ async function find(context) {
 
   if (context.search_keyword) {
     console.log("add search_keyword condition to query");
-    // binds.store_name = context.search_keyword;
-    query += `\nand r.store_name LIKE '%이대헌%'`;
+    binds.store_name = context.search_keyword;
+    query += `\nand r.store_name LIKE '%' || :store_name || '%'`;
   }
   console.log("executing query:", query);
   console.log("executing binds:", binds);
