@@ -52,18 +52,10 @@
             <v-layout v-for="review in reviewItems" row wrap class="py-3">
 
               <!-- 가게이름, 예약날짜, 소멸예정날짜 -->
-              <v-flex xs2>
-                <v-avatar>
-                  <!-- 이미지 -->
-                  <img
-                    :src="`${review.review_img_url}`"
-                  >
-                </v-avatar>
-              </v-flex>
 
               <!-- 적립, 소멸포인트 값 -->
               <v-flex xs10 class="pl-2">
-                <v-layout column wrap>
+
                   <!-- 아이디 -->
                   <v-flex xs12 class="pl-2">
                     <div class="small">
@@ -92,15 +84,14 @@
                       <span> {{ review.contents }}</span>
                     </div>
                   </v-flex>
-                </v-layout>
+                  <v-img v-if="review.review_img_url != NULL" width=250 height=200
+                    :src="`${review.review_img_url}`"
+                  ></v-img>
               </v-flex>
             </v-layout>
-
           </v-layout>
         </v-card>
       </v-flex>
-
-
     </v-layout>
   </v-container>
 </template>

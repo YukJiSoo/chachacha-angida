@@ -8,7 +8,7 @@
           dark
           height="40"
           class="angida-gradiation">
-          <v-btn icon @click="$goBack()">
+          <v-btn icon @click="goToPage('/Home')">
             <v-icon >keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -178,6 +178,9 @@ export default {
     this.getPoint()
   },
   methods: {
+    goToPage(path) {
+      this.$router.push(path)
+    },
     getPoint(){
       var data = {};
       data.customer_code = this.customerInfo.customer_code;

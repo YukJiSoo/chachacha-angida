@@ -37,14 +37,14 @@
         <div class="body-2 grey--text text--darken-1 px-3 pt-3">
           <span>
             <span class="mx-4 green--text text--darken-2">{{i.order_status}}</span>
-            <v-btn v-if="i.progress" outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
+            <v-btn v-if="(i.order_status ==='수락대기' && i.progress) || (i.order_status ==='예약완료 && i.progress)')" outline color="orange" class="angida-gradiation px-0 mx-2" dark small :to="reservationPage">
               예약취소
             </v-btn>
-            <v-btn v-if="!i.progress && i.order_status !=='취소완료'" outline color="red" class="angida-gradiation px-0 mx-2" dark small>
+            <v-btn v-else outline color="red" class="angida-gradiation px-0 mx-2" dark small>
               취소불가
             </v-btn>
             <!-- 취소할 수 있는 남은 시간 -->
-            <span v-if="i.progress" class="mx-4 red--text text--darken-2">{{i.times[0].time}} : {{i.times[1].time}}</span>
+            <span v-if="i.progress && i.order_status === '수락대기'" class="mx-4 red--text text--darken-2">{{i.times[0].time}} : {{i.times[1].time}}</span>
           </span>
         </div>
       </v-flex>
@@ -203,7 +203,7 @@ export default {
     },
     cancelMsg (item) {
       // let status = ((item.status === '수락대기') && !item.progress) && (item.status !== '예약완료' && item.progress)
-      let status = !item.progress && (item.order_status === '수락대기' && item.order_status !== '예약완료')
+      let status = ( !item.progress && item.order_status === '수락대기' ) || item.order_status === '예약완료'
       return status;
     },
 

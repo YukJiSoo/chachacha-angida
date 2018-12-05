@@ -30,7 +30,7 @@
           <v-layout row wrap align-center @click="toDetail(store.store_code)">
             <!-- 왼쪽-사진 -->
             <v-flex xs5 sm12 class="pa-0 black">
-              <v-img
+              <v-img height=120
                 :src="`${store.profile_img_url}`"
               >
               </v-img>
@@ -60,7 +60,7 @@
                     <!-- 위치 -->
                     <v-flex xs6 sm12 class="pa-0">
                       <div class="medium grey--text text--darken-2 font-weight-bold">
-                        <span>약 300m</span>
+                        <span>약 {{ store.distance_to_store }} m</span>
                       </div>
                     </v-flex>
                   </v-layout>
