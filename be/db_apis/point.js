@@ -3,7 +3,7 @@ const database = require('../services/database.js');
 
 const baseQuery =
  `select total_point "total_point" from CUSTOMER_POINT`;
-
+/* CUSTOMER_POINT 테이블에서 누적 포인트(total_point) 조회 */
 async function find(context) {
   let query = baseQuery;
   const binds = {};
@@ -26,7 +26,7 @@ const listQuery =
     OCCUR_POINT "OCCUR_POINT",
     STORE_NAME "STORE_NAME",
   from POINT_DETAIL`;
-
+/* POINT_DETAIL 테이블에서 포인트 내역 조회 */
 async function findList(context) {
   let query = baseQuery;
   const binds = {};
@@ -61,3 +61,5 @@ async function update(context) {
 }
 
 module.exports.update = update;
+
+/* POINT_DETAIL, CUSTOMER_POINT 테이블에서는 딱히 delete 필요없는 것 같다. */

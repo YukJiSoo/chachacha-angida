@@ -10,7 +10,7 @@ const baseQuery =
     coupon_status "coupon_status",
     min_order_amount "min_order_amount",
   from coupon`;
-  
+
 async function findCoupon(context) {
   let query = baseQuery;
   const binds = {};
@@ -26,6 +26,35 @@ async function findCoupon(context) {
 }
 
 module.exports.findCoupon = findCoupon;
+
+const createSql =
+`insert into customer_coupon (
+  store_code, coupon_name, issued_date,
+  end_date, discount_amount, min_order_amount,
+  coupon_status
+) values (
+  :store_code, :coupon_name, sysdate,
+  :end_date, :discount_amount, :min_order_amount,
+  :coupon_status
+) returning coupon_code into :coupon_code`;
+
+async function create(coupon){
+  const coupon = Object.assign({}, coupon);
+
+  coupon.coupon_code = {
+    dir: oracledb.BIND_OUT,
+    type: oracledb.NUMBER
+  }
+
+  const result = await database.simpleExecute(createSql, coupon);
+
+  coupon.coupon_code = result.outBinds.coupon_code[0];
+
+  return coupon;
+}
+
+module.exports.create = create;
+
 
 const updateSql =
  `update customer_coupone
@@ -45,3 +74,28 @@ async function update(context) {
 }
 
 module.exports.update = update;
+
+const deleteSql =
+ `begin
+    delete from customer_coupon
+    where coupon_code = :coupon_code;
+
+    delete from coupon
+    where coupon_code = :coupon_code;
+    :rowcount := sql%rowcount;
+  end;`
+
+async function del(id) {
+  const binds = {
+    coupon_code: id,
+    rowcount: {
+      dir: oracledb.BIND_OUT,
+      type: oracledb.NUMBER
+    }
+  }
+  const result = await database.simpleExecute(deleteSql, binds);
+
+  return result.outBinds.rowcount === 1;
+}
+
+module.exports.delete = del;

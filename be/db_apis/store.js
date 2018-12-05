@@ -51,12 +51,13 @@ async function find(context) {
     query += `\nand r.store_category_code = :store_category_code`;
   }
 
-  if (context.keyword) {
-    console.log("add keyword condition to query");
-    binds.keyword = context.keyword;
-    query += `\nand r.store_name LIKE '%:keyword%'`;
+  if (context.search_keyword) {
+    console.log("add search_keyword condition to query");
+    // binds.store_name = context.search_keyword;
+    query += `\nand r.store_name LIKE '%이대헌%'`;
   }
   console.log("executing query:", query);
+  console.log("executing binds:", binds);
   const result = await database.simpleExecute(query, binds);
 
   return result.rows;
@@ -65,30 +66,7 @@ async function find(context) {
 module.exports.find = find;
 
 const createSql =
- `insert into employees (
-    first_name,
-    last_name,
-    email,
-    phone_number,
-    hire_date,
-    job_id,
-    salary,
-    commission_pct,
-    manager_id,
-    department_id
-  ) values (
-    :first_name,
-    :last_name,
-    :email,
-    :phone_number,
-    :hire_date,
-    :job_id,
-    :salary,
-    :commission_pct,
-    :manager_id,
-    :department_id
-  ) returning employee_id
-  into :employee_id`;
+ `insert into `;
 
 async function create(emp) {
   const employee = Object.assign({}, emp);
@@ -108,18 +86,7 @@ async function create(emp) {
 module.exports.create = create;
 
 const updateSql =
- `update employees
-  set first_name = :first_name,
-    last_name = :last_name,
-    email = :email,
-    phone_number = :phone_number,
-    hire_date = :hire_date,
-    job_id = :job_id,
-    salary = :salary,
-    commission_pct = :commission_pct,
-    manager_id = :manager_id,
-    department_id = :department_id
-  where employee_id = :employee_id`;
+ `update `;
 
 async function update(emp) {
   const employee = Object.assign({}, emp);
@@ -136,11 +103,7 @@ module.exports.update = update;
 
 const deleteSql =
  `begin
-    delete from job_history
-    where employee_id = :employee_id;
-    delete from employees
-    where employee_id = :employee_id;
-    :rowcount := sql%rowcount;
+    delete from;
   end;`
 
 async function del(id) {

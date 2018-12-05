@@ -38,3 +38,62 @@ async function find(context) {
 }
 
 module.exports.find = find;
+
+
+const createSql =
+`insert`;
+
+async function create(customer){
+  const customer = Object.assign({}, customer);
+
+  customer.customer_code = {
+    dir: oracledb.BIND_OUT,
+    type: oracledb.NUMBER
+  }
+
+  const result = await database.simpleExecute(createSql, customer);
+
+  customer.customer_code = result.outBinds.customer_code[0];
+
+  return customer;
+}
+
+module.exports.create = create;
+
+
+const updateSql =
+ `update `;
+
+async function update(context) {
+  const bind = Object.assign({}, context);
+  const result = await database.simpleExecute(updateSql, bind);
+
+  if (result.rowsAffected && result.rowsAffected === 1) {
+    return bind;
+  } else {
+    return null;
+  }
+
+}
+
+module.exports.update = update;
+
+const deleteSql =
+ `begin
+    delete from;
+  end;`
+
+async function del(id) {
+  const binds = {
+    customer_code: id,
+    rowcount: {
+      dir: oracledb.BIND_OUT,
+      type: oracledb.NUMBER
+    }
+  }
+  const result = await database.simpleExecute(deleteSql, binds);
+
+  return result.outBinds.rowcount === 1;
+}
+
+module.exports.delete = del;

@@ -28,3 +28,61 @@ const baseQuery =
   }
 
   module.exports.find = find;
+
+  const createSql =
+  `insert `;
+
+  async function create(notice){
+    const notice = Object.assign({}, notice);
+
+    notice.notice_code = {
+      dir: oracledb.BIND_OUT,
+      type: oracledb.NUMBER
+    }
+
+    const result = await database.simpleExecute(createSql, notice);
+
+    notice.notice_code = result.outBinds.notice_code[0];
+
+    return notice;
+  }
+
+  module.exports.create = create;
+
+
+  const updateSql =
+   `update `;
+
+  async function update(context) {
+    const bind = Object.assign({}, context);
+    const result = await database.simpleExecute(updateSql, bind);
+
+    if (result.rowsAffected && result.rowsAffected === 1) {
+      return bind;
+    } else {
+      return null;
+    }
+
+  }
+
+  module.exports.update = update;
+
+  const deleteSql =
+   `begin
+      delete from
+    end;`
+
+  async function del(id) {
+    const binds = {
+      notice_code: id,
+      rowcount: {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.NUMBER
+      }
+    }
+    const result = await database.simpleExecute(deleteSql, binds);
+
+    return result.outBinds.rowcount === 1;
+  }
+
+  module.exports.delete = del;

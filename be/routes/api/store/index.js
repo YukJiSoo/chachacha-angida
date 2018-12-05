@@ -27,9 +27,9 @@ router.get('/', async function(req, res, next) {
       context.store_category_code = req.query.store_category_code;
     }
 
-    if (req.query.keyword) {
+    if (req.query.search_keyword) {
       console.log("params.keyword");
-      context.keyword = req.query.keyword;
+      context.search_keyword = req.query.search_keyword;
     }
 
     const rows = await store.find(context);

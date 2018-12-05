@@ -120,7 +120,7 @@ export default {
       store_category_name:'',
       lat:0,
       lng:0,
-      keyword:'',
+      search_keyword:'',
       locationLimit:'',
       mainPath:'/home',
       storeItems: [],
@@ -132,9 +132,9 @@ export default {
       this.store_category_name = this.$route.query.store_category_name
       this.lat = this.$route.query.lat
       this.lng = this.$route.query.lng
-      this.keyword = this.$route.query.keyword
+      this.search_keyword = this.$route.query.search_keyword
       this.locationLimit = this.$route.query.locationLimit
-
+      console.log(this.search_keyword.length)
       this.getStores()
     },
   methods: {
@@ -144,11 +144,11 @@ export default {
       data.lng = this.lng;
       data.locationLimit = this.locationLimit;
       if (this.category !== 'AL') data.store_category_code = this.category;
-      if (this.keyword) data.keyword = this.keyword;
+      if (this.search_keyword.length !== 0) data.search_keyword = this.search_keyword;
       console.log("Data:",data);
       this.$axios.get('http://localhost:3000/api/store/', {
-        params: data,
-        headers: data
+        params: data
+        // , headers: data
       }).then((r) => {
         this.storeItems = r.data
         console.log(this.storeItems)

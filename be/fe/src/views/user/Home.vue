@@ -37,6 +37,7 @@
               <v-icon>keyboard_arrow_up</v-icon>
             </v-btn>
             <v-text-field
+              v-model="searchWord"
               single-line
             >{{ searchWord }}</v-text-field>
             <v-btn icon @click="keywordSearch">
@@ -347,7 +348,7 @@ import axios from 'axios'
     methods: {
       keywordSearch() { // 키워드 기반 검색
         this.$router.push({path: '/restaurantList', query: {
-          keyword: this.searchWord,
+          search_keyword: this.searchWord,
           locationLimit: this.locationSlider, // 반경
           lat: this.currentLocation.lat,
           lng: this.currentLocation.lng
