@@ -216,16 +216,13 @@ import axios from 'axios'
         size: 'sm',
         ad_items: [
           {
-            src: 'http://thumb1.photo.cloud.naver.com/3472390814440126240?type=m3&setidc=2&filelink=g3fz9X4ygZV/PH+URkgrvWcb4W4njY3RmErY6gu9YZ6K2MYu7Gq1uRagCQxd24vfpTmerEBr24QzWzav0yqRwQU=&authtoken=Ey75RKZsOw2vvH1DIw2NEAI='
+            src: require('./ad_1.jpg')
           },
           {
-            src: 'http://thumb1.photo.cloud.naver.com/3472390814770716193?type=m3&setidc=2&filelink=g3fz9X4ygZV/PH+URkgrvZiiHm4CZ+F+w1Qtuc14TAN1JTiiofpmmBS5MKZLUmgFnJk9b2qKJMHqY4792iTYngU=&authtoken=3Zy/Er3Nonp/WxpkMsWd0wI='
+            src: require('./ad_2.jpg')
           },
           {
-            src: 'http://thumb1.photo.cloud.naver.com/3472390814770885409?type=m3&setidc=2&filelink=g3fz9X4ygZV/PH+URkgrvfvqZEVQ17ltwB18wCZRCrtjEVr9aRL8TmbTlpcrjxNgTCAEuIyi/9injlrrepa7+wU=&authtoken=iZ/b1WOEKsDvjw8CeSEKewI='
-          },
-          {
-            src: 'http://thumb2.photo.cloud.naver.com/3472390814771052065?type=m3&setidc=2&filelink=g3fz9X4ygZV/PH+URkgrvXddlJlnQPVWbarI6y9PbOHDY60KwkBz/RPEAuONruY09T1PCRZ2/FJjwtAy9VIKggU=&authtoken=SO8ZAhA9AuBkxQ0Wq6eXxQI='
+            src: require('./ad_3.jpg')
           }
         ],
         currentLocation: { lat : 37.558196, lng : 127.000131},
