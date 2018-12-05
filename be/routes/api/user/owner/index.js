@@ -8,7 +8,7 @@ const owner = require('../../../../db_apis/owner.js');
 router.get('/:id', function(req, res, next) {
   const id = req.params.id
   console.log(id)
-  
+
   const userInfo = {
     role: 'owner',
     ownerName: '차민형',
@@ -40,16 +40,16 @@ router.post('/', (req, res, next) => {
   //   birth: ''
   // }
   var success = false; // 성공인지 아닌지
-  
+
   /*
   디비쪽 구현 필요 - insert
   */
 
   if(success) res.json({ success: true})
-  else res.json({ success: false }) 
+  else res.json({ success: false })
 })
 
-/* POST 점주 회원가입*/
+/* POST 점주 로그인*/
 router.post('/signin', async (req, res, next) => {
   console.log("body:", req.body)
   const { id, password } = req.body
