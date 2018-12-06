@@ -434,7 +434,7 @@
         })
       },
       next () {
-        this.onboarding = this.onboarding + 1 === length
+        this.onboarding = this.onboarding + 1 === this.length
           ? 0
           : this.onboarding + 1
       },
