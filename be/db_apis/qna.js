@@ -70,7 +70,7 @@ const baseQuery =
 
     return qna_code
   }
-  
+
   module.exports.create = create;
 
   //

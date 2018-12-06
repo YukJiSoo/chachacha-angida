@@ -22,15 +22,6 @@
       </v-flex>
       <v-flex xs12 sm12>
         <v-form v-model="valid">
-          <!--title text field-->
-          <v-text-field
-            v-model="title"
-            :rules="nameRules"
-            label="Title"
-            required
-            color="orange"
-            class="medium"
-          ></v-text-field>
           <!-- Q&A내용-->
           <v-textarea
             outline
@@ -44,7 +35,7 @@
         </v-form>
         <!-- 완료, 취소 버튼-->
         <div>
-          <v-btn color="primary" @click="complete" :to="qnaPath" class="medium">완료</v-btn>
+          <v-btn color="primary"  @click="postQnaItem()" :to="mainPath" class="medium">완료</v-btn>
           <v-btn color="error" :to="qnaPath" class="medium">취소</v-btn>
         </div>
       </v-flex>
@@ -54,16 +45,34 @@
 
 <script>
 export default {
-  name: 'default',
+  name: 'writingQnA',
   data () {
     return {
       qnaPath:'/Q&A',
+      drawer: null,
+      mainPath: '/Home',
+      qna: {}
     }
   },
+  mounted() {
+      this.qna =  {
+        qna_code : 0,
+        question: ''
+      }
+  },
   methods: {
+    postQnaItem(){
+      this.$axios.post(`http://localhost:3000/api/Q&A/${this.customer_code}`,this.qna)
+      .then((r) => {
+         console.log(this.qnaInfo.customer_code)
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
+    },
     complete () { //완료 method
       alert("등록되었습니다.")
-    },
+    }
   }
 }
 </script>

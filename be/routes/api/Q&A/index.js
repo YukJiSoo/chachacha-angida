@@ -30,6 +30,7 @@ router.get('/', async function(req, res, next) {
 });
 
 router.post('/:customerId', async function(req, res, next) {
+  console.log(req.body);
   try {
     const context = {};
     if (true) {
