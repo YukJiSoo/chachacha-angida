@@ -134,7 +134,6 @@ export default {
       this.lng = this.$route.query.lng
       this.search_keyword = this.$route.query.search_keyword
       this.locationLimit = this.$route.query.locationLimit
-      console.log(this.search_keyword.length)
       this.getStores()
     },
   methods: {
