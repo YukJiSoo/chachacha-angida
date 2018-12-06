@@ -8,7 +8,7 @@
           flat
           height="40"
           class="angida-gradiation white--text">
-          <v-btn dark icon @click="$goBack()">
+          <v-btn dark icon @click="goToMyPage()">
             <v-icon>keyboard_arrow_left</v-icon>
           </v-btn>
           <v-container class="pa-0">
@@ -76,9 +76,9 @@
       <!-- 리뷰작성하러가기 -->
       <v-flex xs12 sm12 align-self-center>
         <div v-if="i.order_status==='방문완료'"class="pt-1 pb-1 light-blue--text text--darken-2 font-weight-bold">
-          <router-link :to="writingReviewPage" class="text--decoration-none small">
-            <span>리뷰 작성하러 가기</span>
-          </router-link>
+          <!-- <router-link :to="writingReviewPage" class="text--decoration-none small"> -->
+            <span class="text--decoration-none small" @click="goToWritingReview(i.store_code)">리뷰 작성하러 가기</span>
+          <!-- </router-link> -->
         </div>
       </v-flex>
       <v-divider class="mt-2"></v-divider>
@@ -120,6 +120,12 @@ export default {
     this.timeinterval = setInterval(this.updateTimerTest, 1000);
   },
   methods: {
+    goToWritingReview(store_code) { // 키워드 기반 검색
+      console.log("넘길 store_code:",store_code)
+      this.$router.push({path: '/writingReview', query: {
+        store_code: store_code
+      }});
+    },
     updateTimerTest: function() {
       for(var i=0; i<this.items.length; i++){
         // console.log("updateTimerTest")
@@ -206,6 +212,9 @@ export default {
       let status = ( !item.progress && item.order_status === '수락대기' ) || item.order_status === '예약완료'
       return status;
     },
+    goToMyPage() {
+      this.$router.push({path: '/mypage'});
+    }
 
   }
 }

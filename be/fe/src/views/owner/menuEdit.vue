@@ -108,7 +108,7 @@ export default {
         menu_desc: '',
         menu_price: ''
       }
-      
+
     } else {
       this.menu = this.$route.query.type
     }
@@ -146,7 +146,7 @@ export default {
 
       alert("완료되었습니다.")
 
-      this.$router.push('/ownerHome')
+      this.$router.push('/ownerMenuManage')
     },
     goBack(){
       window.history.back();
