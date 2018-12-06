@@ -143,8 +143,8 @@ export default {
       data.lat = this.lat;
       data.lng = this.lng;
       data.locationLimit = this.locationLimit;
+      data.search_keyword = this.search_keyword;
       if (this.category !== 'AL') data.store_category_code = this.category;
-      if (this.search_keyword.length !== 0) data.search_keyword = this.search_keyword;
       console.log("Data:",data);
       this.$axios.get('http://localhost:3000/api/store/', {
         params: data
