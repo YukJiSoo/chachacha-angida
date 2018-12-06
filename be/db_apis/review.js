@@ -25,7 +25,7 @@ async function find(context) {
   if (context.store_code) {
     console.log("add store_code condition to query");
     binds.store_code = context.store_code;
-    query += `\nand store_code = :store_code`;
+    query += `\nand s.store_code = :store_code`;
   }
 
   if (context.customer_code) {
