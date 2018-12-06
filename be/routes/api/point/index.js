@@ -37,31 +37,28 @@ router.get('/', async function(req, res, next) {
 });
 
 /* GET point detail . */
-router.get('/list/:id', function(req, res, next) {
-  const id = req.params.id
+router.get('/list/', async function(req, res, next) {
+  const customer_code = req.params.customer_code
   // 디비 만들어지면 테스트
-  // const context = {};
+  const context = {};
 
-  // context.id = parseInt(id, 10);
+  context.customer_code = parseInt(customer_code, 10);
 
-  // const rows = await employees.findList(context);
+  const rows = await point.findList(context);
 
-  // console.log('==========>router result');
-  // console.log(result.rows);
+  console.log('==========>router result');
 
-  // if (id) {
-  //   if (rows.length === 1) {
-  //     res.status(200).json(rows);
-  //   } else {
-  //     res.status(404).end();
-  //   }
-  // } else {
-  //   res.status(200).json(rows);
-  // }
-
-  var POINT_LIST = [{ OCCUR_COUNT: 1, STORE_NAME: '토끼정', OCCUR_DATE: '2018.11.23', OCCUR_POINT: 100 }]
-
-  res.json(POINT_LIST)
+  rows.sort(function (a, b) {
+    if (a.occur_date < b.occur_date) return 1;
+    if (a.occur_date > b.occur_date) return -1;
+    return 0;
+  });
+  console.log(rows);
+  if (rows.length !== 0) {
+    res.status(200).json(rows);
+  } else {
+    res.status(404).end();
+  }
 });
 
 /* PUT home page. */

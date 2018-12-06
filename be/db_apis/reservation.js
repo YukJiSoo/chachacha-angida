@@ -256,7 +256,7 @@ const update_CUSTOMER_COUPON_Query =
  where coupon_code = :coupon_code and customer_code = :customer_code`;
 const update_CUSTOMER_POINT_Query =
 `update customer_point
-set total_point = total_point - :point_discount
+set total_point = total_point - :point_discount + :occur_point
 where customer_code = :customer_code`;
 const insert_PAYMENT_Query =
 `insert into payment (
@@ -268,12 +268,18 @@ const insert_PAYMENT_Query =
   ) `;
 const insert_POINT_DETAIL_Query =
 `insert into POINT_DETAIL (
-    customer_code, point_code, occur_count,
+    customer_code, point_code,
+    occur_count,
     occur_date, occur_point, store_name
   ) values (
-    :customer_code, :point_detail_seq.NEXTVAL, :occur_count,
+    :customer_code, point_detail_seq.NEXTVAL,
+    (select count(*) from point_detail where customer_code = :customer_code),
     sysdate, :occur_point, :store_name
-  ) returning point_code into :point_code`;
+  )`;
+
+  // returning point_code into :point_code`;
+// insert into point_detail
+// values ((select count(*) from point_detail where customer_code = 1), sysdate, 5800, '진땡이순대국', 1, point_detail_seq.NEXTVAL);
 /* TEST END */
 // async function createTransaction(context){
 //   let query = baseQuery;
@@ -398,16 +404,24 @@ async function create(context) {
     } else {
       console.log("쿠폰을 사용하지 않았습니다.");
     }
-    /* [Optionnal] CUSTOMER_POINT Update TOTAL_POINT = TOTAL_POINT - coupon_discount*/
-    if (context.point_discount !== 0){
-      var point_binds = {};
-      point_binds.point_discount = context.point_discount;
-      point_binds.customer_code = context.customer_code;
-      orderResult = await conn.execute(update_CUSTOMER_POINT_Query, point_binds, { outFormat: oracledb.OBJECT, autoCommit: true});
-      console.log("update_CUSTOMER_POINT_Query execute result:", orderResult);
-    } else {
-      console.log("포인트를 사용하지 않았습니다.");
-    }
+    /* CUSTOMER_POINT Update TOTAL_POINT = TOTAL_POINT - coupon_discount*/
+    var point_binds = {};
+    point_binds.point_discount = context.point_discount;
+    point_binds.customer_code = context.customer_code;
+    point_binds.occur_point = (context.total_price - context.coupon_discount - context.point_discount) * context.point_rate;;
+    orderResult = await conn.execute(update_CUSTOMER_POINT_Query, point_binds, { outFormat: oracledb.OBJECT, autoCommit: true});
+    console.log("update_CUSTOMER_POINT_Query execute result:", orderResult);
+
+    // POINT_DETAIL에 생성
+    let pointContext = {}
+    pointContext.customer_code = context.customer_code;
+    // pointContext.point_code = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+    pointContext.occur_point = (context.total_price - context.coupon_discount - context.point_discount) * context.point_rate; //결제금액 * 적립률;
+    pointContext.store_name = context.store_name
+    console.log("reservation.js create() pointContext>> ", pointContext)
+    // orderResult = await database.simpleExecute(insert_POINT_DETAIL_Query, pointContext, { autoCommit: false });
+    orderResult = await conn.execute(insert_POINT_DETAIL_Query, pointContext, { outFormat: oracledb.OBJECT, autoCommit: true});
+    console.log("insert_POINT_DETAIL_Query execute result:", orderResult);
 
     // payment에 생성
     let paymentContext = {}
@@ -420,17 +434,7 @@ async function create(context) {
     orderResult = await database.simpleExecute(insert_PAYMENT_Query, paymentContext, { autoCommit: true });
     console.log("insert_PAYMENT_Query execute result:", orderResult);
 
-    // CUSTOMER_POINT에 생성
-    let pointContext = {}
-    pointContext.customer_code = parseInt(customer_code,10)
-    orderContext.point_code = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
-    // pointContext.payment_date = context.order_time
-    pointContext.occur_count = 0
-    pointContext.occur_point = context.total_price * conext.point_rate; //결제금액 * 적립률;
-    pointContext.store_name = context.store_name
-    console.log("reservation.js create() pointContext>> ", pointContext)
-    orderResult = await database.simpleExecute(insert_POINT_DETAIL_Query, pointContext, { autoCommit: true });
-    console.log("insert_POINT_DETAIL_Query execute result:", orderResult);
+
 
 
     /* TRANSATION END */
