@@ -266,7 +266,14 @@ const insert_PAYMENT_Query =
     :order_code, sysdate, :store_name,
     :payment_amount, :payment_status
   ) `;
-
+const insert_POINT_DETAIL_Query =
+`insert into POINT_DETAIL (
+    customer_code, point_code, occur_count,
+    occur_date, occur_point, store_name
+  ) values (
+    :customer_code, :point_detail_seq.NEXTVAL, :occur_count,
+    sysdate, :occur_point, :store_name
+  ) returning point_code into :point_code`;
 /* TEST END */
 // async function createTransaction(context){
 //   let query = baseQuery;
@@ -315,7 +322,10 @@ const insert_PAYMENT_Query =
 async function create(context) {
   // 1. insert reserv_order
   // 2. insert menu_order_item
-  //
+  // 3. CUSTOMER_COUPON
+  // 4. CUSTOMER_POINT
+  // 5. PAYMENT
+  // 6. CUSTOMER_POINT
   // reserv_order에 insert
   console.log("selected_hour min:", context.selected_hour, context.selected_min);
   let orderContext = {}
@@ -409,6 +419,20 @@ async function create(context) {
     console.log("reservation.js create() paymentContext>> ", paymentContext)
     orderResult = await database.simpleExecute(insert_PAYMENT_Query, paymentContext, { autoCommit: true });
     console.log("insert_PAYMENT_Query execute result:", orderResult);
+
+    // CUSTOMER_POINT에 생성
+    let pointContext = {}
+    pointContext.customer_code = parseInt(customer_code,10)
+    orderContext.point_code = { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }
+    // pointContext.payment_date = context.order_time
+    pointContext.occur_count = 0
+    pointContext.occur_point = context.total_price * conext.point_rate; //결제금액 * 적립률;
+    pointContext.store_name = context.store_name
+    console.log("reservation.js create() pointContext>> ", pointContext)
+    orderResult = await database.simpleExecute(insert_POINT_DETAIL_Query, pointContext, { autoCommit: true });
+    console.log("insert_POINT_DETAIL_Query execute result:", orderResult);
+
+
     /* TRANSATION END */
   } catch (err) {
     console.log("menu err:", err)
