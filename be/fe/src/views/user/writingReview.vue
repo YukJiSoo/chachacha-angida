@@ -129,7 +129,8 @@ export default {
       this.$axios.post('http://localhost:3000/api/review/', data)
       .then((r) => {
         console.log(r);
-        this.$router.push({path: '/reservationHistory', query: {}});
+        //this.$router.push({path: '/reservationHistory', query: {}});
+        this.$goBack();
       })
       .catch((e) => {
         this.pop(e.message)

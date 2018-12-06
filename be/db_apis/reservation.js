@@ -106,7 +106,7 @@ async function findOwnerAll(context) {
     query +=
     `\nwhere r.store_code = :store_code
     and r.customer_code = c.customer_code
-    and ROWNUM <= 10 
+    and ROWNUM <= 10
     order by order_code DESC`;
   }
 
@@ -313,6 +313,9 @@ const insert_PAYMENT_Query =
 // module.exports.createTransaction = createTransaction;
 
 async function create(context) {
+  // 1. insert reserv_order
+  // 2. insert menu_order_item
+  //
   // reserv_order에 insert
   console.log("selected_hour min:", context.selected_hour, context.selected_min);
   let orderContext = {}
@@ -444,7 +447,7 @@ async function update(context) {
   opts.autoCommit = true
   console.log("reservation.js update() bind", bind)
   const result = await database.simpleExecute(updateSql, bind, opts);
-  
+
   let tb = {}
   tb.order_code = parseInt(context.order_code,10)
   const testresult = await database.simpleExecute(test, tb, opts);
@@ -456,7 +459,7 @@ async function update(context) {
     return null;
   }
 
-  
+
 }
 
 module.exports.update = update;
