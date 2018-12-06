@@ -36,7 +36,7 @@
               </div>
             </v-flex>
             <v-flex xs12>
-              <v-btn outline color="orange" large :to="writingPath">
+              <v-btn outline color="orange" large @click="goToWritingReview(store_code)">
                 <div class="px-5 mx-4 font-weight-black xlarge">리뷰 작성하기</div>
               </v-btn>
             </v-flex>
@@ -116,6 +116,12 @@ export default {
     this.getReview()
   },
   methods: {
+    goToWritingReview(store_code) { // 키워드 기반 검색
+      console.log("넘길 store_code:",store_code)
+      this.$router.push({path: '/writingReview', query: {
+        store_code: store_code
+      }});
+    },
     // 리뷰 정보 받아오기
     getReview () {
       var data = {};
