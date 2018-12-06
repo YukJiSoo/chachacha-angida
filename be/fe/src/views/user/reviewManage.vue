@@ -26,13 +26,13 @@
         <v-card flat>
           <v-layout column wrap class="px-3">
             <!-- 이용내역 아이템 -->
-            <v-layout v-for="i in 3" row wrap class="pb-3">
+            <v-layout v-for="i in reviewItems" row wrap class="pb-3">
               <!-- 가게이름, 수정, 삭제 -->
               <v-flex xs12>
                 <v-layout align-center justify-center row wrap>
                   <v-flex xs8>
                     <div class="xlarge pl-3 py-0 orange--text">
-                      <span>강서 동국대점</span>
+                      <span>{{ i.store_name }}</span>
                     </div>
                   </v-flex>
                   <v-flex xs2>
@@ -47,9 +47,9 @@
               <v-flex xs2>
                 <v-avatar>
                   <img
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
+                    :src="`${i.review_img_url}`"
                     alt="John"
-                  >
+                  />
                 </v-avatar>
               </v-flex>
 
@@ -59,34 +59,32 @@
                   <!-- 아이디 -->
                   <v-flex xs12 class="pl-2">
                     <div class="medium">
-                      <span>wltn3231</span>
-                    </div>
-                  </v-flex>
-                  <!-- 날짜 -->
-                  <v-flex xs12 class="pl-1">
-                    <div class="small grey--text pt-1">
-                      <span>2018.10.03</span>
+                      <span>{{ i.customer_name }}</span>
+                      &nbsp;&nbsp;
+                      <span class="small grey--text pt-1">{{ i.review_date.substring(0, 10) }}</span>
                     </div>
                   </v-flex>
                   <!-- 별점 -->
                   <v-flex xs12>
                     <v-rating
-                      v-model="rating"
+                      v-model=i.review_rate
                       background-color="yellow darken-3"
                       color="yellow darken-3"
+                      half-increments
                       small
-                      readonly="true"
-                    ></v-rating>
+                      :readonly="true"
+                    >{{ i.review_rate }}</v-rating>
                   </v-flex>
                   <!-- 이미지 -->
                   <!-- 내용 -->
                   <v-flex xs12>
                     <div class="small grey--text text--darken-1 pt-1">
-                      <span> 늘 뭔가 당도 조절을 잊거나 얼음 조절을 잊거나 사이즈를 잘못 선택하거나 펄을 추가하지 않던가 이런 짓을 때때로 해왔는데 오늘은</span>
+                      <span>{{ i.contents }}</span>
                     </div>
                   </v-flex>
                 </v-layout>
               </v-flex>
+              <v-divider class="mt-2"></v-divider>
             </v-layout>
 
           </v-layout>
@@ -103,11 +101,33 @@ export default {
   name: 'default',
   data () {
     return {
+      customerInfo: {},
       mypagePath: '/mypage',
       rating: 4,
+      reviewItems: []
     }
   },
-  methods: {}
+  mounted () {
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
+    this.getReviewHistory();
+  },
+  methods: {
+    getReviewHistory () {
+      var data = {};
+      data.customer_code = this.customerInfo.customer_code;
+      console.log("Data:",data);
+      this.$axios.get('http://localhost:3000/api/review/', {
+        params: data
+        // , headers: data
+      }).then((r) => {
+        this.reviewItems = r.data
+        console.log(this.reviewItems)
+      })
+      .catch((e) => {
+        this.pop(e.message)
+      })
+    }
+  }
 }
 </script>
 

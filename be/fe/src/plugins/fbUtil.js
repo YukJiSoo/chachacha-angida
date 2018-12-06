@@ -1,7 +1,11 @@
 import firebase from "firebase";
 import fb_config from "../../config/fb.json"
-module.exports.uploadTest = function (imgDir, file, callbackFun) {
-
+// let firebase = require("firebase");
+// let fb_config = require("../../config/fb.json");
+function uploadTest (imgDir, file, callbackFun) {
+  // let firebase = require("firebase");
+  // let fb_config = require("../../config/fb.json");
+  console.log("fbUtil.js uploadTest() >> ");
   var config = {
     apiKey: fb_config.apiKey,
     authDomain: fb_config.authDomain,
@@ -61,3 +65,5 @@ module.exports.uploadTest = function (imgDir, file, callbackFun) {
   });
 
 }
+
+module.exports.uploadTest = uploadTest;

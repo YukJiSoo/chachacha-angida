@@ -13,7 +13,22 @@ router.get('/', async function(req, res, next) {
       context.store_code = req.query.store_code;
     }
 
+    if (req.query.customer_code) {
+      console.log("review params.customer_code");
+      context.customer_code = req.query.customer_code;
+    }
+
     const rows = await review.find(context);
+    rows.forEach((v,i) => {
+      rows[i].review_date = new Date(rows[i].review_date.getTime() + 18 * 60 * 60 * 1000)
+    });
+
+    rows.sort(function (a, b) {
+      if (a.review_date < b.review_date) return 1;
+      if (a.review_date > b.review_date) return -1;
+      return 0;
+    });
+
     console.log(rows);
 
     if (req.query.review_code) {
@@ -46,8 +61,17 @@ router.get('/owner/:id', async function(req, res, next) {
 })
 
 // 사용자가 리뷰 작성 post
-router.post('/:id', function(req, res, next) {
-
+router.post('/', async function(req, res, next) {
+  const reviewInfo = req.body;
+  console.log("reviewInfo:", reviewInfo);
+  try{
+    var result = await review.create(reviewInfo);
+    console.log("review/index.js post result >> ", result);
+    res.status(201).json(result);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
 })
 
 // 사용자가 리뷰 정보 변경 put

@@ -84,6 +84,8 @@
 //const fbUtil = require("../../plugins/fbUtil")
 import firebase from "firebase";
 import fb_config from "../../../config/fb.json"
+// const fbUtil = require("../../plugins/fbUtil.js")
+// import fbUtil from "../../../src/plugins/fbUtil.js"
 var config = {
   apiKey: fb_config.apiKey,
   authDomain: fb_config.authDomain,
@@ -98,7 +100,9 @@ export default {
   name: 'default',
   data () {
     return {
-      rating: 3,
+      customerInfo: {},
+      store_code: '',
+      rating: 0,
       reviewPath:'/review',
       reviewContent: '',
       image: '',
@@ -108,15 +112,29 @@ export default {
       fileUrl: ''
     }
   },
+  mounted () {
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
+    this.store_code = this.$route.query.store_code;
+  },
   methods: {
     complete (downloadURL) { //완료 method
-      console.log("별점:" + this.rating);
-      console.log(this.reviewContent);
-      console.log(downloadURL)
-      console.log("리뷰등록완료");
-      this.$router.push({path: '/reservationHistory', query: {
+      var data = {};
+      data.store_code = this.store_code;
+      data.customer_code = this.customerInfo.customer_code;
+      data.review_rate = this.rating;
+      data.contents = this.reviewContent;
+      data.review_img_url = downloadURL;
 
-      }});
+      console.log("Review Data:",data);
+      this.$axios.post('http://localhost:3000/api/review/', data)
+      .then((r) => {
+        console.log(r);
+        this.$router.push({path: '/reservationHistory', query: {}});
+      })
+      .catch((e) => {
+        this.pop(e.message)
+        alert("리뷰 등록에 실패했습니다. 잠시 후 다시 시도해주세요.")
+      });
     },
     reviewRegister () {
       if(this.reviewContent.length < this.contentLimit){
@@ -124,8 +142,8 @@ export default {
         return;
       }
       if(this.uploadfile) { // 이미지가 있으면
-        this.upload('images/', this.uploadfile, this.complete);
-        //fbUtil.uploadTest('images/', this.uploadfile, this.complete);
+        this.upload('reviewImages/', this.uploadfile, this.complete);
+        // fbUtil.uploadTest('images/', this.uploadfile, this.complete);
       } else {
         console.log("이미지 없이 리뷰 등록");
         this.complete();
