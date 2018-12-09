@@ -18,7 +18,7 @@ function simpleExecute(statement, binds = [], opts = {}) {
     let conn;
 
     if (isEmpty(opts)) { // empty 체크를 먼저 하고
-      console.log("simpleExecute >> opts is empty. so autoCommit is true");
+      // console.log("simpleExecute >> opts is empty. so autoCommit is true");
       opts.autoCommit = true;
     }
     opts.outFormat = oracledb.OBJECT; // outFormat을 설정한다.

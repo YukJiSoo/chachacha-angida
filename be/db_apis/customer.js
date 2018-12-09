@@ -62,14 +62,26 @@ module.exports.create = create;
 
 
 const updateSql =
- `update `;
+ `update customer
+ set address = :address
+ phone_no = :phone_no
+ customer_password := customer_password
+ where customer_code := customer_code`;
 
 async function update(context) {
-  const bind = Object.assign({}, context);
-  const result = await database.simpleExecute(updateSql, bind);
+  console.log(context)
+  let updateContext = {}
 
-  if (result.rowsAffected && result.rowsAffected === 1) {
-    return bind;
+  updateContext.address = context.address
+  updateContext.phone_no = context.phone_no
+  updateContext.customer_password  = context.customer_password
+  updateContext.customer_code  = context.customer_code
+
+  console.log(updateContext)
+  const userResult = await database.simpleExecute(updateSql, updateContext);
+
+  if (userResult.rowsAffected && userResult.rowsAffected === 1) {
+    return userResult;
   } else {
     return null;
   }
