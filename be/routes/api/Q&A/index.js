@@ -1,18 +1,17 @@
 var express = require('express');
 var createError = require('http-errors');
 var router = express.Router();
-const notice = require('../../../db_apis/qna.js');
+const qna = require('../../../db_apis/qna.js');
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
   try {
     const context = {};
     if (req.query.qna_code) {
-      // console.log("review params.store_code");
       context.qna_code = req.query.qna_code;
     }
 
-    const rows = await notice.find(context);
+    const rows = await qna.find(context);
     console.log(rows);
 
     if (req.query.qna_code) {
@@ -29,27 +28,14 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-router.post('/:customerId', async function(req, res, next) {
-  console.log(req.body);
-  try {
-    const context = {};
-    if (true) {
-      console.log("qna params.customer_code");
-      context.qna_category = req.params.qna_category
-      context.question = req.body.question
-      context.answer = req.body.answer
-      context.customer_code = req.body.customer_code
-      context.manager_code = req.body.manager_code
-    }
-    console.log(context);
-    const rows = await qna.create(context);
-    console.log(rows);
-
-    if(rows !== null) res.status(201).json(rows);
-    else res.status(404).end()
-
+router.post('/', async function(req, res, next) {
+  const qnaInfo = req.body;
+  console.log("qnaInfo:", qnaInfo);
+  try{
+    var result = await qna.create(qnaInfo);
+    res.status(201).json(result);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     next(err);
   }
 })

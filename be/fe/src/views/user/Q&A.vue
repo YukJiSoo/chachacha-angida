@@ -23,7 +23,7 @@
 
       <!-- 문의하기 버튼-->
       <v-flex xs12 sm12 class="pa-2">
-        <v-btn color="error" class="medium" @click="writingQnA('enroll')">문의하기</v-btn>
+        <v-btn color="error" class="medium" @click="goToWritingQna">문의하기</v-btn>
       </v-flex>
 
       <!-- QnA목록 -->
@@ -61,6 +61,7 @@
     mounted() {
       this.qna_code = this.$route.query.qna_code
       this.question = this.$route.query.question
+      this.customer_code = this.$route.query.customer_code
       // console.log("review store_code:", this.store_code, ", ", this.store_name)
       this.getQna()
     },
@@ -68,8 +69,10 @@
       goToMypage() {
         this.$router.push('/mypage')
       },
-      writingQnA(type){
-        this.$router.push({path:'/writingQnA', query: {type: type}})
+      goToWritingQna() { // 키워드 기반 검색
+        this.$router.push({path: '/writingQnA', query: {
+          // customer_code: customer_code
+        }});
       },
       getQna () {
         var data = {};

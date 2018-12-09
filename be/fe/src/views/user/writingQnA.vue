@@ -24,18 +24,20 @@
         <v-form v-model="valid">
           <!-- Q&A내용-->
           <v-textarea
+            v-model="question"
             outline
-            name="Question"
             label="Quection"
             color="orange"
             value=""
             height="300"
             class="medium"
-          ></v-textarea>
+          >
+            {{question}}
+          </v-textarea>
         </v-form>
         <!-- 완료, 취소 버튼-->
         <div>
-          <v-btn color="primary"  @click="postQnaItem()" :to="mainPath" class="medium">완료</v-btn>
+          <v-btn color="primary"  @click="qnaRegister" :to="mainPath" class="medium">완료</v-btn>
           <v-btn color="error" :to="qnaPath" class="medium">취소</v-btn>
         </div>
       </v-flex>
@@ -48,30 +50,41 @@ export default {
   name: 'writingQnA',
   data () {
     return {
+      customerInfo : JSON.parse(localStorage.getItem('customerInfo')),
       qnaPath:'/Q&A',
       drawer: null,
       mainPath: '/Home',
-      qna: {}
+      qna: {},
+      qna_code : 0,
+      question: ''
     }
   },
   mounted() {
-      this.qna =  {
-        qna_code : 0,
-        question: ''
-      }
   },
   methods: {
-    postQnaItem(){
-      this.$axios.post(`http://localhost:3000/api/Q&A/${this.customer_code}`,this.qna)
+    complete () { //완료 method
+      var data = {};
+      // data.qna_category = this.qna_category;
+      data.question = this.question;
+      // data.answer = this.answer;
+      data.customer_code = this.customerInfo.customer_code;
+      data.qna_code = this.qna_code;
+      // data.manager_code = this.manager_code;
+      // data.qna_code = this.qna_code;
+
+      this.$axios.post('http://localhost:3000/api/Q&A/', data)
       .then((r) => {
-         console.log(this.qnaInfo.customer_code)
+        console.log(r);
+        alert("접수되었습니다")
+        //this.$router.push({path: '/mypage', query: {}});
       })
       .catch((e) => {
-      this.pop(e.message)
-      })
+        this.pop(e.message)
+        alert("QnA 등록에 실패했습니다.")
+      });
     },
-    complete () { //완료 method
-      alert("등록되었습니다.")
+    qnaRegister () {
+        this.complete();
     }
   }
 }

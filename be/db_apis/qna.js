@@ -33,44 +33,38 @@ const baseQuery =
 
   const createSql =
    `insert into qna (
-      qna_category,
       question,
-      answer,
       customer_code,
       manager_code,
       qna_code
     ) values (
-      :qna_category,
       :question,
-      :answer,
       :customer_code,
-      :manager_code,
+      1,
       qna_seq.NEXTVAL
     ) returning qna_code
     into :qna_code`;
 
-  async function create(context) {
-    let qnaContext = {}
+    async function create(qna) {
+      const binds = Object.assign({}, qna);
 
-    qnaContext.qna_category = context.qna_category
-    qnaContext.question = context.question
-    qnaContext.answer  = context.answer
-    qnaContext.customer_code  = context.customer_code
-    qnaContext.manager_code = context.manager_code
+      binds.qna_code = {
+        dir: oracledb.BIND_OUT,
+        type: oracledb.NUMBER
+      }
 
-    qnaContext.qna_code = {
-      dir: oracledb.BIND_OUT,
-      type: oracledb.NUMBER
+      var qna_options = {
+        autoCommit: true, // 명시적 false
+        bindDefs: {
+          customer_code: { type: oracledb.NUMBER},
+          question: { type: oracledb.STRING, maxSize: 500}
+        } };
+      const result = await database.simpleExecute(createSql, binds);
+
+      binds.qna_code = result.outBinds.qna_code[0];
+
+      return binds;
     }
-    console.log(qnaContext)
-    const qnaResult = await database.simpleExecute(createSql, qnaContext);
-
-    const qna_code = qnaResult.outBinds.qna_code[0];
-    console.log(qna_code)
-
-    return qna_code
-  }
-
   module.exports.create = create;
 
   //
