@@ -8,49 +8,86 @@ const baseQuery =
     end_date "end_date",
     discount_amount "discount_amount",
     coupon_status "coupon_status",
-    min_order_amount "min_order_amount",
+    min_order_amount "min_order_amount"
   from coupon`;
+
+async function find(context) {
+  let query = baseQuery;
+  const binds = {};
+
+  if (context.id) {
+    binds.customer_code = context.id;
+    query += `\nwhere coupon_code in (select coupon_code from customer_coupon where customer_code <> :customer_code)`;
+  }
+  console.log("select query:", query);
+  const result = await database.simpleExecute(query, binds);
+
+  return result.rows;
+}
+module.exports.find = find;
 
 async function findCoupon(context) {
   let query = baseQuery;
   const binds = {};
 
   if (context.id) {
-    binds.customer_code = context.id;
-    query += `\nwhere coupon_code in (select coupon_code from customer_coupon where customer_code = :customer_code`;
+    binds.customer_code = parseInt(context.id, 10);
+    query += `\nwhere coupon_code in (select coupon_code from customer_coupon where customer_code = :customer_code)`;
   }
+
+  console.log("findCoupon binds:", binds);
 
   const result = await database.simpleExecute(query, binds);
 
-  return result.rows;
+  return result;
 }
 
 module.exports.findCoupon = findCoupon;
 
 const createSql =
-`insert into customer_coupon (
-  store_code, coupon_name, issued_date,
-  end_date, discount_amount, min_order_amount,
-  coupon_status
+`insert into coupon (
+  coupon_code, store_code, coupon_name,
+  issued_date, end_date, discount_amount,
+  min_order_amount, coupon_status
 ) values (
-  :store_code, :coupon_name, sysdate,
-  :end_date, :discount_amount, :min_order_amount,
-  :coupon_status
+  coupon_seq.NEXTVAL, :store_code, :coupon_name,
+  sysdate, :end_date, :discount_amount,
+  :min_order_amount, :coupon_status
 ) returning coupon_code into :coupon_code`;
 
-async function create(coupon){
-  const coupon = Object.assign({}, coupon);
+const create_Customer_Coupon_SQL =
+`insert into customer_coupon (
+  coupon_code, customer_code, coupon_status
+) values (
+  :coupon_code, :customer_code, :coupon_status
+)`;
+async function create(context){
+  // const coupon_context = Object.assign({}, context);
+  const coupon_context = {};
 
-  coupon.coupon_code = {
+  coupon_context.store_code = context.store_code;
+  coupon_context.coupon_name = context.coupon_name;
+  coupon_context.discount_amount = parseInt(context.discount_amount, 10);
+  coupon_context.min_order_amount = parseInt(context.min_order_amount, 10);
+  coupon_context.end_date = new Date();
+  coupon_context.coupon_status = "Y";
+  coupon_context.coupon_code = {
     dir: oracledb.BIND_OUT,
     type: oracledb.NUMBER
   }
 
-  const result = await database.simpleExecute(createSql, coupon);
+  var result = await database.simpleExecute(createSql, coupon_context);
+  coupon_context.coupon_code = result.outBinds.coupon_code[0];
 
-  coupon.coupon_code = result.outBinds.coupon_code[0];
+  const customer_coupon_context = {};
+  customer_coupon_context.coupon_code = coupon_context.coupon_code;
+  customer_coupon_context.customer_code = context.customer_code;
+  customer_coupon_context.coupon_status = 'N';
+  console.log("customer_coupon_context:", customer_coupon_context);
 
-  return coupon;
+  result = await database.simpleExecute(create_Customer_Coupon_SQL, customer_coupon_context);
+
+  return result;
 }
 
 module.exports.create = create;
