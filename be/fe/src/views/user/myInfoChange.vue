@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-1">
-    <v-layout row wrap>
+    <v-layout column wrap>
       <!-- 상단 -->
       <v-flex xs12 sm12>
         <v-toolbar
@@ -21,11 +21,23 @@
         </v-toolbar>
       </v-flex>
 
+      <v-flex xs12 sm6 md3 class="px-3 pt-3">
+        <v-text-field
+          label="비밀번호"
+          color="orange"
+          class="medium"
+          v-model="password"
+          :rules="[rules.password, rules.length(6)]"
+        ></v-text-field>
+      </v-flex>
+
       <v-flex xs12 sm6 md3 class="px-3">
         <v-text-field
           label="주소"
           color="orange"
           class="medium"
+          v-model="address"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-flex>
 
@@ -34,38 +46,17 @@
           label="핸드폰번호"
           color="orange"
           class="medium"
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
-
-    <v-divider class="mx-2 mt-4"></v-divider>
-    <v-subheader class="small">카드정보</v-subheader>
-    <v-layout row wrap>
-      <v-flex v-for="input in cardInputs" xs12 sm6 md3 class="px-3">
-        <v-text-field
-          :label="`${input.name}`"
-          color="orange"
-          class="medium"
+          v-model="phone_no"
+          :mask="phoneMask"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-flex>
 
-      <!-- <div id="fileApp"> -->
-      <v-flex xs12 sm6 md3 class="px-3" id="fileApp">
-        <div class="filebox" v-if="!image">
-          <!--<v-btn v-if="!image" color="primary" @click="complete">사진등록</v-btn>-->
-            <label for="ex_file" class="medium">사진변경</label>
-            <input type="file" id="ex_file" @change="onFileChange">
-        </div>
-        <div class="filebox" v-else>
-          <img :src="image" />
-          <label for="ex_file" class="medium">Remove image</label>
-          <input type="button" id="ex_file" @click="removeImage">
-          <!-- <button @click="removeImage">Remove image</button> -->
-        </div>
-      <!-- </div> -->
+      <v-flex align-self-center xs12 sm12 class="pa-2">
+        <v-btn dark color="orange" class="medium" @click="change()">변경하기</v-btn>
       </v-flex>
-
     </v-layout>
+
   </v-container>
 </template>
 
@@ -74,56 +65,56 @@ export default {
   name: 'default',
   data () {
     return {
-      image: '',
-      cardInputs: [
-        {
-          name: '카드회사'
-        },
-        {
-          name: '카드번호'
-        },
-        {
-          name: '유효기간'
-        },
-        {
-          name: 'CVC'
-        },
-        {
-          name: '결제비밀번호'
-        },
-      ]
+      customerInfo : JSON.parse(localStorage.getItem('customerInfo')),
+      password:'',
+      address: '',
+      phone_no: '',
+
+      phoneMask: '(###)-####-####',
+      rules: {
+        email: v => (v || '').match(/@/) || '이메일형식으로 작성해 적어주세요',
+        length: len => v => (v || '').length >= len || `${len}자 이상 적어주세요`,
+        password: v => (v || '').match(/^(?=.*[a-z]).+$/) ||
+          '숫자와 문자가 포함된 비밀번호를 작성해주세요',
+        required: v => !!v || '필수입니다'
+      }
       
     }
   },
-  computed: {
-    
+  mounted() {
+    this.address =  this.customerInfo.address,
+    this.phone_no = this.customerInfo.phone_no
   },
   methods: {
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-      this.filename = files[0].name;
-      this.uploadfile = files[0];
-      this.createImage(files[0]);
+    putMyInfo(){
+      let changeInfo = {
+        address : this.address,
+        phone_no : this.phone_no.slice(0,3) + '-' + this.phone_no.slice(3,7) + '-' + this.phone_no.slice(7,11),
+        password : this.password,
+      }
+      this.$axios.put(`http://localhost:3000/api/user/${this.customerInfo.customer_code}`, changeInfo)
+      .then((r) => {
+        console.log(r.data)
 
-    },
-    createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-      var vm = this;
+        this.customerInfo.address = changeInfo.address
+        this.customerInfo.phone_no = changeInfo.phone_no
+        this.customerInfo.password = changeInfo.password
 
-      reader.onload = (e) => {
-        vm.image = e.target.result;
-        // console.log(typeof vm.image);
-        // console.log(vm.image);
-      };
-      reader.readAsDataURL(file);
+        localStorage.setItem('customerInfo', JSON.stringify(this.customerInfo))
+
+        alert("변경되었습니다.")
+
+        this.$router.push('/mypage')
+
+      })
+      .catch((e) => {
+      this.pop(e.message)
+      })
     },
-    removeImage: function (e) {
-      this.image = '';
+    change(){
+      this.putMyInfo()
     }
-  }
+  },
 }
 </script>
 

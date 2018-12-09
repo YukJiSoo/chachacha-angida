@@ -85,15 +85,35 @@ router.post('/signin', async (req, res, next) => {
 
 /* PUT 내정보변경 */
 router.put('/:id', (req, res, next) => {
-  const id = req.params.id
-  const { name, age } = req.body
+  console.log('put');
+  console.log(req.body);
 
-  res.send({ success: true, msg: 'put ok' })
-})
-
-/* DELETE 회원탈퇴 */
-router.delete('/:id', (req, res, next) => {
   const id = req.params.id
+  const changeInfo = req.body
+
+  console.log(changeInfo)
+  console.log(id)
+
+  try {
+    const context = {};
+    if (true) {
+      console.log("user info");
+      context.customer_code = req.params.id
+      context.address = req.body.address
+      context.phone_no = req.body.phone_no
+      context.customer_password = req.body.password
+    }
+    console.log(context);
+    const rows = await customer.update(context);
+    console.log(rows);
+
+    if(rows !== null) res.status(201).json(rows);
+    else res.status(404).end()
+
+  } catch (err) {
+    console.log(err)
+    next(err);
+  }
 
 })
 
