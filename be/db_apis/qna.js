@@ -36,11 +36,13 @@ const baseQuery =
       question,
       customer_code,
       manager_code,
+      answer,
       qna_code
     ) values (
       :question,
       :customer_code,
       1,
+      '답변을 기다려주세요.',
       qna_seq.NEXTVAL
     ) returning qna_code
     into :qna_code`;
