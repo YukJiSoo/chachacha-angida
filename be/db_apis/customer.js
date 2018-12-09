@@ -63,10 +63,10 @@ module.exports.create = create;
 
 const updateSql =
  `update customer
- set address = :address
- phone_no = :phone_no
- customer_password := customer_password
- where customer_code := customer_code`;
+ set address = :address,
+ phone_no = :phone_no,
+ customer_password = :customer_password
+ where customer_code = :customer_code`;
 
 async function update(context) {
   console.log(context)
@@ -75,7 +75,7 @@ async function update(context) {
   updateContext.address = context.address
   updateContext.phone_no = context.phone_no
   updateContext.customer_password  = context.customer_password
-  updateContext.customer_code  = context.customer_code
+  updateContext.customer_code  = parseInt(context.customer_code,10)
 
   console.log(updateContext)
   const userResult = await database.simpleExecute(updateSql, updateContext);
