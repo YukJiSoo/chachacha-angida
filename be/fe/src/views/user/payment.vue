@@ -15,12 +15,12 @@
             </div>
             <div class="pt-2 pb-2 font-weight-bold large">
               <span>
-                {{ reservationInfo.total_price - reservationInfo.point_discount - reservationInfo.couponChoice.coupon_discount }}원
+                {{ reservationInfo.total_price - reservationInfo.point_discount - reservationInfo.couponChoice.discount_amount }}원
               </span>
             </div>
             <div>
               <span class="grey--text text--darken-2 small">포인트 - {{reservationInfo.point_discount}}P</span>
-              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{reservationInfo.couponChoice.coupon_discount}}원</span>
+              <span class="pl-3 grey--text text--darken-2 small">할인쿠폰 - {{reservationInfo.couponChoice.discount_amount}}원</span>
             </div>
           </v-flex>
         </v-layout>
@@ -209,7 +209,7 @@ export default {
         coupon_discount: 0,
         couponChoice: { // 사용할 쿠폰
           coupon_name: '쿠폰을 선택해주세요',
-          coupon_discount: 0,
+          discount_amount: 0,
           coupon_code: 1
         },
         payMethod: {
