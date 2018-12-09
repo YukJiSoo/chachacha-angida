@@ -84,7 +84,7 @@ router.post('/signin', async (req, res, next) => {
 
 
 /* PUT 내정보변경 */
-router.put('/:id', (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   console.log('put');
   console.log(req.body);
 
