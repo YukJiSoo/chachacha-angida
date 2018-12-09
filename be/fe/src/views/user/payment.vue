@@ -139,7 +139,7 @@
           </v-flex>
           <v-flex xs12>
             <div class="small red--text text--darken-2">
-              {{reservationInfo.total_price/100}}P 적립예정
+              {{((reservationInfo.total_price - reservationInfo.point_discount)*reservationInfo.point_rate).toFixed(0)}}P 적립예정
             </div>
           </v-flex>
         </v-layout>
@@ -247,6 +247,7 @@ export default {
     this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
     /* 트랜잭션에 필요한 예약 정보 초기화 */
     this.reservationInfo.customer_code = this.customerInfo.customer_code
+    this.reservationInfo.point_rate = this.customerInfo.point_rate
     this.reservationInfo.store_code = this.$route.params.storeInfo.store_code
     this.reservationInfo.reserv_time = new Date()
     this.reservationInfo.order_time = new Date()

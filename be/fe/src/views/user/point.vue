@@ -59,12 +59,12 @@
                 <v-layout column wrap>
                   <v-flex xs12>
                     <div class="medium ">
-                      <span>{{pointItem.STORE_NAME}}</span>
+                      <span>{{pointItem.store_name}}</span>
                     </div>
                   </v-flex>
                   <v-flex xs12>
                     <div class="medium grey--text pt-1">
-                      <span>{{pointItem.OCCUR_DATE}} ({{getPointRemoveDay(pointItem.OCCUR_DATE)}})</span>
+                      <span>{{pointItem.occur_date.substring(0, 10)}} ({{getPointRemoveDay(pointItem.occur_date)}})</span>
                     </div>
                   </v-flex>
                 </v-layout>
@@ -73,7 +73,7 @@
               <!-- 적립, 소멸포인트 값 -->
               <v-flex xs3>
                 <div class="medium orange--text pt-2">
-                  <span>+{{pointItem.OCCUR_POINT}}원 적립</span>
+                  <span>+{{pointItem.occur_point.toFixed(0)}}원 적립</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -107,14 +107,14 @@ export default {
     this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
     this.getPoint()
     this.getPointHistory()
-    this.getTotalPoint()
+    // this.getTotalPoint()
   },
   methods: {
-    getTotalPoint(){
-      this.pointHistorys((v) => {
-        this.pointHave += v.OCCUR_POINT
-      })
-    },
+    // getTotalPoint(){
+    //   this.pointHistorys((v) => {
+    //     this.pointHave += v.OCCUR_POINT
+    //   })
+    // },
     getPoint(){
       var data = {};
       data.customer_code = this.customerInfo.customer_code;
@@ -130,7 +130,9 @@ export default {
       })
     },
     getPointHistory(){
-      axios.get(`http://localhost:3000/api/point/list/${this.userCode}`)
+      axios.get(`http://localhost:3000/api/point/list/`, {
+        params: { customer_code: this.userCode }
+      })
       .then((r) => {
         console.log(r.data)
         this.pointHistorys = r.data
@@ -142,8 +144,8 @@ export default {
 
     },
     getPointRemoveDay(date){
-      var dateArr = date.split('.')
-      var month = dateArr[1]
+      // var dateArr = date.substring(10)
+      // var month = dateArr[1]
 
       return '2018.12.23 소멸';
     }

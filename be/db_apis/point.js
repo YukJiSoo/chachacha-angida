@@ -21,22 +21,22 @@ async function find(context) {
 module.exports.find = find;
 
 const listQuery =
- `select OCCUR_COUNT "OCCUR_COUNT",
-    OCCUR_DATE "OCCUR_DATE",
-    OCCUR_POINT "OCCUR_POINT",
-    STORE_NAME "STORE_NAME",
+ `select OCCUR_COUNT "occur_count",
+    OCCUR_DATE "occur_date",
+    OCCUR_POINT "occur_point",
+    STORE_NAME "store_name"
   from POINT_DETAIL`;
 /* POINT_DETAIL 테이블에서 포인트 내역 조회 */
 async function findList(context) {
-  let query = baseQuery;
+  let query = listQuery;
   const binds = {};
 
-  if (context.id) {
-    binds.CUSTOMER_CODE = context.id;
-    query += `\nwhere CUSTOMER_CODE = :CUSTOMER_CODE order by OCCUR_COUNT DESC`;
+  if (context.customer_code) {
+    binds.customer_code = context.customer_code;
+    query += `\nwhere customer_code = :customer_code order by occur_count DESC`;
   }
 
-  const result = await database.simpleExecute(query, binds);
+  const result = await database.simpleExecute(listQuery, binds);
 
   return result.rows;
 }
