@@ -39,7 +39,7 @@
                 </v-flex>
                 <v-flex xs12>
                   <div class="medium grey--text px-3">
-                    <span>{{coupon.issued_date}} ~ {{coupon.end_date}}</span>
+                    <span>{{coupon.issued_date.substring(0,10)}} ~ {{coupon.end_date.substring(0,10)}}</span>
                   </div>
                 </v-flex>
               </v-layout>
@@ -63,16 +63,18 @@ export default {
     return {
       mypagePath:'/mypage',
       userCode: localStorage.getItem('code'),
+      customerInfo: {},
       couponNum: 0,
       coupons: []
     }
   },
   mounted() {
+    this.customerInfo = JSON.parse(localStorage.getItem('customerInfo'))
     this.getCoupons()
   },
   methods: {
     getCoupons(){
-      this.$axios.get(`http://localhost:3000/api/coupon/list/${this.userCode}`)
+      this.$axios.get(`http://localhost:3000/api/coupon/list/${this.customerInfo.customer_code}`)
       .then((r) => {
         console.log(r.data)
         this.coupons = r.data
@@ -80,7 +82,7 @@ export default {
       })
       .catch((e) => {
       this.pop(e.message)
-      })  
+      })
     }
   }
 }

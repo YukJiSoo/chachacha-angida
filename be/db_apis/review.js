@@ -46,6 +46,7 @@ const ownerReviewQuery =
   `select
   r.review_code "review_code",
   customer_name "customer_name",
+  r.customer_code "customer_code",
   r.contents "contents",
   review_date "review_date",
   review_img_url "review_img_url"
