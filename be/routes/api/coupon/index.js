@@ -6,8 +6,9 @@ const coupon = require('../../../db_apis/coupon.js');
 const database = require('../../../services/database.js');
 
 /* GET coupon list. */
-router.get('/list/:id', async function(req, res, next) {
-  const id = req.params.id
+router.get('/list/', async function(req, res, next) {
+  console.log("GET coupon/list query:", req.query);
+  const id = req.query.customer_code;
   // 디비 만들어지면 테스트
   const context = {};
   context.id = parseInt(id, 10);

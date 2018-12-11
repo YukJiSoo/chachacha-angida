@@ -394,6 +394,7 @@ async function create(context) {
     console.log("menu executeMany result:", orderResult);
     /* [Optionnal] CUSTOMER_COUPON Update Copon_status =  Y */
     if (context.coupon_discount !== 0){
+    // if (context.couponChoice.discount_amount !== 0){
       var coupon_binds = {};
       coupon_binds.coupon_status = 'Y';
       coupon_binds.coupon_code = context.couponChoice.coupon_code;

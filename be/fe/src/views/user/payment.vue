@@ -262,7 +262,9 @@ export default {
   },
   methods: {
     getCoupons(){
-      this.$axios.get(`http://localhost:3000/api/coupon/list/${this.reservationInfo.userId}`)
+      this.$axios.get(`http://localhost:3000/api/coupon/list/`,{
+        params: { customer_code: this.customerInfo.customer_code}
+      })
       .then((r) => {
         this.couponItems = r.data
         console.log("갖고온 쿠폰 정보:", this.couponItems)
