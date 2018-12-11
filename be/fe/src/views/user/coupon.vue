@@ -74,7 +74,9 @@ export default {
   },
   methods: {
     getCoupons(){
-      this.$axios.get(`http://localhost:3000/api/coupon/list/${this.customerInfo.customer_code}`)
+      this.$axios.get(`http://localhost:3000/api/coupon/list/`, {
+        params: { customer_code: this.customerInfo.customer_code}
+      })
       .then((r) => {
         console.log(r.data)
         this.coupons = r.data
