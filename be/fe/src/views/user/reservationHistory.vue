@@ -194,6 +194,7 @@ export default {
       })
       .then((r) => {
         this.items = r.data
+        console.log(this.items[0]);
         // // item 객체 생성
         // for(var i in r.data.reserv_list){
         //   this.items.push(new reservItem(i.reservation_time, i.arrival_time, i.menu_list, i.status, i.store_name, i.total_price))

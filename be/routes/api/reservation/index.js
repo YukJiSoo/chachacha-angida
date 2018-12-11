@@ -17,7 +17,8 @@ router.get('/', async function(req, res, next) {
 
   rows.forEach((v,i) => {
     rows[i].order_time = new Date(rows[i].order_time.getTime() + 9 * 60 * 60 * 1000)
-    rows[i].endTime = rows[i].reserv_time
+    //rows[i].endTime = rows[i].reserv_time
+    rows[i].endTime = new Date(rows[i].order_time.getTime() + 1 * 60 * 1000)
     rows[i].reserv_time = new Date(rows[i].reserv_time.getTime() + 9 * 60 * 60 * 1000)
     rows[i].times = []
     rows[i].times.push({ id: 0, time: 1 })
